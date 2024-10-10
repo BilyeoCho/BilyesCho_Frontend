@@ -1,57 +1,106 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import axiosApi from '../../axios'; 
+import InputComponent from '../../components/InputComponent';
 
-const LoginContainer = styled.div`
+function Login() {
+  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
+
+  const loginUser = async (data) => {
+    const { loginId, password } = data;
+    try {
+      const res = await axiosApi.post('/login', {
+        loginId,
+        password,
+      });
+      if (res.status === 200) {
+        localStorage.setItem('accessToken', res.data.accessToken);
+        navigate('/home');
+      }
+    } catch (error) {
+      console.error('ë¡œê·¸ì¸ ì‹¤íŒ¨:', error);
+      alert('ë¡œê·¸ì¸ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤. ì•„ì´ë””ì™€ ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.');
+    }
+  };
+
+  return (
+    <LoginWrapper>
+      <LoginForm onSubmit={handleSubmit(loginUser)}>
+        <Title>ë¡œê·¸ì¸</Title>
+        <FormContent>
+          <InputComponent
+            id="loginId"
+            label="ì•„ì´ë””"
+            type="text"
+            placeholder="ì•„ì´ë””ë¥¼ ì…ë ¥í•˜ì„¸ìš”"
+            register={register}
+            required
+          />
+          <InputComponent
+            id="password"
+            label="ë¹„ë°€ë²ˆí˜¸"
+            type="password"
+            placeholder="ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”"
+            register={register}
+            required
+          />
+          <ButtonGroup>
+            <SignUpButton type="button" onClick={() => navigate('/register')}>íšŒì›ê°€ì…</SignUpButton>
+            <LoginButton type="submit">ë¡œê·¸ì¸</LoginButton>
+          </ButtonGroup>
+        </FormContent>
+      </LoginForm>
+    </LoginWrapper>
+  );
+}
+
+const LoginWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   height: 100vh;
-  width: 100%;
+  background-color: white;
 `;
 
 const LoginForm = styled.form`
-  display: flex;
-  flex-direction: column;¤±
-  width: 300px;
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
 `;
 
 const Title = styled.h1`
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
   text-align: center;
+  color: black;
 `;
 
-const InputLabel = styled.label`
-  margin-bottom: 5px;
-  font-size: 14px;
+const FormContent = styled.div`
+  width: 100%;
 `;
 
-const Input = styled.input`
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
-
-const ButtonContainer = styled.div`
+const ButtonGroup = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  width: 100%;
+  margin-top: 1rem;
 `;
 
 const Button = styled.button`
-  padding: 10px;
-  width: 48%;
-  border: none;
-  border-radius: 4px;
+  width: calc(50% - 0.25rem);
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid black;
+  border-radius: 0.25rem;
   cursor: pointer;
 `;
 
 const SignUpButton = styled(Button)`
   background-color: white;
   color: black;
-  border: 1px solid black;
 `;
 
 const LoginButton = styled(Button)`
@@ -59,22 +108,4 @@ const LoginButton = styled(Button)`
   color: white;
 `;
 
-function LoginPage() {
-  return (
-    <LoginContainer>
-      <LoginForm>
-        <Title>·Î±×ÀÎ</Title>
-        <InputLabel>¾ÆÀÌµğ</InputLabel>
-        <Input type="text" placeholder="¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÏ¼¼¿ä" />
-        <InputLabel>ºñ¹Ğ¹øÈ£</InputLabel>
-        <Input type="password" placeholder="ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä" />
-        <ButtonContainer>
-          <SignUpButton type="button">È¸¿ø°¡ÀÔ</SignUpButton>
-          <LoginButton type="submit">·Î±×ÀÎ</LoginButton>
-        </ButtonContainer>
-      </LoginForm>
-    </LoginContainer>
-  );
-}
-
-export default LoginPage;
+export default Login;

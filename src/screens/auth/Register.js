@@ -1,92 +1,127 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import axiosApi from '../../axios';
+import InputComponent from '../../components/InputComponent';
 
-const Container = styled.div`
+function Register() {
+  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
+
+  const registerUser = async (data) => {
+    const { loginId, name, password } = data;
+    try {
+      const res = await axiosApi.post("/join", {
+        loginId,
+        name,
+        password,
+      });
+      if (res.status === 200) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.error('íšŒì›ê°€ì… ì‹¤íŒ¨:', error);
+      alert('íšŒì›ê°€ì…ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤. ë‹¤ì‹œ ì‹œë„í•´ì£¼ì„¸ìš”.');
+    }
+  };
+
+  return (
+    <RegisterWrapper>
+      <RegisterForm onSubmit={handleSubmit(registerUser)}>
+        <Title>íšŒì›ê°€ì…</Title>
+        <FormContent>
+          <InputComponent
+            id="name"
+            label="ì´ë¦„"
+            type="text"
+            placeholder="ì´ë¦„ì„ ì…ë ¥í•˜ì„¸ìš”"
+            register={register}
+            required
+          />
+          <InputComponent
+            id="loginId"
+            label="ì•„ì´ë””"
+            type="text"
+            placeholder="ì•„ì´ë””ë¥¼ ì…ë ¥í•˜ì„¸ìš”"
+            register={register}
+            required
+          />
+          <InputComponent
+            id="password"
+            label="ë¹„ë°€ë²ˆí˜¸"
+            type="password"
+            placeholder="ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”"
+            register={register}
+            required
+          />
+          <InputComponent
+            id="confirmPassword"
+            label="ë¹„ë°€ë²ˆí˜¸ í™•ì¸"
+            type="password"
+            placeholder="ë¹„ë°€ë²ˆí˜¸ë¥¼ í•œë²ˆ ë” ì…ë ¥í•˜ì„¸ìš”"
+            register={register}
+            required
+          />
+          <ButtonGroup>
+            <BackButton type="button" onClick={() => navigate('/')}>ëŒì•„ê°€ê¸°</BackButton>
+            <RegisterButton type="submit">ê°€ì…í•˜ê¸°</RegisterButton>
+          </ButtonGroup>
+        </FormContent>
+      </RegisterForm>
+    </RegisterWrapper>
+  );
+}
+
+const RegisterWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: 20px;
+  height: 100vh;
+  background-color: white;
+`;
+
+const RegisterForm = styled.form`
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
 `;
 
 const Title = styled.h1`
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: black;
 `;
 
-const Input = styled.input`
+const FormContent = styled.div`
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
 `;
 
-const ButtonContainer = styled.div`
+const ButtonGroup = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin-top: 1rem;
 `;
 
 const Button = styled.button`
-  width: 48%;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
+  width: calc(50% - 0.25rem);
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid black;
+  border-radius: 0.25rem;
   cursor: pointer;
 `;
 
 const BackButton = styled(Button)`
   background-color: white;
   color: black;
-  border: 1px solid black;
 `;
 
 const RegisterButton = styled(Button)`
   background-color: black;
   color: white;
 `;
-
-const Register = () => {
-  const [name, setName] = useState('');
-  const [id, setId] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-
-  const handleRegister = () => {
-    // È¸¿ø°¡ÀÔ ·ÎÁ÷ ±¸Çö
-  };
-
-  return (
-    <Container>
-      <Title>È¸¿ø°¡ÀÔ</Title>
-      <Input
-        placeholder="ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <Input
-        placeholder="¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÏ¼¼¿ä"
-        value={id}
-        onChange={(e) => setId(e.target.value)}
-      />
-      <Input
-        type="password"
-        placeholder="ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <Input
-        type="password"
-        placeholder="ºñ¹Ğ¹øÈ£¸¦ ÇÑ¹ø ´õ ÀÔ·ÂÇÏ¼¼¿ä"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-      />
-      <ButtonContainer>
-        <BackButton>µ¹¾Æ°¡±â</BackButton>
-        <RegisterButton onClick={handleRegister}>°¡ÀÔÇÏ±â</RegisterButton>
-      </ButtonContainer>
-    </Container>
-  );
-};
 
 export default Register;
