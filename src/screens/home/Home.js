@@ -1,15 +1,20 @@
 import React from 'react'
+import styled from 'styled-components'
 import TopBar from '../../components/TopBar';
 import Main from './Main';
 
 const Home = () => {
   return (
-    <div>
-        <TopBar />
-        <Main />
-    </div>
+    <HomeContainer>
+      <TopBar />
+      <Main />
+    </HomeContainer>
   )
 }
 
-export default Home;
+const HomeContainer = styled.div`
+  display: flex;
+  height: 100vh;
+`;
 
+export default Home;
