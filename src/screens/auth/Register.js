@@ -12,7 +12,7 @@ function Register() {
   const registerUser = async (data) => {
     const { loginId, name, password } = data;
     try {
-      const res = await axiosApi.post("/api/join", {
+      const res = await axiosApi.post("/join", {
         loginId,
         name,
         password,
