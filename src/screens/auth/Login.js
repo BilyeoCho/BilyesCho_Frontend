@@ -12,7 +12,7 @@ function Login() {
   const loginUser = async (data) => {
     const { loginId, password } = data;
     try {
-      const res = await axiosApi.post('/api/login', {
+      const res = await axiosApi.post('/login', {
         loginId,
         password,
       });

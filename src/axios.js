@@ -7,7 +7,7 @@ const axiosApi = axios.create({
 
 const handleRequestInterceptor = (config) => {
   const token = localStorage.getItem("accessToken");
-  if (token) {
+  if (token && !['/login', '/join'].includes(config.url)) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
