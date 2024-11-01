@@ -36,7 +36,7 @@ function Register() {
             label="이름"
             type="text"
             placeholder="이름을 입력하세요"
-            register={register("name")}
+            register={{...register("name")}}
             required
           />
           <InputComponent
@@ -44,7 +44,7 @@ function Register() {
             label="아이디"
             type="text"
             placeholder="아이디를 입력하세요"
-            register={register("loginId")}
+            register={{...register("loginId")}}
             required
           />
           <InputComponent
@@ -52,7 +52,7 @@ function Register() {
             label="비밀번호"
             type="password"
             placeholder="비밀번호를 입력하세요"
-            register={register("password")}
+            register={{...register("password")}}
             required
           />
           <InputComponent
@@ -60,7 +60,7 @@ function Register() {
             label="비밀번호 확인"
             type="password"
             placeholder="비밀번호를 한번 더 입력하세요"
-            register={register("comfirmPassword")}
+            register={{...register("comfirmPassword")}}
             required
           />
           <ButtonGroup>
