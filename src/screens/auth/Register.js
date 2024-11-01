@@ -11,12 +11,12 @@ function Register() {
 
   const registerUser = async (data) => {
     console.log(data);
-    const { loginId, name, password } = data;
+    const { userId, userName, userPwd } = data;
     try {
       const res = await axiosApi.post("/join", {
-        loginId,
-        name,
-        password,
+        userId,
+        userName,
+        userPwd,
       });
       if (res.status === 200) {
         navigate("/");
@@ -33,27 +33,27 @@ function Register() {
         <Title>회원가입</Title>
         <FormContent>
           <InputComponent
-            id="name"
+            id="userName"
             label="이름"
             type="text"
             placeholder="이름을 입력하세요"
-            register={register("name")}
+            register={register("userName")}
             required
           />
           <InputComponent
-            id="loginId"
+            id="userId"
             label="아이디"
             type="text"
             placeholder="아이디를 입력하세요"
-            register={register("loginId")}
+            register={register("userId")}
             required
           />
           <InputComponent
-            id="password"
+            id="userPwd"
             label="비밀번호"
             type="password"
             placeholder="비밀번호를 입력하세요"
-            register={register("password")}
+            register={register("userPwd")}
             required
           />
           <InputComponent
