@@ -9,7 +9,8 @@ function InputComponent({ id, label, type, placeholder, register, required }) {
         type={type}
         id={id}
         placeholder={placeholder}
-        {...(register && register(id, { required }))}
+        {...register} 
+        required={required}
       />
     </InputWrapper>
   );
