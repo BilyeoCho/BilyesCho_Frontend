@@ -10,12 +10,14 @@ function Login() {
   const navigate = useNavigate();
 
   const loginUser = async (data) => {
+    console.log("로그인 시도 데이터:", data); // 로그인 데이터 확인
     const { userId, userPwd } = data;
     try {
       const res = await axiosApi.post('/login', {
         userId,
         userPwd,
       });
+      console.log("로그인 응답:", res); // 서버 응답 확인
       if (res.status === 200) {
         localStorage.setItem('accessToken', res.data.accessToken);
         navigate('/home');
