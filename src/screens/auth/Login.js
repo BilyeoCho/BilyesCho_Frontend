@@ -40,7 +40,7 @@ function Login() {
             required
           />
           <InputComponent
-            id="password"
+            id="userPwd"
             label="비밀번호"
             type="password"
             placeholder="비밀번호를 입력하세요"
