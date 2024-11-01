@@ -10,11 +10,11 @@ function Login() {
   const navigate = useNavigate();
 
   const loginUser = async (data) => {
-    const { loginId, password } = data;
+    const { userId, userPwd } = data;
     try {
       const res = await axiosApi.post('/login', {
-        loginId,
-        password,
+        userId,
+        userPwd,
       });
       if (res.status === 200) {
         localStorage.setItem('accessToken', res.data.accessToken);
@@ -32,11 +32,11 @@ function Login() {
         <Title>로그인</Title>
         <FormContent>
           <InputComponent
-            id="loginId"
+            id="userId"
             label="아이디"
             type="text"
             placeholder="아이디를 입력하세요"
-            register={register}
+            register={register("userId")}
             required
           />
           <InputComponent
@@ -44,7 +44,7 @@ function Login() {
             label="비밀번호"
             type="password"
             placeholder="비밀번호를 입력하세요"
-            register={register}
+            register={register("userPwd")}
             required
           />
           <ButtonGroup>
