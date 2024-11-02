@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import TopBar from '../../components/TopBar';
-import RegisterMain from './RegisterMain';
+import ItemRegisterMain from './ItemRegisterMain';
 
-const Register = () => {
+const ItemRegister = () => {
   return (
     <HomeContainer>
         <TopBar />
-        <RegisterMain />
+        <ItemRegisterMain />
     </HomeContainer>
   )
 }
@@ -17,4 +17,4 @@ const HomeContainer = styled.div`
   height: 100vh;
 `;
 
-export default Register
+export default ItemRegister

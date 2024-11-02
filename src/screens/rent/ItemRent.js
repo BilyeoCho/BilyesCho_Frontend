@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import TopBar from '../../components/TopBar';
-import RentMain from './RentMain';
+import ItemRentMain from './ItemRentMain';
 
-const Rent = () => {
+const ItemRent = () => {
   return (
     <HomeContainer>
         <TopBar />
-        <RentMain />
+        <ItemRentMain />
     </HomeContainer>
   )
 }
@@ -17,4 +17,4 @@ const HomeContainer = styled.div`
   height: 100vh;
 `;
 
-export default Rent
+export default ItemRent

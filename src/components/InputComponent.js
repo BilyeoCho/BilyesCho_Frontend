@@ -6,7 +6,7 @@ function InputComponent({ id, label, type, placeholder, register, required }) {
     <InputWrapper>
       <Label htmlFor={id}>{label}</Label>
       <InputField
-        type={type}
+        type={type} 
         id={id}
         placeholder={placeholder}
         {...register} 
