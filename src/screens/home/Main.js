@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Pagination } from '@mui/material';
 
 const Main = () => {
   const [currentBanner, setCurrentBanner] = useState(0);
+  const [sliding, setSliding] = useState(false);
+  const [slideDirection, setSlideDirection] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
   // 임시 데이터
@@ -33,22 +35,54 @@ const Main = () => {
   const itemsPerPage = 4;
   const totalPages = Math.ceil(rentalItems.length / itemsPerPage);
 
+  const handlePrevBanner = () => {
+    setSlideDirection('right');
+    setSliding(true);
+    setCurrentBanner(prev => (prev === 0 ? bannerItems.length - 1 : prev - 1));
+  };
+
+  const handleNextBanner = () => {
+    setSlideDirection('left');
+    setSliding(true);
+    setCurrentBanner(prev => (prev === bannerItems.length - 1 ? 0 : prev + 1));
+  };
+
+  useEffect(() => {
+    if (sliding) {
+      const timer = setTimeout(() => {
+        setSliding(false);
+      }, 500); // 슬라이딩 애니메이션 시간
+      return () => clearTimeout(timer);
+    }
+  }, [sliding]);
+
   return (
     <MainContainer>
       {/* 배너 섹션 */}
       <BannerSection>
-        <BannerImage>
-          {bannerItems[currentBanner].title}
-        </BannerImage>
-        <BannerIndicators>
-          {bannerItems.map((_, index) => (
-            <Indicator 
-              key={index} 
-              active={currentBanner === index}
-              onClick={() => setCurrentBanner(index)}
-            />
-          ))}
-        </BannerIndicators>
+        <BannerWrapper>
+          <BannerImage 
+            sliding={sliding} 
+            direction={slideDirection}
+          >
+            {bannerItems[currentBanner].title}
+          </BannerImage>
+          <BannerButton left onClick={handlePrevBanner}>&lt;</BannerButton>
+          <BannerButton right onClick={handleNextBanner}>&gt;</BannerButton>
+          <BannerIndicators>
+            {bannerItems.map((_, index) => (
+              <Indicator 
+                key={index} 
+                active={currentBanner === index}
+                onClick={() => {
+                  setSlideDirection(index > currentBanner ? 'left' : 'right');
+                  setSliding(true);
+                  setCurrentBanner(index);
+                }}
+              />
+            ))}
+          </BannerIndicators>
+        </BannerWrapper>
       </BannerSection>
 
       {/* 카테고리 섹션 */}
@@ -102,6 +136,11 @@ const BannerSection = styled.div`
   margin-bottom: 40px;
 `;
 
+const BannerWrapper = styled.div`
+  position: relative;
+  overflow: hidden;
+`;
+
 const BannerImage = styled.div`
   width: 100%;
   height: 300px;
@@ -109,6 +148,41 @@ const BannerImage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.5s ease-in-out;
+  transform: ${props => {
+    if (!props.sliding) return 'translateX(0)';
+    return props.direction === 'left' 
+      ? 'translateX(-100%)' 
+      : 'translateX(100%)';
+  }};
+`;
+
+const BannerButton = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  ${props => props.left ? 'left: 20px;' : 'right: 20px;'}
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const BannerIndicators = styled.div`
