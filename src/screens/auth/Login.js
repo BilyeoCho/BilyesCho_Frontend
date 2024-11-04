@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import axiosApi from '../../axios'; 
 import InputComponent from '../../components/InputComponent';
+import Title from '../../components/Title';
 
 function Login() {
   const { register, handleSubmit } = useForm();
@@ -30,8 +31,11 @@ function Login() {
 
   return (
     <LoginWrapper>
+      <TitleContainer>
+        <Title />
+      </TitleContainer>
       <LoginForm onSubmit={handleSubmit(loginUser)}>
-        <Title>로그인</Title>
+        <LoginTitle>로그인</LoginTitle>
         <FormContent>
           <InputComponent
             id="userId"
@@ -73,7 +77,7 @@ const LoginForm = styled.form`
   padding: 2rem;
 `;
 
-const Title = styled.h1`
+const LoginTitle = styled.h1`
   font-size: 1.5rem;
   margin-bottom: 2rem;
   text-align: center;
@@ -108,6 +112,12 @@ const SignUpButton = styled(Button)`
 const LoginButton = styled(Button)`
   background-color: black;
   color: white;
+`;
+
+const TitleContainer = styled.div`
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
 `;
 
 export default Login;
