@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import axiosApi from '../../axios';
 import InputComponent from '../../components/InputComponent';
+import Title from '../../components/Title';
 
 function Register() {
   const { register, handleSubmit } = useForm();
@@ -29,8 +30,11 @@ function Register() {
 
   return (
     <RegisterWrapper>
+      <TitleContainer>
+        <Title />
+      </TitleContainer>
       <RegisterForm onSubmit={handleSubmit(registerUser)}>
-        <Title>회원가입</Title>
+        <RegisterTitle>회원가입</RegisterTitle>
         <FormContent>
           <InputComponent
             id="userName"
@@ -88,7 +92,13 @@ const RegisterForm = styled.form`
   padding: 2rem;
 `;
 
-const Title = styled.h1`
+const TitleContainer = styled.div`
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+`;
+
+const RegisterTitle = styled.h1`
   font-size: 1.5rem;
   margin-bottom: 2rem;
   text-align: center;
