@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Pagination } from '@mui/material';
 
 const Main = () => {
   const [currentBanner, setCurrentBanner] = useState(0);
-  const [sliding, setSliding] = useState(false);
-  const [slideDirection, setSlideDirection] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const bannerRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [currentTranslate, setCurrentTranslate] = useState(0);
 
   // 임시 데이터
   const bannerItems = [
@@ -35,35 +37,65 @@ const Main = () => {
   const itemsPerPage = 4;
   const totalPages = Math.ceil(rentalItems.length / itemsPerPage);
 
+  // 드래그 시작 시
+  const handleDragStart = (e) => {
+    setIsDragging(true);
+    setStartX(e.clientX);
+  };
+
+  // 드래그 중
+  const handleDragMove = (e) => {
+    if (!isDragging) return;
+    const diff = e.clientX - startX;
+    setCurrentTranslate(diff);
+  };
+
+  // 드래그 종료 시
+  const handleDragEnd = () => {
+    setIsDragging(false);
+    if (currentTranslate < -50) {
+      handleNextBanner();
+    } else if (currentTranslate > 50) {
+      handlePrevBanner();
+    }
+    setCurrentTranslate(0);
+  };
+
   const handlePrevBanner = () => {
-    setSlideDirection('right');
-    setSliding(true);
-    setCurrentBanner(prev => (prev === 0 ? bannerItems.length - 1 : prev - 1));
+    setCurrentBanner((prev) => (prev === 0 ? bannerItems.length - 1 : prev - 1));
   };
 
   const handleNextBanner = () => {
-    setSlideDirection('left');
-    setSliding(true);
-    setCurrentBanner(prev => (prev === bannerItems.length - 1 ? 0 : prev + 1));
+    setCurrentBanner((prev) => (prev === bannerItems.length - 1 ? 0 : prev + 1));
   };
 
   useEffect(() => {
-    if (sliding) {
-      const timer = setTimeout(() => {
-        setSliding(false);
-      }, 500); // 슬라이딩 애니메이션 시간
-      return () => clearTimeout(timer);
+    const bannerElement = bannerRef.current;
+
+    if (bannerElement) {
+      bannerElement.addEventListener("mousedown", handleDragStart);
+      bannerElement.addEventListener("mousemove", handleDragMove);
+      bannerElement.addEventListener("mouseup", handleDragEnd);
+      bannerElement.addEventListener("mouseleave", handleDragEnd);
+
+      return () => {
+        bannerElement.removeEventListener("mousedown", handleDragStart);
+        bannerElement.removeEventListener("mousemove", handleDragMove);
+        bannerElement.removeEventListener("mouseup", handleDragEnd);
+        bannerElement.removeEventListener("mouseleave", handleDragEnd);
+      };
     }
-  }, [sliding]);
+  }, [isDragging, startX, currentTranslate]);
 
   return (
     <MainContainer>
       {/* 배너 섹션 */}
       <BannerSection>
-        <BannerWrapper>
-          <BannerImage 
-            sliding={sliding} 
-            direction={slideDirection}
+        <BannerWrapper ref={bannerRef} currentTranslate={currentTranslate}>
+          <BannerImage
+            style={{
+              transform: `translateX(${currentTranslate}px)`,
+            }}
           >
             {bannerItems[currentBanner].title}
           </BannerImage>
@@ -71,14 +103,10 @@ const Main = () => {
           <BannerButton right onClick={handleNextBanner}>&gt;</BannerButton>
           <BannerIndicators>
             {bannerItems.map((_, index) => (
-              <Indicator 
-                key={index} 
+              <Indicator
+                key={index}
                 active={currentBanner === index}
-                onClick={() => {
-                  setSlideDirection(index > currentBanner ? 'left' : 'right');
-                  setSliding(true);
-                  setCurrentBanner(index);
-                }}
+                onClick={() => setCurrentBanner(index)}
               />
             ))}
           </BannerIndicators>
@@ -113,8 +141,8 @@ const Main = () => {
             ))}
         </RentalGrid>
         <PaginationWrapper>
-          <Pagination 
-            count={totalPages} 
+          <Pagination
+            count={totalPages}
             page={currentPage}
             onChange={(_, page) => setCurrentPage(page)}
           />
@@ -148,13 +176,7 @@ const BannerImage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.5s ease-in-out;
-  transform: ${props => {
-    if (!props.sliding) return 'translateX(0)';
-    return props.direction === 'left' 
-      ? 'translateX(-100%)' 
-      : 'translateX(100%)';
-  }};
+  transition: transform 0.2s ease-out;
 `;
 
 const BannerButton = styled.button`
