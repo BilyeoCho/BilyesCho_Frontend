@@ -7,40 +7,41 @@ const ItemRentDetail = () => {
   const { itemId } = useParams();
 
   // 임시 데이터
-  const itemDetails = {
-    id: 1,
-    title: '자전거',
-    price: '10,000',
-    duration: '24시간',
-    description: [
-      '물품 상세설명입니다.',
-      '물품 상세설명입니다.',
-      '물품 상세설명입니다.',
-      '물품 상세설명입니다.',
-      '물품 상세설명입니다.',
-    ],
-    owner: '장성우',
-    category: 'Sports & Outdoors',
-    image: 'bicycle.jpg',
-  };
+  const rentalItems = [
+    { id: 1, title: '자전거', price: '10,000', duration: '24시간', owner: '장성우', category: 'Sports & Outdoors', description: ['물품 상세설명입니다.', '물품 상세설명입니다.'] },
+    { id: 2, title: '텐트', price: '20,000', duration: '24시간', owner: '홍길동', category: 'Camping Equipment', description: ['물품 상세설명입니다.', '물품 상세설명입니다.'] },
+    { id: 3, title: '캠핑의자', price: '5,000', duration: '24시간', owner: '정준서', category: 'Camping Equipment', description: ['물품 상세설명입니다.', '물품 상세설명입니다.'] },
+    { id: 4, title: '가스토치', price: '3,000', duration: '24시간', owner: '김태양', category: 'Camping Equipment', description: ['물품 상세설명입니다.', '물품 상세설명입니다.'] },
+    { id: 5, title: '코터', price: '15,000', duration: '24시간', owner: '장성우', category: 'Camping Equipment', description: ['물품 상세설명입니다.', '물품 상세설명입니다.'] },
+    { id: 6, title: '등산모자', price: '2,000', duration: '24시간', owner: '홍길동', category: 'Sports & Outdoors', description: ['물품 상세설명입니다.', '물품 상세설명입니다.'] },
+    { id: 7, title: '야구글러브', price: '8,000', duration: '24시간', owner: '정준서', category: 'Sports & Outdoors', description: ['물품 상세설명입니다.', '물품 상세설명입니다.'] },
+    { id: 8, title: '낚시대', price: '12,000', duration: '24시간', owner: '김태양', category: 'Sports & Outdoors', description: ['물품 상세설명입니다.', '물품 상세설명입니다.'] },
+  ];
+
+  // itemId를 이용해 해당 아이템의 상세 정보를 가져옴
+  const itemDetails = rentalItems.find(item => item.id === parseInt(itemId));
+
+  if (!itemDetails) {
+    return <div>잘못된 접근입니다. 물품을 찾을 수 없습니다.</div>;
+  }
 
   return (
     <DetailContainer>
       <TopBar />
       <ContentWrapper>
         <ImageSection>
-          <ItemImage>{itemDetails.title} Image</ItemImage>
+          <ItemImage>{rentalItems.title} Image</ItemImage>
         </ImageSection>
         <DetailsSection>
-          <OwnerInfo>소유자: {itemDetails.owner}</OwnerInfo>
-          <ItemTitle>{itemDetails.title}</ItemTitle>
-          <ItemPrice>₩{itemDetails.price} / {itemDetails.duration}</ItemPrice>
+          <OwnerInfo>소유자: {rentalItems.owner}</OwnerInfo>
+          <ItemTitle>{rentalItems.title}</ItemTitle>
+          <ItemPrice>₩{rentalItems.price} / {rentalItems.duration}</ItemPrice>
           <RentButton>대여하기</RentButton>
           <ItemDetails>
             <SectionTitle>상세 정보</SectionTitle>
-            <Category>{itemDetails.category}</Category>
+            <Category>{rentalItems.category}</Category>
             <DescriptionList>
-              {itemDetails.description.map((desc, index) => (
+              {rentalItems.description.map((desc, index) => (
                 <DescriptionItem key={index}>{desc}</DescriptionItem>
               ))}
             </DescriptionList>
