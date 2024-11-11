@@ -17,7 +17,7 @@ const ItemRentMain = () => {
     { id: 8, title: '낚시대', price: '12,000', duration: '24시간' },
   ];
 
-  const itemsPerPage = 4;
+  const itemsPerPage = 8;
   const totalPages = Math.ceil(rentalItems.length / itemsPerPage);
 
   return (
@@ -57,6 +57,8 @@ const MainContainer = styled.div`
 const SectionTitle = styled.h2`
   margin-bottom: 20px;
   font-weight: bold;
+  text-align: center;
+  font-size: 2rem;
 `;
 
 const RentalGrid = styled.div`
