@@ -177,16 +177,21 @@ const DetailContainer = styled.div`
 
 const ContentWrapper = styled.div`
   display: flex;
-  padding: 2rem;
-  gap: 2rem;
+  padding: 24rem;
+  gap: 24rem;
+  max-width: 1200px;
+  margin: 0 auto;
 `;
 
 const ImageSection = styled.div`
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ItemImage = styled.div`
-  width: 100%;
+  width: 1080%;
   height: 500px;
   background-color: #f0f0f0;
   display: flex;
@@ -200,6 +205,7 @@ const DetailsSection = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `;
 
 const OwnerInfo = styled.div`
@@ -229,6 +235,7 @@ const RentButton = styled.button`
   cursor: pointer;
   width: 200px;
   margin-bottom: 2rem;
+  align-self: flex-start;
 `;
 
 const ItemDetails = styled.div`
