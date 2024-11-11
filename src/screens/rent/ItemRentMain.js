@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Pagination } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-const ItemRentMain = ({ onCardClick }) => {
+const ItemRentMain = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
 
   // 임시 데이터
   const rentalItems = [
@@ -20,6 +22,10 @@ const ItemRentMain = ({ onCardClick }) => {
   const itemsPerPage = 8;
   const totalPages = Math.ceil(rentalItems.length / itemsPerPage);
 
+  const handleCardClick = (itemId) => {
+    navigate(`/rent/item/${itemId}`);
+  }
+
   return (
     <MainContainer>
       <SectionTitle>대여 가능한 물품</SectionTitle>
@@ -27,7 +33,7 @@ const ItemRentMain = ({ onCardClick }) => {
         {rentalItems
           .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
           .map((item) => (
-            <RentalCard key={item.id} onClick={() => onCardClick(item.id)}>
+            <RentalCard key={item.id} onClick={() => handleCardClick(item.id)}>
               <CardImage />
               <CardInfo>
                 <CardTitle>{item.title}</CardTitle>
@@ -58,7 +64,6 @@ const SectionTitle = styled.h2`
   margin-bottom: 20px;
   font-weight: bold;
   text-align: center;
-  font-size: 1.5rem;
 `;
 
 const RentalGrid = styled.div`

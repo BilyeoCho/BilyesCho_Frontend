@@ -2,16 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import TopBar from '../../components/TopBar';
 import ItemRentMain from './ItemRentMain';
-import { useNavigate } from 'react-router-dom';
 
 const ItemRent = () => {
-  const navigate = useNavigate();
-
   return (
     <HomeContainer>
       <TopBar />
       <MainWrapper>
-        <ItemRentMain onCardClick={(itemId) => navigate(`/itemrent/${itemId}`)} />
+        <ItemRentMain />
       </MainWrapper>
     </HomeContainer>
   );
