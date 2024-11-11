@@ -178,15 +178,16 @@ const DetailContainer = styled.div`
 const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 24px;
 `;
 
 const ImageSection = styled.div`
   width: 100%;
+  max-width: 500px;
   aspect-ratio: 1;
-  margin-bottom: 40px;
+  margin: 0 auto 48px;
 `;
 
 const ItemImage = styled.div`
@@ -196,31 +197,38 @@ const ItemImage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 0.875rem;
   color: #999;
 `;
 
 const DetailsSection = styled.div`
   width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
 `;
 
 const OwnerInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 14px;
   color: #666;
+  margin-bottom: 4px;
 `;
 
 const ItemTitle = styled.h2`
-  font-size: 24px;
-  font-weight: bold;
-  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
 `;
 
 const ItemPrice = styled.div`
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
 `;
 
 const RentButton = styled.button`
@@ -229,25 +237,27 @@ const RentButton = styled.button`
   background-color: #000;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
-  margin: 8px 0 24px;
+  margin: 8px 0 32px;
 `;
 
 const ItemDetails = styled.div`
-  margin-top: 16px;
+  margin-top: 32px;
 `;
 
 const SectionTitle = styled.h3`
-  font-size: 18px;
-  margin-bottom: 12px;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
 `;
 
 const Category = styled.div`
   font-size: 14px;
   color: #666;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 `;
 
 const DescriptionList = styled.ul`
@@ -257,10 +267,10 @@ const DescriptionList = styled.ul`
 `;
 
 const DescriptionItem = styled.li`
-  font-size: 14px;
+  font-size: 15px;
   color: #333;
-  margin-bottom: 8px;
-  line-height: 1.5;
+  margin-bottom: 12px;
+  line-height: 1.6;
 `;
 
 export default ItemRentDetail;
