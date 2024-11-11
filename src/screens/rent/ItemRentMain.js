@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Pagination } from '@mui/material';
 
-const ItemRentMain = () => {
+const ItemRentMain = ({ onCardClick }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   // 임시 데이터
@@ -27,7 +27,7 @@ const ItemRentMain = () => {
         {rentalItems
           .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
           .map((item) => (
-            <RentalCard key={item.id}>
+            <RentalCard key={item.id} onClick={() => onCardClick(item.id)}>
               <CardImage />
               <CardInfo>
                 <CardTitle>{item.title}</CardTitle>
@@ -58,7 +58,7 @@ const SectionTitle = styled.h2`
   margin-bottom: 20px;
   font-weight: bold;
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.5rem;
 `;
 
 const RentalGrid = styled.div`

@@ -8,6 +8,7 @@ import ItemRegister from "./screens/register/ItemRegister";
 import Talk from './screens/talk/Talk';
 import Review from './screens/review/Review';
 import MyPage from './screens/mypage/MyPage';
+import ItemRentDetail from './screens/rent/ItemRentDetail';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/itemrent",
         element: <ItemRent />,
+      },
+      {
+        path: "/itemrent/:itemId",
+        element: <ItemRentDetail />,
       },
       {
         path: "/itemregister",
