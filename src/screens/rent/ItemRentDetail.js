@@ -177,90 +177,90 @@ const DetailContainer = styled.div`
 
 const ContentWrapper = styled.div`
   display: flex;
-  padding: 24rem;
-  gap: 24rem;
+  flex-direction: column;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
 `;
 
 const ImageSection = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  aspect-ratio: 1;
+  margin-bottom: 40px;
 `;
 
 const ItemImage = styled.div`
-  width: 1080%;
-  height: 500px;
-  background-color: #f0f0f0;
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: #999;
 `;
 
 const DetailsSection = styled.div`
-  flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 16px;
 `;
 
 const OwnerInfo = styled.div`
-  font-size: 1rem;
+  font-size: 14px;
   color: #666;
-  margin-bottom: 0.5rem;
 `;
 
 const ItemTitle = styled.h2`
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
 `;
 
 const ItemPrice = styled.div`
-  font-size: 1.5rem;
+  font-size: 20px;
   font-weight: bold;
-  margin-bottom: 1.5rem;
 `;
 
 const RentButton = styled.button`
-  padding: 1rem;
-  background-color: black;
+  width: 100%;
+  padding: 16px;
+  background-color: #000;
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 4px;
+  font-size: 16px;
   cursor: pointer;
-  width: 200px;
-  margin-bottom: 2rem;
-  align-self: flex-start;
+  margin: 8px 0 24px;
 `;
 
 const ItemDetails = styled.div`
-  margin-top: 2rem;
+  margin-top: 16px;
 `;
 
 const SectionTitle = styled.h3`
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  font-size: 18px;
+  margin-bottom: 12px;
 `;
 
 const Category = styled.div`
-  font-size: 1rem;
-  color: #999;
-  margin-bottom: 1rem;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 16px;
 `;
 
 const DescriptionList = styled.ul`
   list-style-type: none;
   padding: 0;
+  margin: 0;
 `;
 
 const DescriptionItem = styled.li`
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+  line-height: 1.5;
 `;
 
 export default ItemRentDetail;
