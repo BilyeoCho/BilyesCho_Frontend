@@ -151,7 +151,7 @@ const ItemRentDetail = () => {
           <ItemImage>{itemDetails.title} Image</ItemImage>
         </ImageSection>
         <DetailsSection>
-          <OwnerInfo>소유자: {itemDetails.owner}</OwnerInfo>
+          <OwnerInfo>{itemDetails.owner}</OwnerInfo>
           <ItemTitle>{itemDetails.title}</ItemTitle>
           <ItemPrice>₩{itemDetails.price} / {itemDetails.duration}</ItemPrice>
           <RentButton>대여하기</RentButton>
@@ -176,18 +176,17 @@ const DetailContainer = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-width: 800px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 40px;
 `;
 
 const ImageSection = styled.div`
   width: 100%;
-  max-width: 500px;
   aspect-ratio: 1;
-  margin: 0 auto 48px;
 `;
 
 const ItemImage = styled.div`
@@ -197,17 +196,15 @@ const ItemImage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.875rem;
   color: #999;
+  font-size: 14px;
 `;
 
 const DetailsSection = styled.div`
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  padding-top: 20px;
 `;
 
 const OwnerInfo = styled.div`
@@ -216,19 +213,27 @@ const OwnerInfo = styled.div`
   gap: 8px;
   font-size: 14px;
   color: #666;
-  margin-bottom: 4px;
+  
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-color: #f5f5f5;
+    border-radius: 50%;
+  }
 `;
 
 const ItemTitle = styled.h2`
-  font-size: 28px;
-  font-weight: 600;
-  margin: 0 0 16px 0;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 0;
 `;
 
 const ItemPrice = styled.div`
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 24px;
+  font-size: 20px;
+  font-weight: 500;
+  margin: 8px 0 24px;
 `;
 
 const RentButton = styled.button`
@@ -237,27 +242,25 @@ const RentButton = styled.button`
   background-color: #000;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 16px;
-  font-weight: 500;
   cursor: pointer;
-  margin: 8px 0 32px;
 `;
 
 const ItemDetails = styled.div`
-  margin-top: 32px;
+  margin-top: 48px;
 `;
 
 const SectionTitle = styled.h3`
   font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 16px;
+  font-weight: bold;
+  margin: 0 0 16px 0;
 `;
 
 const Category = styled.div`
   font-size: 14px;
   color: #666;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 `;
 
 const DescriptionList = styled.ul`
@@ -267,10 +270,9 @@ const DescriptionList = styled.ul`
 `;
 
 const DescriptionItem = styled.li`
-  font-size: 15px;
+  font-size: 14px;
   color: #333;
-  margin-bottom: 12px;
-  line-height: 1.6;
+  line-height: 1.8;
 `;
 
 export default ItemRentDetail;
