@@ -14,7 +14,7 @@ function Register() {
     console.log(data);
     const { userId, userName, userPwd } = data;
     try {
-      const res = await axiosApi.post(" ", {
+      const res = await axiosApi.post("/join", {
         userId,
         userName,
         userPwd,
