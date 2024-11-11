@@ -23,7 +23,7 @@ const ItemRentMain = () => {
   const totalPages = Math.ceil(rentalItems.length / itemsPerPage);
 
   const handleCardClick = (itemId) => {
-    navigate(`/rent/item/${itemId}`);
+    navigate(`/itemrent/${itemId}`);
   }
 
   return (
