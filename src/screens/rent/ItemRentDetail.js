@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import TopBar from '../../components/TopBar';
 import { useParams } from 'react-router-dom';
 
 const ItemRentDetail = () => {
   const { itemId } = useParams();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 임시 데이터
   const rentalItems = [
@@ -19,7 +20,7 @@ const ItemRentDetail = () => {
 
         ],
         owner: '장성우',
-        category: 'Sports & Outdoors',
+        category: 'Sports',
         image: 'bicycle.jpg',
       },
       {
@@ -34,7 +35,7 @@ const ItemRentDetail = () => {
           '물품 상세설명입니다.',
         ],
         owner: '김철수',
-        category: 'Camping Equipment',
+        category: 'Sports',
         image: 'tent.jpg',
       },
       {
@@ -49,7 +50,7 @@ const ItemRentDetail = () => {
           '물품 상세설명입니다.',
         ],
         owner: '정준서',
-        category: 'Camping Equipment',
+        category: 'Sports',
         image: 'bicycle.jpg',
       },
       {
@@ -64,7 +65,7 @@ const ItemRentDetail = () => {
           '물품 상세설명입니다.',
         ],
         owner: '김태양',
-        category: 'Camping Equipment',
+        category: 'Sports',
         image: 'bicycle.jpg',
       },
       {
@@ -79,7 +80,7 @@ const ItemRentDetail = () => {
           '물품 상세설명입니다.',
         ],
         owner: '장성우',
-        category: 'Camping Equipment',
+        category: 'Sports',
         image: 'bicycle.jpg',
       },
       {
@@ -94,7 +95,7 @@ const ItemRentDetail = () => {
           '물품 상세설명입니다.',
         ],
         owner: '김철수',
-        category: 'Sports & Outdoors',
+        category: 'Sports',
         image: 'bicycle.jpg',
       },
       {
@@ -109,7 +110,7 @@ const ItemRentDetail = () => {
           '물품 상세설명입니다.',
         ],
         owner: '정준서',
-        category: 'Sports & Outdoors',
+        category: 'Sports',
         image: 'bicycle.jpg',
       },
       {
@@ -124,7 +125,7 @@ const ItemRentDetail = () => {
           '물품 상세설명입니다.',
         ],
         owner: '김태양',
-        category: 'Sports & Outdoors',
+        category: 'Sports',
         image: 'bicycle.jpg',
       }
   ];
@@ -135,6 +136,14 @@ const ItemRentDetail = () => {
   if (!itemDetails) {
     return <div>해당 물품을 찾을 수 없습니다.</div>;
   }
+
+  const handleRentButtonClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <DetailContainer>
@@ -147,7 +156,7 @@ const ItemRentDetail = () => {
           <OwnerInfo>{itemDetails.owner}</OwnerInfo>
           <ItemTitle>{itemDetails.title}</ItemTitle>
           <ItemPrice>₩{itemDetails.price}</ItemPrice>
-          <RentButton>대여요청하기</RentButton>
+          <RentButton onClick={handleRentButtonClick}>대여요청하기</RentButton>
           <ItemDetails>
             <SectionTitle>상세 정보</SectionTitle>
             <Category>{itemDetails.category}</Category>
@@ -159,6 +168,23 @@ const ItemRentDetail = () => {
           </ItemDetails>
         </DetailsSection>
       </ContentWrapper>
+
+      {isModalOpen && (
+        <ModalOverlay>
+          <ModalContainer>
+            <ModalTitle>대여 요청</ModalTitle>
+            <OwnerInfo>{itemDetails.owner}</OwnerInfo>
+            <ContactInfo>
+              <ContactLabel>연락처</ContactLabel> H.P.
+            </ContactInfo>
+            <ChatLink>
+              <ChatIcon /> 오픈 카카오톡 방
+              <ChatURL href="https://www.figma.com/">https://www.figma.com/</ChatURL>
+            </ChatLink>
+            <CloseButton onClick={handleCloseModal}>닫기</CloseButton>
+          </ModalContainer>
+        </ModalOverlay>
+      )}
     </DetailContainer>
   );
 };
@@ -266,6 +292,71 @@ const DescriptionItem = styled.li`
   font-size: 14px;
   color: #333;
   line-height: 1.8;
+`;
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContainer = styled.div`
+  width: 400px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+`;
+
+const ModalTitle = styled.h2`
+  margin: 0;
+  font-size: 24px;
+  margin-bottom: 20px;
+`;
+
+const ContactInfo = styled.div`
+  font-size: 16px;
+  margin-bottom: 16px;
+`;
+
+const ContactLabel = styled.span`
+  font-weight: bold;
+`;
+
+const ChatLink = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+`;
+
+const ChatIcon = styled.div`
+  width: 24px;
+  height: 24px;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  margin-right: 8px;
+`;
+
+const ChatURL = styled.a`
+  color: #000;
+  text-decoration: none;
+`;
+
+const CloseButton = styled.button`
+  width: 100%;
+  padding: 12px;
+  background-color: #000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
 `;
 
 export default ItemRentDetail;
