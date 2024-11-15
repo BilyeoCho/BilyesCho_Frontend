@@ -22,21 +22,25 @@ const ItemRegisterMain = () => {
         <RegisterTitle>물품 등록하기</RegisterTitle>
         <RegisterSubtitle>소중한 물품을 등록해주세요</RegisterSubtitle>
       </TitleSection>
-      <ImageUploadButton onClick={() => document.getElementById('imageInput').click()}>
-        <UploadText>사진을 첨부해주세요</UploadText>
-        <input
-          type="file"
-          id="imageInput"
-          accept="image/*"
-          onChange={handleImageUpload}
-          style={{ display: 'none' }}
-        />
-      </ImageUploadButton>
-      {imagePreview && (
+      <ImageSection>
+        <ImageUploadButton onClick={() => document.getElementById('imageInput').click()}>
+          <UploadText>사진을 첨부해주세요</UploadText>
+          <input
+            type="file"
+            id="imageInput"
+            accept="image/*"
+            onChange={handleImageUpload}
+            style={{ display: 'none' }}
+          />
+        </ImageUploadButton>
         <ImagePreviewSection>
-          <PreviewImage src={imagePreview} alt="Preview" />
+          {imagePreview ? (
+            <PreviewImage src={imagePreview} alt="Preview" />
+          ) : (
+            <UploadText style={{ color: '#666' }}>물품사진</UploadText>
+          )}
         </ImagePreviewSection>
-      )}
+      </ImageSection>
     </TopSection>
 
       <BottomSection>
@@ -106,9 +110,16 @@ const TitleSection = styled.div`
   margin-bottom: 32px;
 `;
 
-const ImageUploadButton = styled.div`
+const ImageSection = styled.div`
   width: 100%;
-  max-width: 400px;
+  max-width: 800px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+`;
+
+const ImageUploadButton = styled.div`
+  width: 400px;
   height: 48px;
   background-color: black;
   color: white;
@@ -117,7 +128,6 @@ const ImageUploadButton = styled.div`
   justify-content: center;
   cursor: pointer;
   border-radius: 4px;
-  margin: 0 auto;
 `;
 
 const BottomSection = styled.div`
@@ -145,11 +155,9 @@ const UploadText = styled.span`
 `;
 
 const ImagePreviewSection = styled.div`
-  width: 100%;
-  max-width: 400px;
-  aspect-ratio: 16/9;
+  width: 400px;
+  height: 300px;
   background-color: #f5f5f5;
-  margin: 16px auto 0;
   display: flex;
   align-items: center;
   justify-content: center;
