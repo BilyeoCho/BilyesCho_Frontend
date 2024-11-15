@@ -12,13 +12,11 @@ const ItemRentDetail = () => {
         id: 1,
         title: '자전거',
         price: '10,000',
-        duration: '24시간',
         description: [
           '물품 상세설명입니다.',
           '물품 상세설명입니다.',
           '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
+
         ],
         owner: '장성우',
         category: 'Sports & Outdoors',
@@ -28,11 +26,12 @@ const ItemRentDetail = () => {
         id: 2,
         title: '텐트',
         price: '20,000',
-        duration: '24시간',
         description: [
           '텐트 상세설명입니다.',
           '텐트 상세설명입니다.',
           '텐트 상세설명입니다.',
+          '물품 상세설명입니다.',
+          '물품 상세설명입니다.',
         ],
         owner: '김철수',
         category: 'Camping Equipment',
@@ -42,7 +41,6 @@ const ItemRentDetail = () => {
         id: 3,
         title: '캠핑의자',
         price: '5,000',
-        duration: '24시간',
         description: [
           '물품 상세설명입니다.',
           '물품 상세설명입니다.',
@@ -58,7 +56,6 @@ const ItemRentDetail = () => {
         id: 4,
         title: '가스토치',
         price: '3,000',
-        duration: '24시간',
         description: [
           '물품 상세설명입니다.',
           '물품 상세설명입니다.',
@@ -74,7 +71,6 @@ const ItemRentDetail = () => {
         id: 5,
         title: '코터',
         price: '15,000',
-        duration: '24시간',
         description: [
           '물품 상세설명입니다.',
           '물품 상세설명입니다.',
@@ -90,7 +86,6 @@ const ItemRentDetail = () => {
         id: 6,
         title: '등산모자',
         price: '2,000',
-        duration: '24시간',
         description: [
           '물품 상세설명입니다.',
           '물품 상세설명입니다.',
@@ -106,7 +101,6 @@ const ItemRentDetail = () => {
         id: 7,
         title: '야구글러브',
         price: '8,000',
-        duration: '24시간',
         description: [
           '물품 상세설명입니다.',
           '물품 상세설명입니다.',
@@ -122,7 +116,6 @@ const ItemRentDetail = () => {
         id: 8,
         title: '낚시대',
         price: '12,000',
-        duration: '24시간',
         description: [
           '물품 상세설명입니다.',
           '물품 상세설명입니다.',
@@ -153,8 +146,8 @@ const ItemRentDetail = () => {
         <DetailsSection>
           <OwnerInfo>{itemDetails.owner}</OwnerInfo>
           <ItemTitle>{itemDetails.title}</ItemTitle>
-          <ItemPrice>₩{itemDetails.price} / {itemDetails.duration}</ItemPrice>
-          <RentButton>대여하기</RentButton>
+          <ItemPrice>₩{itemDetails.price}</ItemPrice>
+          <RentButton>대여요청하기</RentButton>
           <ItemDetails>
             <SectionTitle>상세 정보</SectionTitle>
             <Category>{itemDetails.category}</Category>
