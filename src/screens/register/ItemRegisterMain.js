@@ -16,27 +16,28 @@ const ItemRegisterMain = () => {
   };
 
   return (
-    <RegisterContainer>
-      <TopSection>
-        <TitleSection>
-          <RegisterTitle>물품 등록하기</RegisterTitle>
-          <RegisterSubtitle>소중한 물품을 등록해주세요</RegisterSubtitle>
-          <ImageUploadButton onClick={() => document.getElementById('imageInput').click()}>
-            {imagePreview ? (
-              <PreviewImage src={imagePreview} alt="Preview" />
-            ) : (
-              <UploadText>사진을 첨부해주세요</UploadText>
-            )}
-            <input
-              type="file"
-              id="imageInput"
-              accept="image/*"
-              onChange={handleImageUpload}
-              style={{ display: 'none' }}
-            />
-          </ImageUploadButton>
-        </TitleSection>
-      </TopSection>
+  <RegisterContainer>
+    <TopSection>
+      <TitleSection>
+        <RegisterTitle>물품 등록하기</RegisterTitle>
+        <RegisterSubtitle>소중한 물품을 등록해주세요</RegisterSubtitle>
+      </TitleSection>
+      <ImageUploadButton onClick={() => document.getElementById('imageInput').click()}>
+        <UploadText>사진을 첨부해주세요</UploadText>
+        <input
+          type="file"
+          id="imageInput"
+          accept="image/*"
+          onChange={handleImageUpload}
+          style={{ display: 'none' }}
+        />
+      </ImageUploadButton>
+      {imagePreview && (
+        <ImagePreviewSection>
+          <PreviewImage src={imagePreview} alt="Preview" />
+        </ImagePreviewSection>
+      )}
+    </TopSection>
 
       <BottomSection>
         <GridContainer>
@@ -93,20 +94,22 @@ const RegisterContainer = styled.div`
 `;
 
 const TopSection = styled.div`
-  margin-bottom: 40px;
+  margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const TitleSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 32px;
 `;
 
 const ImageUploadButton = styled.div`
   width: 100%;
-  max-width: 520px;
-  height: 120px;
+  max-width: 400px;
+  height: 48px;
   background-color: black;
   color: white;
   display: flex;
@@ -114,7 +117,7 @@ const ImageUploadButton = styled.div`
   justify-content: center;
   cursor: pointer;
   border-radius: 4px;
-  margin-top: 16px;
+  margin: 0 auto;
 `;
 
 const BottomSection = styled.div`
@@ -124,25 +127,40 @@ const BottomSection = styled.div`
 `;
 
 const RegisterTitle = styled.h1`
-  font-size: 24px;
+  font-size: 32px;
   font-weight: bold;
   margin: 0;
+  margin-bottom: 12px;
 `;
 
 const RegisterSubtitle = styled.p`
-  font-size: 14px;
+  font-size: 16px;
   color: #666;
-  margin: 8px 0 0 0;
+  margin: 0;
 `;
 
 const UploadText = styled.span`
-  color: #666;
+  color: white;
+  font-size: 14px;
+`;
+
+const ImagePreviewSection = styled.div`
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 16/9;
+  background-color: #f5f5f5;
+  margin: 16px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  overflow: hidden;
 `;
 
 const PreviewImage = styled.img`
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const InputGroup = styled.div`
