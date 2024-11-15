@@ -9,14 +9,14 @@ const ItemRentMain = () => {
 
   // 임시 데이터
   const rentalItems = [
-    { id: 1, title: '자전거', price: '10,000', duration: '24시간' },
-    { id: 2, title: '텐트', price: '20,000', duration: '24시간' },
-    { id: 3, title: '캠핑의자', price: '5,000', duration: '24시간' },
-    { id: 4, title: '가스토치', price: '3,000', duration: '24시간' },
-    { id: 5, title: '코터', price: '15,000', duration: '24시간' },
-    { id: 6, title: '등산모자', price: '2,000', duration: '24시간' },
-    { id: 7, title: '야구글러브', price: '8,000', duration: '24시간' },
-    { id: 8, title: '낚시대', price: '12,000', duration: '24시간' },
+    { id: 1, title: '자전거', price: '10,000' },
+    { id: 2, title: '텐트', price: '20,000' },
+    { id: 3, title: '캠핑의자', price: '5,000' },
+    { id: 4, title: '가스토치', price: '3,000' },
+    { id: 5, title: '코터', price: '15,000' },
+    { id: 6, title: '등산모자', price: '2,000' },
+    { id: 7, title: '야구글러브', price: '8,000' },
+    { id: 8, title: '낚시대', price: '12,000' },
   ];
 
   const itemsPerPage = 8;
@@ -37,7 +37,7 @@ const ItemRentMain = () => {
               <CardImage />
               <CardInfo>
                 <CardTitle>{item.title}</CardTitle>
-                <CardPrice>₩{item.price} / {item.duration}</CardPrice>
+                <CardPrice>₩{item.price}</CardPrice>
               </CardInfo>
             </RentalCard>
           ))}
