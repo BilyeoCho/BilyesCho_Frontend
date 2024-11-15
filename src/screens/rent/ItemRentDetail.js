@@ -230,8 +230,9 @@ const OwnerInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
+  font-size: 18px;
   color: #666;
+  margin-bottom: 24px;
   
   &::before {
     content: '';
@@ -309,7 +310,7 @@ const ModalOverlay = styled.div`
 const ModalContainer = styled.div`
   width: 400px;
   background: #fff;
-  padding: 20px;
+  padding: 32px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 `;
@@ -317,12 +318,12 @@ const ModalContainer = styled.div`
 const ModalTitle = styled.h2`
   margin: 0;
   font-size: 24px;
-  margin-bottom: 20px;
+  margin-bottom: 32px;
 `;
 
 const ContactInfo = styled.div`
   font-size: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 `;
 
 const ContactLabel = styled.span`
@@ -331,8 +332,9 @@ const ContactLabel = styled.span`
 
 const ChatLink = styled.div`
   display: flex;
-  align-items: center;
-  margin-bottom: 16px;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 32px;
 `;
 
 const ChatIcon = styled.div`
@@ -346,6 +348,7 @@ const ChatIcon = styled.div`
 const ChatURL = styled.a`
   color: #000;
   text-decoration: none;
+  margin-left: 32px;
 `;
 
 const CloseButton = styled.button`
