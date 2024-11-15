@@ -178,8 +178,11 @@ const ItemRentDetail = () => {
               <ContactLabel>연락처</ContactLabel> H.P.
             </ContactInfo>
             <ChatLink>
-              <ChatIcon /> 오픈 카카오톡 방
-              <ChatURL href="https://www.figma.com/">https://www.figma.com/</ChatURL>
+              <ChatIcon />
+              <ChatInfo>
+                <ChatText>오픈 카카오톡 방</ChatText>
+                <ChatURL href="https://www.figma.com/">https://www.figma.com/</ChatURL>
+              </ChatInfo>
             </ChatLink>
             <CloseButton onClick={handleCloseModal}>닫기</CloseButton>
           </ModalContainer>
@@ -332,23 +335,43 @@ const ContactLabel = styled.span`
 
 const ChatLink = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: flex-start;
+  gap: 12px;
   margin-bottom: 32px;
 `;
 
 const ChatIcon = styled.div`
-  width: 24px;
-  height: 24px;
+  width: 36px;
+  height: 36px;
   background-color: #f0f0f0;
   border-radius: 50%;
-  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &::after {
+    content: '...';
+    font-size: 20px;
+    line-height: 1;
+    color: #666;
+  }
+`;
+
+const ChatInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const ChatText = styled.span`
+  font-size: 16px;
+  color: #000;
 `;
 
 const ChatURL = styled.a`
-  color: #000;
+  color: #666;
   text-decoration: none;
-  margin-left: 32px;
+  font-size: 14px;
 `;
 
 const CloseButton = styled.button`
