@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 const ItemRegisterMain = () => {
   const [imagePreview, setImagePreview] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -13,6 +14,10 @@ const ItemRegisterMain = () => {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
   };
 
   return (
@@ -57,13 +62,15 @@ const ItemRegisterMain = () => {
             <CategorySection>
               <Label>카테고리</Label>
               <CategoryWrapper>
-                <CategoryButton>Sports</CategoryButton>
-                <CategoryButton>Fashion</CategoryButton>
-                <CategoryButton>Electronics</CategoryButton>
-                <CategoryButton>Instruments</CategoryButton>
-                <CategoryButton>Camera</CategoryButton>
-                <CategoryButton>Book</CategoryButton>
-                <CategoryButton>Others</CategoryButton>
+                {['Sports', 'Fashion', 'Electronics', 'Instruments', 'Camera', 'Book', 'Others'].map((category) => (
+                  <CategoryButton 
+                    key={category}
+                    isSelected={selectedCategory === category}
+                    onClick={() => handleCategoryClick(category)}
+                  >
+                    {category}
+                  </CategoryButton>
+                ))}
               </CategoryWrapper>
               <SubText>물품 카테고리 선택</SubText>
             </CategorySection>
@@ -215,14 +222,21 @@ const CategoryWrapper = styled.div`
 
 const CategoryButton = styled.button`
   padding: 8px 16px;
-  background-color: #f5f5f5;
+  background-color: ${props => props.isSelected ? 'black' : '#f5f5f5'};
+  color: ${props => props.isSelected ? 'white' : 'black'};
   border: none;
   border-radius: 20px;
   font-size: 14px;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
   
   &:hover {
-    background-color: #e0e0e0;
+    background-color: ${props => props.isSelected ? 'black' : '#e0e0e0'};
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `;
 
