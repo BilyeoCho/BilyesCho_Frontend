@@ -101,15 +101,17 @@ const TopSection = styled.div`
   margin-bottom: 60px;
   display: flex;
   justify-content: space-between;
-  gap: 40px;
+  gap: 80px;
   width: 100%;
 `;
 
 const LeftSection = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 24px;
   width: 400px;
+  height: 300px;
 `;
 
 const TitleSection = styled.div`
@@ -154,7 +156,7 @@ const UploadText = styled.span`
 `;
 
 const ImagePreviewSection = styled.div`
-  width: 400px;
+  width: 500px;
   height: 300px;
   background-color: #f5f5f5;
   display: flex;
