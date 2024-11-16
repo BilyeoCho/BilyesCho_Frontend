@@ -100,22 +100,23 @@ const RegisterContainer = styled.div`
 const TopSection = styled.div`
   margin-bottom: 60px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
 `;
 
 const TitleSection = styled.div`
-  width: 100%;
-  text-align: center;
-  margin-bottom: 32px;
+  width: 400px;
+  text-align: left;
+  margin-bottom: 0;
 `;
 
 const ImageSection = styled.div`
-  width: 100%;
-  max-width: 800px;
+  width: 400px;
   display: flex;
+  flex-direction: column;
   gap: 24px;
-  align-items: flex-start;
 `;
 
 const ImageUploadButton = styled.div`
