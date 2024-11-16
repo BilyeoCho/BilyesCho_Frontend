@@ -16,13 +16,13 @@ const ItemRegisterMain = () => {
   };
 
   return (
-  <RegisterContainer>
+    <RegisterContainer>
     <TopSection>
-      <TitleSection>
-        <RegisterTitle>물품 등록하기</RegisterTitle>
-        <RegisterSubtitle>소중한 물품을 등록해주세요</RegisterSubtitle>
-      </TitleSection>
-      <ImageSection>
+      <LeftSection>
+        <TitleSection>
+          <RegisterTitle>물품 등록하기</RegisterTitle>
+          <RegisterSubtitle>소중한 물품을 등록해주세요</RegisterSubtitle>
+        </TitleSection>
         <ImageUploadButton onClick={() => document.getElementById('imageInput').click()}>
           <UploadText>사진을 첨부해주세요</UploadText>
           <input
@@ -33,14 +33,14 @@ const ItemRegisterMain = () => {
             style={{ display: 'none' }}
           />
         </ImageUploadButton>
-        <ImagePreviewSection>
-          {imagePreview ? (
-            <PreviewImage src={imagePreview} alt="Preview" />
-          ) : (
-            <UploadText style={{ color: '#666' }}>물품사진</UploadText>
-          )}
-        </ImagePreviewSection>
-      </ImageSection>
+      </LeftSection>
+      <ImagePreviewSection>
+        {imagePreview ? (
+          <PreviewImage src={imagePreview} alt="Preview" />
+        ) : (
+          <UploadText style={{ color: '#666' }}>물품사진</UploadText>
+        )}
+      </ImagePreviewSection>
     </TopSection>
 
       <BottomSection>
@@ -100,27 +100,25 @@ const RegisterContainer = styled.div`
 const TopSection = styled.div`
   margin-bottom: 60px;
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start;
+  gap: 40px;
   width: 100%;
 `;
 
-const TitleSection = styled.div`
-  width: 400px;
-  text-align: left;
-  margin-bottom: 0;
-`;
-
-const ImageSection = styled.div`
-  width: 400px;
+const LeftSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+  width: 400px;
+`;
+
+const TitleSection = styled.div`
+  width: 100%;
+  text-align: left;
 `;
 
 const ImageUploadButton = styled.div`
-  width: 400px;
+  width: 100%;
   height: 48px;
   background-color: black;
   color: white;
