@@ -15,7 +15,8 @@ const handleRequestInterceptor = (config) => {
 
 // 에러 처리
 const handleResponseInterceptor = async (error) => {
-  return new Promise(() => {});
+  // 에러를 그대로 reject하여 catch에서 처리될 수 있도록 함
+  return Promise.reject(error);
 };
 
 axiosApi.interceptors.request.use(
