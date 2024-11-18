@@ -24,25 +24,34 @@ function Login() {
         navigate('/home');
       }
     } catch (error) {
-      console.error('로그인 실패:', error);
       if (error.response) {
-        // HTTP 상태 코드에 따른 예외 처리
-        switch (error.response.status) {
+        const { status, data } = error.response;
+
+        // 상태 코드에 따른 메시지 처리
+        switch (status) {
           case 400:
-            alert('잘못된 요청입니다. 입력을 확인하세요.');
+            alert(`잘못된 요청: ${data.message}`);
             break;
           case 401:
-            alert('아이디 또는 비밀번호가 잘못되었습니다.');
+            alert(`인증 실패: ${data.message}`);
+            break;
+          case 403:
+            alert(`권한 없음: ${data.message}`);
+            break;
+          case 404:
+            alert(`자원을 찾을 수 없음: ${data.message}`);
+            break;
+          case 409:
+            alert(`충돌: ${data.message}`);
             break;
           case 500:
-            alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+            alert(`서버 오류: ${data.message}`);
             break;
           default:
-            alert('알 수 없는 오류가 발생했습니다. 다시 시도해주세요.');
+            alert(`알 수 없는 오류: ${data.message}`);
         }
       } else {
-        // 네트워크 오류 등의 기타 예외 처리
-        alert('네트워크 오류가 발생했습니다. 인터넷 연결을 확인하세요.');
+        alert("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
       }
     }
   };
