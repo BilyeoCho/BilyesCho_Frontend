@@ -149,13 +149,14 @@ const SubText = styled.span`
 
 const FilterWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  gap: 16px;
+  margin-bottom: 16px;
 `;
 
 const FilterLabel = styled.span`
   font-size: 16px;
   font-weight: 500;
+  margin-bottom: 8px;
 `;
 
 const FilterButton = styled.button`
