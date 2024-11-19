@@ -86,8 +86,10 @@ const ReviewMain = () => {
                   <ItemTitle>{item.title}</ItemTitle>
                   <ItemDuration>{item.duration}</ItemDuration>
                 </ItemInfo>
-                <ItemPrice>{item.price}</ItemPrice>
-                <ArrowIcon>➡</ArrowIcon>
+                <PriceAndArrow>
+                  <ItemPrice>{item.price}</ItemPrice>
+                  <ArrowIcon>{'>'}</ArrowIcon>
+                </PriceAndArrow>
               </ItemButton>
             ))}
         </ItemList>
@@ -194,10 +196,10 @@ const ItemButton = styled.button`
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 12px;
+  width: 100%;
   background-color: white;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  width: 100%;
 
   &:hover {
     background-color: #f5f5f5;
@@ -221,13 +223,19 @@ const ItemDuration = styled.div`
   color: #666;
 `;
 
+const PriceAndArrow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
 const ItemPrice = styled.div`
   font-size: 16px;
   font-weight: bold;
 `;
 
 const ArrowIcon = styled.div`
-  font-size: 24px;
+  font-size: 16px;
   color: #666;
 `;
 
