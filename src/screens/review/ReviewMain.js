@@ -107,7 +107,7 @@ const Section = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 48px;
+  font-size: 32px;
   font-weight: bold;
   margin-bottom: 12px;
 `;
