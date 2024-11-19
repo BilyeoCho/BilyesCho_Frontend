@@ -16,12 +16,12 @@ const ReviewRegister = () => {
     <>
       <TopBar /> {/* 상단바 컴포넌트 추가 */}
       <ReviewRegisterContainer>
-        <TopSection>
+        <SectionTitle>리뷰 등록하기</SectionTitle>
+        <ContentWrapper>
           <ImageSection>
             <PlaceholderImage>물품 사진</PlaceholderImage>
           </ImageSection>
           <FormSection>
-            <SectionTitle>리뷰 등록하기</SectionTitle>
             <RatingWrapper>
               <RatingLabel>평점</RatingLabel>
               {[1, 2, 3, 4, 5].map((value) => (
@@ -63,7 +63,7 @@ const ReviewRegister = () => {
             </InputWrapper>
             <SubmitButton>리뷰 제출하기</SubmitButton>
           </FormSection>
-        </TopSection>
+        </ContentWrapper>
       </ReviewRegisterContainer>
     </>
   );
@@ -75,10 +75,17 @@ const ReviewRegisterContainer = styled.div`
   padding: 40px;
 `;
 
-const TopSection = styled.div`
+const SectionTitle = styled.h2`
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  text-align: center;
+`;
+
+const ContentWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 40px;
+  gap: 60px;
   align-items: flex-start;
 `;
 
@@ -88,7 +95,7 @@ const ImageSection = styled.div`
 
 const PlaceholderImage = styled.div`
   width: 100%;
-  height: 400px;
+  height: 500px;
   background-color: #f5f5f5;
   display: flex;
   align-items: center;
@@ -105,11 +112,6 @@ const FormSection = styled.div`
   gap: 24px;
 `;
 
-const SectionTitle = styled.h2`
-  font-size: 32px;
-  font-weight: bold;
-`;
-
 const RatingWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -117,13 +119,13 @@ const RatingWrapper = styled.div`
 `;
 
 const RatingLabel = styled.span`
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
 `;
 
 const RatingButton = styled.button`
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   background-color: ${(props) => (props.isSelected ? 'black' : '#f5f5f5')};
   color: ${(props) => (props.isSelected ? 'white' : 'black')};
   border: none;
@@ -138,7 +140,7 @@ const FilterWrapper = styled.div`
 `;
 
 const FilterButton = styled.button`
-  padding: 8px 16px;
+  padding: 10px 18px;
   background-color: ${(props) => (props.isSelected ? 'black' : '#f5f5f5')};
   color: ${(props) => (props.isSelected ? 'white' : 'black')};
   border: none;
@@ -172,18 +174,19 @@ const TextArea = styled.textarea`
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
-  min-height: 150px;
+  min-height: 200px;
 `;
 
 const SubmitButton = styled.button`
-  padding: 16px;
+  padding: 16px 0;
+  width: 100%;
   background-color: black;
   color: white;
   border: none;
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
-  align-self: flex-start;
+  align-self: center;
 
   &:hover {
     opacity: 0.9;
