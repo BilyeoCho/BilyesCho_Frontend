@@ -5,6 +5,7 @@ import { Pagination } from '@mui/material';
 const ReviewMain = () => {
   const [currentReviewPage, setCurrentReviewPage] = useState(1);
   const [currentRegisterPage, setCurrentRegisterPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const reviews = [
     { user: '장성우', rating: 5, comment: 'The meatball platter was incredible!' },
@@ -28,6 +29,10 @@ const ReviewMain = () => {
   const totalReviewPages = Math.ceil(reviews.length / reviewsPerPage);
   const totalRegisterPages = Math.ceil(items.length / itemsPerPage);
 
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+  };
+
   return (
     <ReviewContainer>
       <CenteredSection>
@@ -38,9 +43,15 @@ const ReviewMain = () => {
       <Section>
         <SectionTitle>물품 리뷰</SectionTitle>
         <FilterWrapper>
-          <FilterButton>답변이 빨라요</FilterButton>
-          <FilterButton>친절하고 배려가 넘쳐요</FilterButton>
-          <FilterButton>물품 설명이 적절했어요</FilterButton>
+          {['답변이 빨라요', '친절하고 배려가 넘쳐요', '물품 설명이 적절했어요'].map((category) => (
+            <FilterButton
+              key={category}
+              isSelected={selectedCategory === category}
+              onClick={() => handleCategoryClick(category)}
+            >
+              {category}
+            </FilterButton>
+          ))}
         </FilterWrapper>
         <ReviewGrid>
           {reviews
@@ -125,7 +136,8 @@ const FilterWrapper = styled.div`
 
 const FilterButton = styled.button`
   padding: 8px 16px;
-  background-color: #f5f5f5;
+  background-color: ${(props) => (props.isSelected ? 'black' : '#f5f5f5')};
+  color: ${(props) => (props.isSelected ? 'white' : 'black')};
   border: none;
   border-radius: 20px;
   font-size: 14px;
@@ -133,7 +145,7 @@ const FilterButton = styled.button`
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    background-color: #e0e0e0;
+    background-color: ${(props) => (props.isSelected ? 'black' : '#e0e0e0')};
     transform: translateY(-2px);
   }
 `;
