@@ -1,81 +1,112 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import TopBar from '../../components/TopBar';
 
 const ReviewRegister = () => {
+  const [rating, setRating] = useState(5);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [title, setTitle] = useState('');
+  const [review, setReview] = useState('');
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+  };
+
   return (
-    <PageContainer>
-      <TopBar />
-      <RegisterContainer>
-        <ImageSection>
-          <ImagePlaceholder>물품 사진</ImagePlaceholder>
-        </ImageSection>
-        <FormSection>
-          <SectionTitle>리뷰 등록하기</SectionTitle>
-          <RatingWrapper>
-            <RatingButton>1</RatingButton>
-            <RatingButton>2</RatingButton>
-            <RatingButton>3</RatingButton>
-            <RatingButton>4</RatingButton>
-            <RatingButton selected>5</RatingButton>
-          </RatingWrapper>
-          <FilterWrapper>
-            <FilterButton>답변이 빨라요</FilterButton>
-            <FilterButton>친절하고 배려가 넘쳐요</FilterButton>
-            <FilterButton>물품 설명이 적절했어요</FilterButton>
-          </FilterWrapper>
-          <InputWrapper>
-            <InputLabel>리뷰 제목</InputLabel>
-            <Input placeholder="리뷰 제목을 작성해주세요" />
-          </InputWrapper>
-          <InputWrapper>
-            <InputLabel>리뷰</InputLabel>
-            <TextArea placeholder="솔직한 리뷰를 작성해주세요" />
-          </InputWrapper>
-          <SubmitButton>리뷰 제출하기</SubmitButton>
-        </FormSection>
-      </RegisterContainer>
-    </PageContainer>
+    <ReviewRegisterContainer>
+      <TopBar /> {/* 상단바를 포함하여 일관된 레이아웃 유지 */}
+      <ContentWrapper>
+        <TopSection>
+          <ImageSection>
+            <PlaceholderImage>물품 사진</PlaceholderImage>
+          </ImageSection>
+          <FormSection>
+            <SectionTitle>리뷰 등록하기</SectionTitle>
+            <RatingWrapper>
+              <RatingLabel>평점</RatingLabel>
+              {[1, 2, 3, 4, 5].map((value) => (
+                <RatingButton
+                  key={value}
+                  isSelected={rating === value}
+                  onClick={() => setRating(value)}
+                >
+                  {value}
+                </RatingButton>
+              ))}
+            </RatingWrapper>
+            <FilterWrapper>
+              {['답변이 빨라요', '친절하고 배려가 넘쳐요', '물품 설명이 적절했어요'].map((category) => (
+                <FilterButton
+                  key={category}
+                  isSelected={selectedCategory === category}
+                  onClick={() => handleCategoryClick(category)}
+                >
+                  {category}
+                </FilterButton>
+              ))}
+            </FilterWrapper>
+            <InputWrapper>
+              <Label>리뷰 제목</Label>
+              <Input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="리뷰 제목을 작성해주세요"
+              />
+            </InputWrapper>
+            <InputWrapper>
+              <Label>리뷰</Label>
+              <TextArea
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
+                placeholder="솔직한 리뷰를 작성해주세요"
+              />
+            </InputWrapper>
+            <SubmitButton>리뷰 제출하기</SubmitButton>
+          </FormSection>
+        </TopSection>
+      </ContentWrapper>
+    </ReviewRegisterContainer>
   );
 };
 
-const PageContainer = styled.div`
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
+const ReviewRegisterContainer = styled.div`
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
 `;
 
-const RegisterContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+const ContentWrapper = styled.div`
+  margin-top: 20px; /* TopBar 아래에 공간 추가 */
+`;
+
+const TopSection = styled.div`
   display: flex;
+  justify-content: space-between;
   gap: 40px;
+  align-items: flex-start;
 `;
 
 const ImageSection = styled.div`
   flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
-const ImagePlaceholder = styled.div`
+const PlaceholderImage = styled.div`
   width: 100%;
   height: 400px;
   background-color: #f5f5f5;
   display: flex;
-  justify-content: center;
   align-items: center;
-  color: #666;
-  border-radius: 8px;
+  justify-content: center;
+  border-radius: 12px;
+  font-size: 18px;
+  color: #888;
 `;
 
 const FormSection = styled.div`
   flex: 2;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 `;
 
 const SectionTitle = styled.h2`
@@ -85,20 +116,24 @@ const SectionTitle = styled.h2`
 
 const RatingWrapper = styled.div`
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
+`;
+
+const RatingLabel = styled.span`
+  font-size: 16px;
+  font-weight: 500;
 `;
 
 const RatingButton = styled.button`
-  padding: 10px;
+  width: 40px;
+  height: 40px;
+  background-color: ${(props) => (props.isSelected ? 'black' : '#f5f5f5')};
+  color: ${(props) => (props.isSelected ? 'white' : 'black')};
+  border: none;
   border-radius: 50%;
-  border: 1px solid ${(props) => (props.selected ? 'black' : '#ddd')};
-  background-color: ${(props) => (props.selected ? 'black' : 'white')};
-  color: ${(props) => (props.selected ? 'white' : 'black')};
+  font-size: 16px;
   cursor: pointer;
-
-  &:hover {
-    border-color: black;
-  }
 `;
 
 const FilterWrapper = styled.div`
@@ -108,16 +143,12 @@ const FilterWrapper = styled.div`
 
 const FilterButton = styled.button`
   padding: 8px 16px;
-  background-color: #f5f5f5;
+  background-color: ${(props) => (props.isSelected ? 'black' : '#f5f5f5')};
+  color: ${(props) => (props.isSelected ? 'white' : 'black')};
   border: none;
   border-radius: 20px;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    background-color: #e0e0e0;
-  }
 `;
 
 const InputWrapper = styled.div`
@@ -126,33 +157,26 @@ const InputWrapper = styled.div`
   gap: 8px;
 `;
 
-const InputLabel = styled.label`
-  font-weight: bold;
+const Label = styled.label`
+  font-size: 16px;
+  font-weight: 500;
 `;
 
 const Input = styled.input`
+  width: 100%;
   padding: 12px;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
-  outline: none;
-
-  &:focus {
-    border-color: black;
-  }
+  border-radius: 4px;
+  font-size: 14px;
 `;
 
 const TextArea = styled.textarea`
+  width: 100%;
   padding: 12px;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 4px;
+  font-size: 14px;
   min-height: 150px;
-  outline: none;
-
-  &:focus {
-    border-color: black;
-  }
 `;
 
 const SubmitButton = styled.button`
@@ -160,12 +184,13 @@ const SubmitButton = styled.button`
   background-color: black;
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 18px;
+  border-radius: 4px;
+  font-size: 16px;
   cursor: pointer;
+  align-self: flex-start;
 
   &:hover {
-    background-color: #333;
+    opacity: 0.9;
   }
 `;
 
