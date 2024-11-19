@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import TopBar from '../../components/TopBar'; // TopBar 컴포넌트 추가
+import TopBar from '../../components/TopBar';
 
 const ReviewRegister = () => {
   const [rating, setRating] = useState(5);
@@ -14,27 +14,31 @@ const ReviewRegister = () => {
 
   return (
     <>
-      <TopBar /> {/* 상단바 컴포넌트 추가 */}
+      <TopBar />
       <ReviewRegisterContainer>
-        <SectionTitle>리뷰 등록하기</SectionTitle>
-        <ContentWrapper>
+        <TopSection>
           <ImageSection>
             <PlaceholderImage>물품 사진</PlaceholderImage>
           </ImageSection>
           <FormSection>
+            <SectionTitle>리뷰 등록하기</SectionTitle>
             <RatingWrapper>
               <RatingLabel>평점</RatingLabel>
-              {[1, 2, 3, 4, 5].map((value) => (
-                <RatingButton
-                  key={value}
-                  isSelected={rating === value}
-                  onClick={() => setRating(value)}
-                >
-                  {value}
-                </RatingButton>
-              ))}
+              <RatingButtons>
+                {[1, 2, 3, 4, 5].map((value) => (
+                  <RatingButton
+                    key={value}
+                    isSelected={rating === value}
+                    onClick={() => setRating(value)}
+                  >
+                    {value}
+                  </RatingButton>
+                ))}
+              </RatingButtons>
+              <SubText>평점을 선택해주세요</SubText>
             </RatingWrapper>
             <FilterWrapper>
+              <FilterLabel>리뷰 필터링</FilterLabel>
               {['답변이 빨라요', '친절하고 배려가 넘쳐요', '물품 설명이 적절했어요'].map((category) => (
                 <FilterButton
                   key={category}
@@ -45,6 +49,7 @@ const ReviewRegister = () => {
                 </FilterButton>
               ))}
             </FilterWrapper>
+            <SubText>물품 카테고리 선택</SubText>
             <InputWrapper>
               <Label>리뷰 제목</Label>
               <Input
@@ -63,7 +68,7 @@ const ReviewRegister = () => {
             </InputWrapper>
             <SubmitButton>리뷰 제출하기</SubmitButton>
           </FormSection>
-        </ContentWrapper>
+        </TopSection>
       </ReviewRegisterContainer>
     </>
   );
@@ -75,17 +80,10 @@ const ReviewRegisterContainer = styled.div`
   padding: 40px;
 `;
 
-const SectionTitle = styled.h2`
-  font-size: 36px;
-  font-weight: bold;
-  margin-bottom: 40px;
-  text-align: center;
-`;
-
-const ContentWrapper = styled.div`
+const TopSection = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 60px;
+  gap: 40px;
   align-items: flex-start;
 `;
 
@@ -95,7 +93,7 @@ const ImageSection = styled.div`
 
 const PlaceholderImage = styled.div`
   width: 100%;
-  height: 500px;
+  height: 400px;
   background-color: #f5f5f5;
   display: flex;
   align-items: center;
@@ -112,20 +110,30 @@ const FormSection = styled.div`
   gap: 24px;
 `;
 
+const SectionTitle = styled.h2`
+  font-size: 32px;
+  font-weight: bold;
+`;
+
 const RatingWrapper = styled.div`
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 8px;
 `;
 
 const RatingLabel = styled.span`
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
 `;
 
+const RatingButtons = styled.div`
+  display: flex;
+  gap: 12px;
+`;
+
 const RatingButton = styled.button`
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   background-color: ${(props) => (props.isSelected ? 'black' : '#f5f5f5')};
   color: ${(props) => (props.isSelected ? 'white' : 'black')};
   border: none;
@@ -134,13 +142,24 @@ const RatingButton = styled.button`
   cursor: pointer;
 `;
 
+const SubText = styled.span`
+  font-size: 14px;
+  color: #888;
+`;
+
 const FilterWrapper = styled.div`
   display: flex;
-  gap: 16px;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const FilterLabel = styled.span`
+  font-size: 16px;
+  font-weight: 500;
 `;
 
 const FilterButton = styled.button`
-  padding: 10px 18px;
+  padding: 8px 16px;
   background-color: ${(props) => (props.isSelected ? 'black' : '#f5f5f5')};
   color: ${(props) => (props.isSelected ? 'white' : 'black')};
   border: none;
@@ -174,19 +193,18 @@ const TextArea = styled.textarea`
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
-  min-height: 200px;
+  min-height: 150px;
 `;
 
 const SubmitButton = styled.button`
-  padding: 16px 0;
-  width: 100%;
+  padding: 16px;
   background-color: black;
   color: white;
   border: none;
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
-  align-self: center;
+  align-self: flex-start;
 
   &:hover {
     opacity: 0.9;
