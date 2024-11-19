@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Pagination } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const ReviewMain = () => {
   const [currentReviewPage, setCurrentReviewPage] = useState(1);
   const [currentRegisterPage, setCurrentRegisterPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const navigate = useNavigate(); // 페이지 전환을 위한 useNavigate 훅 사용
 
   const reviews = [
     { user: '장성우', rating: 5, comment: 'The meatball platter was incredible!' },
@@ -17,10 +19,10 @@ const ReviewMain = () => {
   ];
 
   const items = [
-    { title: '텐트', duration: '24시간', price: '₩10,000' },
-    { title: '캠핑의자', duration: '48시간', price: '₩5,000' },
-    { title: '랜턴', duration: '12시간', price: '₩3,000' },
-    { title: '취사도구', duration: '36시간', price: '₩7,000' },
+    { id: 1, title: '텐트', duration: '24시간', price: '₩10,000' },
+    { id: 2, title: '캠핑의자', duration: '48시간', price: '₩5,000' },
+    { id: 3, title: '랜턴', duration: '12시간', price: '₩3,000' },
+    { id: 4, title: '취사도구', duration: '36시간', price: '₩7,000' },
   ];
 
   const reviewsPerPage = 4;
@@ -31,6 +33,10 @@ const ReviewMain = () => {
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
+  };
+
+  const handleItemClick = (itemId) => {
+    navigate(`/review/register/${itemId}`); // 아이템 클릭 시 리뷰 등록 페이지로 이동
   };
 
   return (
@@ -80,8 +86,8 @@ const ReviewMain = () => {
         <ItemList>
           {items
             .slice((currentRegisterPage - 1) * itemsPerPage, currentRegisterPage * itemsPerPage)
-            .map((item, index) => (
-              <ItemButton key={index}>
+            .map((item) => (
+              <ItemButton key={item.id} onClick={() => handleItemClick(item.id)}>
                 <ItemInfo>
                   <ItemTitle>{item.title}</ItemTitle>
                   <ItemDuration>{item.duration}</ItemDuration>
