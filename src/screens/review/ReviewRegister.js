@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import TopBar from '../../components/TopBar';
+import TopBar from '../../components/TopBar'; // TopBar 컴포넌트 추가
 
 const ReviewRegister = () => {
   const [rating, setRating] = useState(5);
@@ -13,9 +13,9 @@ const ReviewRegister = () => {
   };
 
   return (
-    <ReviewRegisterContainer>
-      <TopBar /> {/* 상단바를 포함하여 일관된 레이아웃 유지 */}
-      <ContentWrapper>
+    <>
+      <TopBar /> {/* 상단바 컴포넌트 추가 */}
+      <ReviewRegisterContainer>
         <TopSection>
           <ImageSection>
             <PlaceholderImage>물품 사진</PlaceholderImage>
@@ -64,19 +64,15 @@ const ReviewRegister = () => {
             <SubmitButton>리뷰 제출하기</SubmitButton>
           </FormSection>
         </TopSection>
-      </ContentWrapper>
-    </ReviewRegisterContainer>
+      </ReviewRegisterContainer>
+    </>
   );
 };
 
 const ReviewRegisterContainer = styled.div`
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 40px;
-`;
-
-const ContentWrapper = styled.div`
-  margin-top: 20px; /* TopBar 아래에 공간 추가 */
+  padding: 40px;
 `;
 
 const TopSection = styled.div`
