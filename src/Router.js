@@ -9,6 +9,7 @@ import Talk from './screens/talk/Talk';
 import Review from './screens/review/Review';
 import MyPage from './screens/mypage/MyPage';
 import ItemRentDetail from './screens/rent/ItemRentDetail';
+import ReviewRegister from "./screens/review/ReviewRegister";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: "/review",
         element: <Review />,
+      },
+      {
+        path: "/review/register/:itemId",
+        element: <ReviewRegister />,
       },
       {
         path: "/mypage",
