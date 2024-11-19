@@ -1,95 +1,63 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import TopBar from '../../components/TopBar'; // 상단 바 추가
+import TopBar from '../../components/TopBar';
 
 const ReviewRegister = () => {
-  const [selectedRating, setSelectedRating] = useState(5);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [reviewTitle, setReviewTitle] = useState("");
-  const [reviewContent, setReviewContent] = useState("");
-
-  const handleRatingClick = (rating) => {
-    setSelectedRating(rating);
-  };
-
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-  };
-
   return (
-    <ReviewRegisterContainer>
-      <TopBar /> {/* 상단 바 추가 */}
-      <ContentWrapper>
+    <PageContainer>
+      <TopBar />
+      <RegisterContainer>
         <ImageSection>
           <ImagePlaceholder>물품 사진</ImagePlaceholder>
         </ImageSection>
         <FormSection>
           <SectionTitle>리뷰 등록하기</SectionTitle>
           <RatingWrapper>
-            <Label>평점</Label>
-            <RatingButtons>
-              {[1, 2, 3, 4, 5].map((rating) => (
-                <RatingButton
-                  key={rating}
-                  isSelected={selectedRating === rating}
-                  onClick={() => handleRatingClick(rating)}
-                >
-                  {rating}
-                </RatingButton>
-              ))}
-            </RatingButtons>
+            <RatingButton>1</RatingButton>
+            <RatingButton>2</RatingButton>
+            <RatingButton>3</RatingButton>
+            <RatingButton>4</RatingButton>
+            <RatingButton selected>5</RatingButton>
           </RatingWrapper>
-          <CategoryWrapper>
-            <Label>리뷰 필터링</Label>
-            <FilterButtons>
-              {['답변이 빨라요', '친절하고 배려가 넘쳐요', '물품 설명이 적절했어요'].map((category) => (
-                <CategoryButton
-                  key={category}
-                  isSelected={selectedCategory === category}
-                  onClick={() => handleCategoryClick(category)}
-                >
-                  {category}
-                </CategoryButton>
-              ))}
-            </FilterButtons>
-          </CategoryWrapper>
+          <FilterWrapper>
+            <FilterButton>답변이 빨라요</FilterButton>
+            <FilterButton>친절하고 배려가 넘쳐요</FilterButton>
+            <FilterButton>물품 설명이 적절했어요</FilterButton>
+          </FilterWrapper>
           <InputWrapper>
-            <Label>리뷰 제목</Label>
-            <Input
-              placeholder="리뷰 제목을 작성해주세요"
-              value={reviewTitle}
-              onChange={(e) => setReviewTitle(e.target.value)}
-            />
+            <InputLabel>리뷰 제목</InputLabel>
+            <Input placeholder="리뷰 제목을 작성해주세요" />
           </InputWrapper>
           <InputWrapper>
-            <Label>리뷰</Label>
-            <TextArea
-              placeholder="솔직한 리뷰를 작성해주세요"
-              value={reviewContent}
-              onChange={(e) => setReviewContent(e.target.value)}
-            />
+            <InputLabel>리뷰</InputLabel>
+            <TextArea placeholder="솔직한 리뷰를 작성해주세요" />
           </InputWrapper>
           <SubmitButton>리뷰 제출하기</SubmitButton>
         </FormSection>
-      </ContentWrapper>
-    </ReviewRegisterContainer>
+      </RegisterContainer>
+    </PageContainer>
   );
 };
 
-const ReviewRegisterContainer = styled.div`
+const PageContainer = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+
+const RegisterContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-`;
-
-const ContentWrapper = styled.div`
   display: flex;
   gap: 40px;
-  margin-top: 40px;
 `;
 
 const ImageSection = styled.div`
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ImagePlaceholder = styled.div`
@@ -97,16 +65,17 @@ const ImagePlaceholder = styled.div`
   height: 400px;
   background-color: #f5f5f5;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   color: #666;
+  border-radius: 8px;
 `;
 
 const FormSection = styled.div`
   flex: 2;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 `;
 
 const SectionTitle = styled.h2`
@@ -116,51 +85,38 @@ const SectionTitle = styled.h2`
 
 const RatingWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const RatingButtons = styled.div`
-  display: flex;
   gap: 8px;
 `;
 
 const RatingButton = styled.button`
-  padding: 8px 16px;
-  background-color: ${(props) => (props.isSelected ? 'black' : '#f5f5f5')};
-  color: ${(props) => (props.isSelected ? 'white' : 'black')};
-  border: none;
-  border-radius: 20px;
-  font-size: 16px;
+  padding: 10px;
+  border-radius: 50%;
+  border: 1px solid ${(props) => (props.selected ? 'black' : '#ddd')};
+  background-color: ${(props) => (props.selected ? 'black' : 'white')};
+  color: ${(props) => (props.selected ? 'white' : 'black')};
   cursor: pointer;
 
   &:hover {
-    background-color: ${(props) => (props.isSelected ? 'black' : '#e0e0e0')};
+    border-color: black;
   }
 `;
 
-const CategoryWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const FilterButtons = styled.div`
+const FilterWrapper = styled.div`
   display: flex;
   gap: 16px;
 `;
 
-const CategoryButton = styled.button`
+const FilterButton = styled.button`
   padding: 8px 16px;
-  background-color: ${(props) => (props.isSelected ? 'black' : '#f5f5f5')};
-  color: ${(props) => (props.isSelected ? 'white' : 'black')};
+  background-color: #f5f5f5;
   border: none;
   border-radius: 20px;
   font-size: 14px;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
 
   &:hover {
-    background-color: ${(props) => (props.isSelected ? 'black' : '#e0e0e0')};
+    background-color: #e0e0e0;
   }
 `;
 
@@ -170,33 +126,32 @@ const InputWrapper = styled.div`
   gap: 8px;
 `;
 
-const Label = styled.label`
-  font-weight: 500;
+const InputLabel = styled.label`
+  font-weight: bold;
 `;
 
 const Input = styled.input`
   padding: 12px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 16px;
+  outline: none;
 
   &:focus {
     border-color: black;
-    outline: none;
   }
 `;
 
 const TextArea = styled.textarea`
   padding: 12px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 16px;
-  min-height: 120px;
-  resize: vertical;
+  min-height: 150px;
+  outline: none;
 
   &:focus {
     border-color: black;
-    outline: none;
   }
 `;
 
@@ -206,7 +161,7 @@ const SubmitButton = styled.button`
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
 
   &:hover {
