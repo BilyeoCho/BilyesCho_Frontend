@@ -81,13 +81,14 @@ const ReviewMain = () => {
           {items
             .slice((currentRegisterPage - 1) * itemsPerPage, currentRegisterPage * itemsPerPage)
             .map((item, index) => (
-              <Item key={index}>
+              <ItemButton key={index}>
                 <ItemInfo>
                   <ItemTitle>{item.title}</ItemTitle>
                   <ItemDuration>{item.duration}</ItemDuration>
                 </ItemInfo>
                 <ItemPrice>{item.price}</ItemPrice>
-              </Item>
+                <ArrowIcon>➡</ArrowIcon>
+              </ItemButton>
             ))}
         </ItemList>
         <PaginationWrapper>
@@ -186,13 +187,22 @@ const ItemList = styled.div`
   margin-bottom: 24px;
 `;
 
-const Item = styled.div`
+const ItemButton = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 12px;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+
+  &:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-2px);
+  }
 `;
 
 const ItemInfo = styled.div`
@@ -214,6 +224,11 @@ const ItemDuration = styled.div`
 const ItemPrice = styled.div`
   font-size: 16px;
   font-weight: bold;
+`;
+
+const ArrowIcon = styled.div`
+  font-size: 24px;
+  color: #666;
 `;
 
 const PaginationWrapper = styled.div`
