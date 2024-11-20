@@ -142,6 +142,12 @@ const RatingButton = styled.button`
   border-radius: 50%;
   font-size: 16px;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: ${(props) => (props.isSelected ? 'black' : '#e0e0e0')};
+    transform: translateY(-2px);
+  }
 `;
 
 const SubText = styled.span`
@@ -173,7 +179,14 @@ const FilterButton = styled.button`
   border-radius: 20px;
   font-size: 14px;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: ${(props) => (props.isSelected ? 'black' : '#e0e0e0')};
+    transform: translateY(-2px);
+  }
 `;
+
 
 const InputWrapper = styled.div`
   display: flex;
