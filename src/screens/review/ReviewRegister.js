@@ -91,6 +91,8 @@ const TopSection = styled.div`
 
 const ImageSection = styled.div`
   flex: 1;
+  display: flex;
+  align-items: stretch; 
 `;
 
 const FormSection = styled.div`
@@ -101,8 +103,8 @@ const FormSection = styled.div`
 `;
 
 const PlaceholderImage = styled.div`
-  width: 100%; 
-  height: 500px;
+  width: 100%;
+  height: 100%;  
   background-color: #f5f5f5;
   display: flex;
   align-items: center;
