@@ -68,7 +68,7 @@ const ReviewMain = () => {
                 <ReviewRating>
                   {'⭐'.repeat(review.rating)}
                 </ReviewRating>
-                <ReviewComment>{review.comment}</ReviewComment>
+                <ReviewComment>{review.title}</ReviewComment>
               </ReviewCard>
             ))}
         </ReviewGrid>
