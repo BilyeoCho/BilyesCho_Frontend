@@ -10,12 +10,12 @@ const ReviewMain = () => {
   const navigate = useNavigate(); // 페이지 전환을 위한 useNavigate 훅 사용
 
   const reviews = [
-    { user: '장성우', rating: 5, comment: '리뷰 제목입니다.' },
-    { user: '정준서', rating: 5, comment: '리뷰 제목입니다.' },
-    { user: '김태양', rating: 5, comment: "리뷰 제목입니다." },
-    { user: '홍길동', rating: 5, comment: "리뷰 제목입니다." },
-    { user: '박영희', rating: 4, comment: '리뷰 제목입니다.' },
-    { user: '이철수', rating: 4, comment: '리뷰 제목입니다.' },
+    { user: '장성우', rating: 5, comment: '유용하게 사용했습니다.' },
+    { user: '정준서', rating: 5, comment: '되게 아늑하고 좋았습니다.' },
+    { user: '김태양', rating: 5, comment: '푹신하고 편안했습니다.' },
+    { user: '홍길동', rating: 5, comment: '불이 세요.' },
+    { user: '박영희', rating: 4, comment: '사용감이 좋았습니다.' },
+    { user: '이철수', rating: 4, comment: '다음에 또 빌리고 싶습니다.' },
   ];
 
   const items = [
