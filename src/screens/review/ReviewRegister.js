@@ -39,15 +39,17 @@ const ReviewRegister = () => {
             </RatingWrapper>
             <FilterWrapper>
               <FilterLabel>리뷰 필터링</FilterLabel>
-              {['답변이 빨라요', '친절하고 배려가 넘쳐요', '물품 설명이 적절했어요'].map((category) => (
-                <FilterButton
-                  key={category}
-                  isSelected={selectedCategory === category}
-                  onClick={() => handleCategoryClick(category)}
-                >
-                  {category}
-                </FilterButton>
-              ))}
+              <FilterButtons>
+                {['답변이 빨라요', '친절하고 배려가 넘쳐요', '물품 설명이 적절했어요'].map((category) => (
+                  <FilterButton
+                    key={category}
+                    isSelected={selectedCategory === category}
+                    onClick={() => handleCategoryClick(category)}
+                  >
+                    {category}
+                  </FilterButton>
+                ))}
+              </FilterButtons>
             </FilterWrapper>
             <SubText>물품 카테고리 선택</SubText>
             <InputWrapper>
@@ -149,14 +151,18 @@ const SubText = styled.span`
 
 const FilterWrapper = styled.div`
   display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
+  flex-direction: column;
+  gap: 8px;
 `;
 
 const FilterLabel = styled.span`
   font-size: 16px;
   font-weight: 500;
-  margin-bottom: 8px;
+`;
+
+const FilterButtons = styled.div`
+  display: flex;
+  gap: 16px;
 `;
 
 const FilterButton = styled.button`
