@@ -10,12 +10,12 @@ const ReviewMain = () => {
   const navigate = useNavigate(); // 페이지 전환을 위한 useNavigate 훅 사용
 
   const reviews = [
-    { user: '장성우', rating: 5, title: '리뷰 제목입니다.' },
-    { user: '정준서', rating: 5, title: '리뷰 제목입니다.' },
-    { user: '김태양', rating: 5, title: "리뷰 제목입니다." },
-    { user: '홍길동', rating: 5, title: "리뷰 제목입니다." },
-    { user: '박영희', rating: 4, title: '리뷰 제목입니다.' },
-    { user: '이철수', rating: 4, title: '리뷰 제목입니다.' },
+    { user: '장성우', rating: 5, comment: '리뷰 제목입니다.' },
+    { user: '정준서', rating: 5, comment: '리뷰 제목입니다.' },
+    { user: '김태양', rating: 5, comment: "리뷰 제목입니다." },
+    { user: '홍길동', rating: 5, comment: "리뷰 제목입니다." },
+    { user: '박영희', rating: 4, comment: '리뷰 제목입니다.' },
+    { user: '이철수', rating: 4, comment: '리뷰 제목입니다.' },
   ];
 
   const items = [
@@ -68,7 +68,7 @@ const ReviewMain = () => {
                 <ReviewRating>
                   {'⭐'.repeat(review.rating)}
                 </ReviewRating>
-                <ReviewComment>{review.title}</ReviewComment>
+                <ReviewComment>{review.comment}</ReviewComment>
               </ReviewCard>
             ))}
         </ReviewGrid>
