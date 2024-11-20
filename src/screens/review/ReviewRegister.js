@@ -84,18 +84,25 @@ const ReviewRegisterContainer = styled.div`
 
 const TopSection = styled.div`
   display: flex;
-  justify-content: space-between;
   gap: 40px;
   align-items: flex-start;
+  width: 100%;
 `;
 
 const ImageSection = styled.div`
   flex: 1;
 `;
 
+const FormSection = styled.div`
+  flex: 1;  
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
 const PlaceholderImage = styled.div`
-  width: 100%;
-  height: 400px;
+  width: 100%; 
+  height: 500px;
   background-color: #f5f5f5;
   display: flex;
   align-items: center;
@@ -103,13 +110,6 @@ const PlaceholderImage = styled.div`
   border-radius: 12px;
   font-size: 18px;
   color: #888;
-`;
-
-const FormSection = styled.div`
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
 `;
 
 const SectionTitle = styled.h2`
