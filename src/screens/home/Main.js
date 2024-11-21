@@ -12,9 +12,9 @@ const Main = () => {
 
   // 임시 데이터
   const bannerItems = [
-    { id: 1, title: "인기 대여 물품 1", image: "banner1.jpg" },
-    { id: 2, title: "인기 대여 물품 2", image: "banner2.jpg" },
-    { id: 3, title: "인기 대여 물품 3", image: "banner3.jpg" },
+    { id: 1, title: "인기 등록 물품 1", image: "banner1.jpg" },
+    { id: 2, title: "인기 등록 물품 2", image: "banner2.jpg" },
+    { id: 3, title: "인기 등록 물품 3", image: "banner3.jpg" },
   ];
 
   const categories = [

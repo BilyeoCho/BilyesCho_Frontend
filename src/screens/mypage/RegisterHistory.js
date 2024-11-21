@@ -5,18 +5,23 @@ const RegisterHistory = () => {
   const registeredItems = [
     {
       id: 1,
-      name: '텐트',
-      status: '제공중',
-      price: '20,000원',
-      duration: '24시간',
+      name: '자전거',
+      status: '제공가능',
+      price: '10,000원',
       image: '/images/tent1.jpg'
     },
     {
       id: 2,
+      name: '텐트',
+      status: '제공중',
+      price: '20,000원',
+      image: '/images/tent1.jpg'
+    },
+    {
+      id: 3,
       name: '캠핑의자',
       status: '제공완료',
       price: '10,000원',
-      duration: '12시간',
       image: '/images/chair1.jpg'
     },
   ];
@@ -41,15 +46,13 @@ const RegisterHistory = () => {
                   <DetailLabel>대여 가격</DetailLabel>
                   <DetailValue>{item.price}</DetailValue>
                 </DetailRow>
-                <DetailRow>
-                  <DetailLabel>대여 기간</DetailLabel>
-                  <DetailValue>{item.duration}</DetailValue>
-                </DetailRow>
               </ItemDetails>
-              <ButtonGroup>
-                <EditButton>수정</EditButton>
-                <DeleteButton>삭제</DeleteButton>
-              </ButtonGroup>
+              {item.status === '제공가능' && (
+                <ButtonGroup>
+                  <EditButton>수정</EditButton>
+                  <DeleteButton>삭제</DeleteButton>
+                </ButtonGroup>
+              )}
             </ItemInfo>
           </ItemCard>
         ))}
@@ -120,8 +123,30 @@ const StatusBadge = styled.span`
   border-radius: 4px;
   font-size: 12px;
   font-weight: bold;
-  background-color: ${props => props.status === '제공중' ? '#e6f3e6' : '#f8f9fa'};
-  color: ${props => props.status === '제공중' ? '#2f9e44' : '#666'};
+  ${props => {
+    switch (props.status) {
+      case '제공가능':
+        return `
+          background-color: #e3fafc;
+          color: #0c8599;
+        `;
+      case '제공중':
+        return `
+          background-color: #e6f3e6;
+          color: #2f9e44;
+        `;
+      case '제공완료':
+        return `
+          background-color: #f8f9fa;
+          color: #666;
+        `;
+      default:
+        return `
+          background-color: #f8f9fa;
+          color: #666;
+        `;
+    }
+  }}
 `;
 
 const ItemDetails = styled.div`
