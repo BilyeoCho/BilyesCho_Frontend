@@ -58,11 +58,11 @@ const RentHistory = () => {
                   <DetailValue>{item.returnDate}</DetailValue>
                 </DetailRow>
               </ItemDetails>
-              <ButtonGroup>
-                <ReviewButton status={item.status}>
-                  {item.status === '대여완료' ? '리뷰작성' : '반납하기'}
-                </ReviewButton>
-              </ButtonGroup>
+              {item.status === '대여중' && (
+                <ButtonGroup>
+                  <ReturnButton>반납하기</ReturnButton>
+                </ButtonGroup>
+              )}
             </ItemInfo>
           </ItemCard>
         ))}
@@ -162,18 +162,18 @@ const ButtonGroup = styled.div`
   gap: 8px;
 `;
 
-const ReviewButton = styled.button`
+const ReturnButton = styled.button`
   flex: 1;
   padding: 8px;
-  border: 1px solid ${props => props.status === '대여완료' ? '#4263eb' : '#f76707'};
+  border: 1px solid #f76707;
   background-color: #fff;
-  color: ${props => props.status === '대여완료' ? '#4263eb' : '#f76707'};
+  color: #f76707;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    background-color: ${props => props.status === '대여완료' ? '#4263eb' : '#f76707'};
+    background-color: #f76707;
     color: #fff;
   }
 `;
