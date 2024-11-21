@@ -9,6 +9,7 @@ import Review from './screens/review/Review';
 import MyPage from './screens/mypage/MyPage';
 import ItemRentDetail from './screens/rent/ItemRentDetail';
 import ReviewRegister from "./screens/review/ReviewRegister";
+import EditRegister from "./screens/mypage/EditRegister";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/mypage",
         element: <MyPage />,
+      },
+      {
+        path: "/mypage/edit/:itemId",
+        element: <EditRegister />,
       },
     ],
   },
