@@ -5,6 +5,7 @@ import SideBar from '../../components/SideBar';
 import RegisterHistory from './RegisterHistory';
 import RentHistory from './RentHistory';
 import ReviewHistory from './ReviewHistory';
+import Profile from './Profile';
 
 const MyPageMain = () => {
   const [activeMenu, setActiveMenu] = useState('등록내역');
@@ -42,7 +43,8 @@ const MyPageMain = () => {
         return <RentHistory />;
       case '리뷰내역':
         return <ReviewHistory />;
-      // 다른 메뉴들도 추가 예정
+      case '프로필':
+        return <Profile />;
       default:
         return <RegisterHistory />;
     }
