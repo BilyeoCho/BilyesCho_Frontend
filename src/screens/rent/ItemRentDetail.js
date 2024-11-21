@@ -180,7 +180,7 @@ const ItemRentDetail = () => {
             <ChatLink>
               <ChatIcon />
               <ChatInfo>
-                <ChatText>오픈 카카오톡 방</ChatText>
+                <ChatText>오픈 카카오톡 방🙏</ChatText>
                 <ChatURL href="https://www.figma.com/">https://www.figma.com/</ChatURL>
               </ChatInfo>
             </ChatLink>
