@@ -13,14 +13,12 @@ const TopBar = () => {
 
   return (
     <TopBarWrapper>
-      <TitleWrapper>
+      <TitleWrapper onClick={() => navigate('/home')} style={{ cursor: 'pointer' }}>
         <Title />
       </TitleWrapper>
       <MenuWrapper>
-        <MenuItem onClick={() => navigate('/home')}>홈</MenuItem>
         <MenuItem onClick={() => navigate('/itemrent')}>대여</MenuItem>
         <MenuItem onClick={() => navigate('/itemregister')}>등록</MenuItem>
-        <MenuItem onClick={() => navigate('/talk')}>톡</MenuItem>
         <MenuItem onClick={() => navigate('/review')}>리뷰</MenuItem>
         <MenuItem onClick={() => navigate('/mypage')}>마이페이지</MenuItem>
         <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
@@ -40,6 +38,11 @@ const TopBarWrapper = styled.div`
 const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
+  transition: opacity 0.2s ease-in-out;
+  
+  &:hover {
+    opacity: 0.7;
+  }
 `;
 
 const MenuWrapper = styled.div`
