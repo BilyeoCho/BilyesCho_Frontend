@@ -81,6 +81,7 @@ const ReviewMain = () => {
                 key={index} 
                 onClick={() => handleReviewClick(review)}
               >
+                <ItemName>{review.itemName}</ItemName>
                 <ReviewUser>{review.user}</ReviewUser>
                 <ReviewRating>
                   {'⭐'.repeat(review.rating)}
@@ -211,6 +212,9 @@ const ReviewCard = styled.div`
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 
   &:hover {
     background-color: #f5f5f5;
@@ -340,10 +344,10 @@ const ReviewHeader = styled.div`
   gap: 8px;
 `;
 
-const ItemName = styled.h3`
-  font-size: 24px;
+const ItemName = styled.div`
+  font-size: 18px;
   font-weight: bold;
-  margin: 0;
+  color: #333;
 `;
 
 const ReviewText = styled.p`
