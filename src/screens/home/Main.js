@@ -126,7 +126,7 @@ const Main = () => {
 
       {/* 최신 대여 목록 섹션 */}
       <RentalSection>
-        <SectionTitle>최신 대여 물품</SectionTitle>
+        <SectionTitle>최신 등록 물품</SectionTitle>
         <RentalGrid>
           {rentalItems
             .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
