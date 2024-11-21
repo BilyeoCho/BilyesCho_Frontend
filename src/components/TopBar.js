@@ -6,6 +6,11 @@ import styled from 'styled-components';
 const TopBar = () => {
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    // 로그아웃 처리 로직
+    navigate('/');
+  };
+
   return (
     <TopBarWrapper>
       <TitleWrapper>
@@ -18,6 +23,7 @@ const TopBar = () => {
         <MenuItem onClick={() => navigate('/talk')}>톡</MenuItem>
         <MenuItem onClick={() => navigate('/review')}>리뷰</MenuItem>
         <MenuItem onClick={() => navigate('/mypage')}>마이페이지</MenuItem>
+        <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
       </MenuWrapper>
     </TopBarWrapper>
   );
@@ -39,6 +45,7 @@ const TitleWrapper = styled.div`
 const MenuWrapper = styled.div`
   display: flex;
   gap: 2rem;
+  align-items: center;
 `;
 
 const MenuItem = styled.button`
@@ -49,6 +56,15 @@ const MenuItem = styled.button`
   color: #333;
   &:hover {
     opacity: 0.7;
+  }
+`;
+
+const LogoutButton = styled(MenuItem)`
+  color: #dc3545;
+  font-weight: 500;
+  
+  &:hover {
+    opacity: 0.8;
   }
 `;
 

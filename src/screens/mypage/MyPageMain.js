@@ -26,10 +26,6 @@ const MyPageMain = () => {
       case '프로필':
         navigate('/mypage?tab=profile');
         break;
-      case '로그아웃':
-        // 로그아웃 처리 후
-        navigate('/');
-        break;
       default:
         navigate('/mypage?tab=register');
     }

@@ -7,7 +7,6 @@ const SideBar = ({ activeMenu, onMenuClick }) => {
     { name: '대여내역', icon: '📦' },
     { name: '리뷰내역', icon: '⭐' },
     { name: '프로필', icon: '👤' },
-    { name: '로그아웃', icon: '🚪' },
   ];
 
   return (
