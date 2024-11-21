@@ -222,17 +222,6 @@ const ReviewCard = styled.div`
   }
 `;
 
-const ReviewUser = styled.div`
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 8px;
-`;
-
-const ReviewRating = styled.div`
-  color: #FFD700;
-  margin-bottom: 8px;
-`;
-
 const ReviewComment = styled.div`
   font-size: 14px;
   color: #333;
@@ -332,28 +321,43 @@ const ProductImage = styled.img`
 
 const ReviewSection = styled.div`
   flex: 1;
-  padding: 24px;
+  padding: 40px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  justify-content: center;
+  gap: 24px;
 `;
 
 const ReviewHeader = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
 `;
 
 const ItemName = styled.div`
-  font-size: 18px;
+  font-size: 24px;
   font-weight: bold;
   color: #333;
+  margin-bottom: 8px;
+`;
+
+const ReviewUser = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+  color: #666;
+`;
+
+const ReviewRating = styled.div`
+  color: #FFD700;
+  font-size: 20px;
+  margin: 8px 0;
 `;
 
 const ReviewText = styled.p`
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.6;
   color: #333;
+  margin-top: 16px;
 `;
 
 const CloseButton = styled.button`
