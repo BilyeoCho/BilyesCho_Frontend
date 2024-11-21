@@ -1,20 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import SideBar from '../../components/SideBar';
 
 const MyPageMain = () => {
   const [activeMenu, setActiveMenu] = useState('등록내역');
-  const navigate = useNavigate();
 
-  const menuItems = [
-    { name: '등록내역', icon: '📝' },
-    { name: '대여내역', icon: '📦' },
-    { name: '리뷰내역', icon: '⭐' },
-    { name: '프로필', icon: '👤' },
-    { name: '로그아웃', icon: '🚪' },
-  ];
-
-  // 임시 등록 물품 데이터
   const registeredItems = [
     {
       id: 1,
@@ -32,7 +22,6 @@ const MyPageMain = () => {
       duration: '12시간',
       image: '/images/chair1.jpg'
     },
-    // 더미 데이터 추가 가능
   ];
 
   const handleMenuClick = (menuName) => {
@@ -42,25 +31,14 @@ const MyPageMain = () => {
 
   return (
     <Container>
-      <Sidebar>
-        <MenuList>
-          {menuItems.map((item) => (
-            <MenuItem
-              key={item.name}
-              active={activeMenu === item.name}
-              onClick={() => handleMenuClick(item.name)}
-            >
-              <span>{item.icon}</span>
-              {item.name}
-            </MenuItem>
-          ))}
-        </MenuList>
-      </Sidebar>
+      <SideBar 
+        activeMenu={activeMenu} 
+        onMenuClick={handleMenuClick}
+      />
       
       <Content>
         <ContentHeader>
           <h2>등록내역</h2>
-          <RegisterButton onClick={() => navigate('/register')}>물품 등록하기</RegisterButton>
         </ContentHeader>
 
         <ItemGrid>
@@ -99,40 +77,6 @@ const Container = styled.div`
   display: flex;
   gap: 40px;
   height: 100%;
-`;
-
-const Sidebar = styled.div`
-  width: 240px;
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 12px;
-`;
-
-const MenuList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-`;
-
-const MenuItem = styled.li`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  margin-bottom: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: ${props => props.active ? '#000' : 'transparent'};
-  color: ${props => props.active ? '#fff' : '#000'};
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    background-color: ${props => props.active ? '#000' : '#eee'};
-  }
-
-  span {
-    font-size: 20px;
-  }
 `;
 
 const Content = styled.div`
