@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterHistory = () => {
+  const navigate = useNavigate();
+
   const registeredItems = [
     {
       id: 1,
@@ -49,7 +52,9 @@ const RegisterHistory = () => {
               </ItemDetails>
               {item.status === '제공가능' && (
                 <ButtonGroup>
-                  <EditButton>수정</EditButton>
+                  <EditButton onClick={() => navigate(`/mypage/edit/${item.id}`)}>
+                    수정
+                  </EditButton>
                   <DeleteButton>삭제</DeleteButton>
                 </ButtonGroup>
               )}
