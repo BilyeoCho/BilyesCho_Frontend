@@ -6,7 +6,6 @@ const Profile = () => {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [contact, setContact] = useState({
-    phone: '',
     kakaoUrl: ''
   });
 
@@ -65,9 +64,9 @@ const Profile = () => {
           </SettingItem>
 
           <SettingItem>
-            <SettingTitle>연락처 H.P.</SettingTitle>
+            <SettingTitle>오픈채팅 URL</SettingTitle>
             <SettingButton onClick={() => setIsContactModalOpen(true)}>
-              {contact.phone ? '수정하기' : '등록하기'}
+              {contact.kakaoUrl ? '수정하기' : '등록하기'}
             </SettingButton>
           </SettingItem>
 
@@ -108,27 +107,18 @@ const Profile = () => {
       {isContactModalOpen && (
         <ModalOverlay>
           <ModalContainer>
-            <ModalTitle>연락처 설정</ModalTitle>
+            <ModalTitle>오픈채팅 URL 설정</ModalTitle>
             <form onSubmit={handleContactUpdate}>
-              <InputGroup>
-                <Label>휴대폰 번호</Label>
-                <Input 
-                  type="tel" 
-                  value={contact.phone}
-                  onChange={(e) => setContact({...contact, phone: e.target.value})}
-                  placeholder="010-0000-0000"
-                  required 
-                />
-              </InputGroup>
               <InputGroup>
                 <Label>오픈 카카오톡 방🙏</Label>
                 <Input 
                   type="url" 
                   value={contact.kakaoUrl}
-                  onChange={(e) => setContact({...contact, kakaoUrl: e.target.value})}
+                  onChange={(e) => setContact({ kakaoUrl: e.target.value })}
                   placeholder="https://open.kakao.com/..."
                   required 
                 />
+                <Description>물품 대여 요청 시 표시될 오픈채팅방 URL을 입력해주세요.</Description>
               </InputGroup>
               <ButtonGroup>
                 <CancelButton type="button" onClick={() => setIsContactModalOpen(false)}>
@@ -338,6 +328,13 @@ const ConfirmButton = styled(Button)`
   &:hover {
     background: #333;
   }
+`;
+
+const Description = styled.p`
+  font-size: 12px;
+  color: #666;
+  margin-top: 8px;
+  margin-bottom: 0;
 `;
 
 export default Profile;
