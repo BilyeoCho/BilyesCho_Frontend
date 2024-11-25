@@ -33,6 +33,11 @@ const ReviewHistory = () => {
     }
   ];
 
+  const handleEditReview = (reviewId) => {
+    // 리뷰 편집 로직 구현
+    console.log(`Editing review ${reviewId}`);
+  };
+
   return (
     <Content>
       <ContentHeader>
@@ -48,6 +53,9 @@ const ReviewHistory = () => {
             </ReviewHeader>
             <Rating>{'⭐'.repeat(review.rating)}</Rating>
             <ReviewText>{review.comment}</ReviewText>
+            <EditButton onClick={() => handleEditReview(review.id)}>
+              편집하기
+            </EditButton>
           </ReviewCard>
         ))}
       </ReviewGrid>
@@ -119,6 +127,24 @@ const ReviewText = styled.p`
   font-size: 16px;
   line-height: 1.5;
   margin: 0;
+  margin-bottom: 16px;
+`;
+
+const EditButton = styled.button`
+  padding: 8px 16px;
+  background-color: transparent;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  color: #666;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #f5f5f5;
+    border-color: #999;
+    color: #333;
+  }
 `;
 
 export default ReviewHistory;
