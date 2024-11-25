@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axiosApi from '../../axios';
 
 const ItemRegisterMain = () => {
   const [imagePreview, setImagePreview] = useState(null);
@@ -18,6 +19,27 @@ const ItemRegisterMain = () => {
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append('itemPhoto', imagePreview);
+    formData.append('category', selectedCategory);
+    formData.append('itemName', '상품명');
+    formData.append('itemDescription', '상세 설명');
+    formData.append('userId', '사용자 ID');
+    formData.append('price', 10000);
+
+    try {
+      const response = await axiosApi.post('/regist', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error('물품 등록 실패:', error);
+    }
   };
 
   return (
@@ -92,7 +114,7 @@ const ItemRegisterMain = () => {
             </InputGroup>
           </GridItem>
         </GridContainer>
-        <SubmitButton>Submit</SubmitButton>
+        <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
       </BottomSection>
     </RegisterContainer>
   );
