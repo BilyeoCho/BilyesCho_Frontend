@@ -79,7 +79,7 @@ const Profile = () => {
         <ModalOverlay>
           <ModalContainer>
             <ModalTitle>비밀번호 변경</ModalTitle>
-            <form onSubmit={handlePasswordChange}>
+            <ModalForm onSubmit={handlePasswordChange}>
               <InputGroup>
                 <Label>현재 비밀번호</Label>
                 <Input type="password" required />
@@ -98,7 +98,7 @@ const Profile = () => {
                 </CancelButton>
                 <ConfirmButton type="submit">변경하기</ConfirmButton>
               </ButtonGroup>
-            </form>
+            </ModalForm>
           </ModalContainer>
         </ModalOverlay>
       )}
