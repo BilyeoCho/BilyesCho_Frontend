@@ -175,7 +175,7 @@ const ItemRentDetail = () => {
             <ModalTitle>대여 요청</ModalTitle>
             <OwnerInfo>{itemDetails.owner}</OwnerInfo>
             <ContactInfo>
-              <ContactLabel>연락처</ContactLabel> H.P.
+              <ContactLabel>연락처</ContactLabel>
             </ContactInfo>
             <ChatLink>
               <ChatIcon />
