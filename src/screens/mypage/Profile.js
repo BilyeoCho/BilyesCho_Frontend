@@ -108,7 +108,7 @@ const Profile = () => {
         <ModalOverlay>
           <ModalContainer>
             <ModalTitle>오픈채팅 URL 설정</ModalTitle>
-            <form onSubmit={handleContactUpdate}>
+            <ModalForm onSubmit={handleContactUpdate}>
               <InputGroup>
                 <Label>오픈 카카오톡 방🙏</Label>
                 <Input 
@@ -126,7 +126,7 @@ const Profile = () => {
                 </CancelButton>
                 <ConfirmButton type="submit">저장하기</ConfirmButton>
               </ButtonGroup>
-            </form>
+            </ModalForm>
           </ModalContainer>
         </ModalOverlay>
       )}
@@ -263,6 +263,10 @@ const ModalContainer = styled.div`
   border-radius: 16px;
   width: 420px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+`;
+
+const ModalForm = styled.form`
+  padding: 0 24px;
 `;
 
 const ModalTitle = styled.h3`
