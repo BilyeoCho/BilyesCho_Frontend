@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axiosApi from '../../axios';
 
 const ItemRegisterMain = () => {
+  const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  
+  const [itemName, setItemName] = useState('');
+  const [itemDescription, setItemDescription] = useState('');
+  const [userId, setUserId] = useState('');
+  const [price, setPrice] = useState('');
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -25,10 +31,10 @@ const ItemRegisterMain = () => {
     const formData = new FormData();
     formData.append('itemPhoto', imagePreview);
     formData.append('category', selectedCategory);
-    formData.append('itemName', '상품명');
-    formData.append('itemDescription', '상세 설명');
-    formData.append('userId', '사용자 ID');
-    formData.append('price', 10000);
+    formData.append('itemName', itemName);
+    formData.append('itemDescription', itemDescription);
+    formData.append('userId', userId);
+    formData.append('price', price);
 
     try {
       const response = await axiosApi.post('/regist', formData, {
@@ -36,7 +42,9 @@ const ItemRegisterMain = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log(response.data);
+      if (response.status === 200) {
+        navigate('/');
+      }
     } catch (error) {
       console.error('물품 등록 실패:', error);
     }
@@ -75,7 +83,11 @@ const ItemRegisterMain = () => {
           <GridItem>
             <InputGroup>
               <Label>상품명</Label>
-              <Input placeholder="제품명을 입력해주세요" />
+              <Input 
+                placeholder="제품명을 입력해주세요" 
+                value={itemName} 
+                onChange={(e) => setItemName(e.target.value)}
+              />
               <SubText>물품 이름 설명</SubText>
             </InputGroup>
           </GridItem>
@@ -101,7 +113,11 @@ const ItemRegisterMain = () => {
           <GridItem>
             <InputGroup>
               <Label>가격</Label>
-              <Input placeholder="가격을 입력해주세요" />
+              <Input 
+                placeholder="가격을 입력해주세요" 
+                value={price} 
+                onChange={(e) => setPrice(e.target.value)}
+              />
               <SubText>대여 가격 설정</SubText>
             </InputGroup>
           </GridItem>
@@ -109,7 +125,11 @@ const ItemRegisterMain = () => {
           <GridItem>
             <InputGroup>
               <Label>상세 설명</Label>
-              <TextArea placeholder="물품에 대한 설명해주세요" />
+              <TextArea 
+                placeholder="물품에 대한 설명해주세요" 
+                value={itemDescription} 
+                onChange={(e) => setItemDescription(e.target.value)}
+              />
               <SubText>물품 상세 설명</SubText>
             </InputGroup>
           </GridItem>
