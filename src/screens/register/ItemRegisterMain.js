@@ -46,7 +46,7 @@ const ItemRegisterMain = () => {
         navigate('/');
       }
     } catch (error) {
-      console.error('물품 등록 실패:', error);
+      console.error('물품 등록 실패:', error.response ? error.response.data : error.message);
     }
   };
 
