@@ -259,20 +259,20 @@ const ModalOverlay = styled.div`
 
 const ModalContainer = styled.div`
   background: white;
-  padding: 32px;
+  padding: 24px;
   border-radius: 16px;
-  width: 400px;
+  width: 360px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 `;
 
 const ModalTitle = styled.h3`
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 `;
 
 const InputGroup = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 `;
 
 const Label = styled.label`
@@ -283,7 +283,7 @@ const Label = styled.label`
 
 const Input = styled.input`
   width: 100%;
-  padding: 12px;
+  padding: 10px 12px;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 14px;
@@ -296,8 +296,8 @@ const Input = styled.input`
 
 const ButtonGroup = styled.div`
   display: flex;
-  gap: 12px;
-  margin-top: 24px;
+  gap: 8px;
+  margin-top: 20px;
 `;
 
 const Button = styled.button`
