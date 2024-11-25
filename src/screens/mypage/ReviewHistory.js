@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const ReviewHistory = () => {
+  const navigate = useNavigate();
+
   const reviews = [
     {
       id: 1,
@@ -34,8 +37,7 @@ const ReviewHistory = () => {
   ];
 
   const handleEditReview = (reviewId) => {
-    // 리뷰 편집 로직 구현
-    console.log(`Editing review ${reviewId}`);
+    navigate(`/edit-review/${reviewId}`);
   };
 
   return (
