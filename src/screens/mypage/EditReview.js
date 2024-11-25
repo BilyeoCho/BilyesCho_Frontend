@@ -7,7 +7,6 @@ const EditReview = () => {
   const { reviewId } = useParams();
   const [rating, setRating] = useState(5);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [title, setTitle] = useState('');
   const [review, setReview] = useState('');
 
   // 리뷰 데이터 불러오기 (예시)
@@ -65,14 +64,6 @@ const EditReview = () => {
               </FilterButtons>
             </FilterWrapper>
             <SubText>물품 카테고리 선택</SubText>
-            <InputWrapper>
-              <Label>리뷰 제목</Label>
-              <Input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="리뷰 제목을 작성해주세요"
-              />
-            </InputWrapper>
             <InputWrapper>
               <Label>리뷰</Label>
               <TextArea
@@ -212,14 +203,6 @@ const InputWrapper = styled.div`
 const Label = styled.label`
   font-size: 16px;
   font-weight: 500;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
 `;
 
 const TextArea = styled.textarea`
