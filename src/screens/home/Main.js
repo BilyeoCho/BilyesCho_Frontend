@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Pagination } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const Main = () => {
+  const navigate = useNavigate();
   const [currentBanner, setCurrentBanner] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const bannerRef = useRef(null);
@@ -69,6 +71,14 @@ const Main = () => {
     setCurrentBanner((prev) => (prev === bannerItems.length - 1 ? 0 : prev + 1));
   };
 
+  const handleBannerClick = (id) => {
+    navigate(`/itemrent/${id}`);
+  };
+
+  const handleRentalCardClick = (id) => {
+    navigate(`/itemrent/${id}`);
+  };
+
   useEffect(() => {
     const bannerElement = bannerRef.current;
 
@@ -92,13 +102,11 @@ const Main = () => {
       {/* 배너 섹션 */}
       <BannerSection>
         <BannerWrapper ref={bannerRef} currentTranslate={currentTranslate}>
-          <BannerImage
-            style={{
-              transform: `translateX(${currentTranslate}px)`,
-            }}
-          >
-            {bannerItems[currentBanner].title}
-          </BannerImage>
+          {bannerItems.map((item) => (
+            <BannerImage key={item.id} onClick={() => handleBannerClick(item.id)}>
+              {item.title}
+            </BannerImage>
+          ))}
           <BannerButton left onClick={handlePrevBanner}>&lt;</BannerButton>
           <BannerButton right onClick={handleNextBanner}>&gt;</BannerButton>
           <BannerIndicators>
@@ -131,7 +139,7 @@ const Main = () => {
           {rentalItems
             .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
             .map(item => (
-              <RentalCard key={item.id}>
+              <RentalCard key={item.id} onClick={() => handleRentalCardClick(item.id)}>
                 <CardImage />
                 <CardInfo>
                   <CardTitle>{item.title}</CardTitle>
