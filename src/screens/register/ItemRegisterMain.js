@@ -5,8 +5,8 @@ import axiosApi from '../../axios';
 
 const ItemRegisterMain = () => {
   const navigate = useNavigate();
-  const [imagePreview, setImagePreview] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [itemPhoto, setImagePreview] = useState(null);
+  const [itemCategory, setSelectedCategory] = useState(null);
   const [itemName, setItemName] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [userId, setUserId] = useState('');
@@ -29,7 +29,7 @@ const ItemRegisterMain = () => {
 
   const handleSubmit = async () => {
     const formData = new FormData();
-    formData.append('itemPhoto', imagePhoto);
+    formData.append('itemPhoto', itemPhoto);
     formData.append('category', itemCategory);
     formData.append('itemName', itemName);
     formData.append('itemDescription', itemDescription);
@@ -37,7 +37,7 @@ const ItemRegisterMain = () => {
     formData.append('price', price);
 
     console.log('전송할 데이터입니다.:', {
-        itemPhoto: imagePhoto,
+        itemPhoto: itemPhoto,
         category: itemCategory,
         itemName: itemName,
         itemDescription: itemDescription,
@@ -79,8 +79,8 @@ const ItemRegisterMain = () => {
         </ImageUploadButton>
       </LeftSection>
       <ImagePreviewSection>
-        {imagePreview ? (
-          <PreviewImage src={imagePreview} alt="Preview" />
+        {itemPhoto ? (
+          <PreviewImage src={itemPhoto} alt="Preview" />
         ) : (
           <UploadText style={{ color: '#666' }}>물품사진</UploadText>
         )}
@@ -108,7 +108,7 @@ const ItemRegisterMain = () => {
                 {['Sports', 'Fashion', 'Electronics', 'Instruments', 'Camera', 'Book', 'Others'].map((category) => (
                   <CategoryButton 
                     key={category}
-                    isSelected={selectedCategory === category}
+                    isSelected={itemCategory === category}
                     onClick={() => handleCategoryClick(category)}
                   >
                     {category}
