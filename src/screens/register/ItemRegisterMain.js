@@ -13,12 +13,12 @@ const ItemRegisterMain = () => {
   const [price, setPrice] = useState(''); // 변수명 변경
   
   const handleImageUpload = (e) => {
-    const file = e.target.files[0]; // 사용자가 업로드한 파일 가져옴
-    if (file) {
-      setItemPhoto(file); // 원본 File 객체를 상태에 저장
-    }
-  };
-  
+  const file = e.target.files[0]; // 사용자가 업로드한 파일 가져옴
+  if (file) {
+    setItemPhoto(file); // 원본 File 객체를 상태에 저장
+  }
+};
+
   const handleCategoryClick = (category) => {
     setItemCategory(category); // 변수명 변경
   };
@@ -49,7 +49,7 @@ const ItemRegisterMain = () => {
         },
       });
       if (response.status === 200) {
-        navigate('/'); // 성공 시 이동
+        navigate('/home'); // 성공 시 이동
       }
     } catch (error) {
       if (error.response) {
