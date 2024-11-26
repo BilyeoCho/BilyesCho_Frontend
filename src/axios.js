@@ -9,6 +9,8 @@ const handleRequestInterceptor = (config) => {
   const token = localStorage.getItem("accessToken");
   if (token && !['/login', '/join'].includes(config.url)) {
     config.headers.Authorization = `Bearer ${token}`;
+  } else {
+    console.error("토큰이 없거나 유효하지 않습니다.");
   }
   return config;
 };
