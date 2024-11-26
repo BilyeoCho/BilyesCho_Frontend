@@ -49,6 +49,7 @@ const ItemRegisterMain = () => {
         },
       });
       if (response.status === 200) {
+        console.log('등록된 itemId:', response.data.itemId); // itemId 로그 추가
         navigate('/home'); // 성공 시 이동
       }
     } catch (error) {
@@ -337,4 +338,5 @@ const GridItem = styled.div`
   width: 100%;
 `;
 
+export default ItemRegisterMain
 export default ItemRegisterMain
