@@ -86,7 +86,7 @@ const ItemRegisterMain = () => {
         </LeftSection>
         <ImagePreviewSection>
           {itemPhoto ? (
-            <PreviewImage src={itemPhoto} alt="Preview" />
+            <PreviewImage src={URL.createObjectURL(itemPhoto)} alt="Preview" />
           ) : (
             <UploadText style={{ color: '#666' }}>물품사진</UploadText>
           )}
