@@ -55,7 +55,16 @@ const ItemRegisterMain = () => {
         navigate('/'); // 성공 시 이동
       }
     } catch (error) {
-      console.error('물품 등록 실패:', error.response ? error.response.data : error.message);
+      if (error.response) {
+        const { status, data } = error.response;
+        if (status === 400) {
+          console.error('잘못된 요청:', data);
+        } else if (status === 500) {
+          console.error('서버 오류:', data);
+        }
+      } else {
+        console.error('물품 등록 실패:', error.message);
+      }
     }
   };
 
