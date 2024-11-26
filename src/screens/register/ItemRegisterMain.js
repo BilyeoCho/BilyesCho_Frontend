@@ -105,7 +105,7 @@ const ItemRegisterMain = () => {
             <CategorySection>
               <Label>카테고리</Label>
               <CategoryWrapper>
-                {['Sports', 'Fashion', 'Electronics', 'Instruments', 'Camera', 'Book', 'Others'].map((category) => (
+                {['SPORTS', 'FASHION', 'ELECTRONICS', 'INSTRUMENTS', 'CAMERA', 'BOOK', 'OTHERS'].map((category) => (
                   <CategoryButton 
                     key={category}
                     isSelected={itemCategory === category} // 변수명 변경
