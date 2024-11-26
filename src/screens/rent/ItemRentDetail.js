@@ -14,6 +14,7 @@ const ItemRentDetail = () => {
       try {
         const response = await axiosApi.get(`/item/${itemId}`);
         setItemDetails(response.data);
+        console.log('Item Photo URL:', response.data.itemPhoto);
       } catch (error) {
         console.error('물품 상세 조회 실패:', error);
       }
