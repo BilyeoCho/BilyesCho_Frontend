@@ -36,7 +36,7 @@ const ItemRegisterMain = () => {
     formData.append('userId', userId);
     formData.append('price', price);
 
-    console.log('전송할 데이터:', {
+    console.log('전송할 데이터입니다.:', {
         itemPhoto: imagePhoto,
         category: itemCategory,
         itemName: itemName,
