@@ -29,16 +29,16 @@ const ItemRegisterMain = () => {
 
   const handleSubmit = async () => {
     const formData = new FormData();
-    formData.append('itemPhoto', imagePreview);
-    formData.append('category', selectedCategory);
+    formData.append('itemPhoto', imagePhoto);
+    formData.append('category', itemCategory);
     formData.append('itemName', itemName);
     formData.append('itemDescription', itemDescription);
     formData.append('userId', userId);
     formData.append('price', price);
 
     console.log('전송할 데이터:', {
-        itemPhoto: imagePreview,
-        category: selectedCategory,
+        itemPhoto: imagePhoto,
+        category: itemCategory,
         itemName: itemName,
         itemDescription: itemDescription,
         userId: userId,
