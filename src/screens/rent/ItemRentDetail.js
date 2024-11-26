@@ -39,7 +39,7 @@ const ItemRentDetail = () => {
       <TopBar />
       <ContentWrapper>
         <ImageSection>
-          <ItemImage>{itemDetails.itemName} Image</ItemImage>
+          <ItemImage src={itemDetails.itemPhoto} alt={`${itemDetails.itemName} 이미지`} />
         </ImageSection>
         <DetailsSection>
           <OwnerInfo>{itemDetails.userId}</OwnerInfo>
@@ -98,15 +98,10 @@ const ImageSection = styled.div`
   aspect-ratio: 1;
 `;
 
-const ItemImage = styled.div`
+const ItemImage = styled.img`
   width: 100%;
   height: 100%;
-  background-color: #f5f5f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #999;
-  font-size: 14px;
+  object-fit: cover;
 `;
 
 const DetailsSection = styled.div`
