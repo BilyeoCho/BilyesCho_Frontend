@@ -8,6 +8,7 @@ const ItemRentDetail = () => {
   const { itemId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemDetails, setItemDetails] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchItemDetails = async () => {
@@ -16,12 +17,26 @@ const ItemRentDetail = () => {
         setItemDetails(response.data);
         console.log('Item Photo URL:', response.data.itemPhoto);
       } catch (error) {
-        console.error('물품 상세 조회 실패:', error);
+        if (error.response) {
+          if (error.response.status === 404) {
+            setError('물품을 찾을 수 없습니다.');
+          } else if (error.response.status === 500) {
+            setError('서버 오류가 발생했습니다. 나중에 다시 시도해 주세요.');
+          } else {
+            setError('알 수 없는 오류가 발생했습니다.');
+          }
+        } else {
+          setError('네트워크 오류가 발생했습니다.');
+        }
       }
     };
 
     fetchItemDetails();
   }, [itemId]);
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   if (!itemDetails) {
     return <div>해당 물품을 찾을 수 없습니다.</div>;
