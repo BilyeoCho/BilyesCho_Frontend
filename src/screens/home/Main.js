@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Pagination } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import axiosApi from '../../axios';
 
 const Main = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const Main = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [currentTranslate, setCurrentTranslate] = useState(0);
+  const [latestItems, setLatestItems] = useState([]);
 
   // 임시 데이터
   const bannerItems = [
@@ -79,6 +81,20 @@ const Main = () => {
     navigate(`/itemrent/${id}`);  // RentalCard 클릭 시 ItemRentDetail로 이동
   };
 
+  // 최신 물품 조회 함수
+  const fetchLatestItems = async () => {
+    try {
+      const response = await axiosApi.get('/latest');
+      setLatestItems(response.data); // 응답 데이터로 상태 업데이트
+    } catch (error) {
+      console.error("최신 물품 조회 실패:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLatestItems(); // 컴포넌트 마운트 시 최신 물품 조회
+  }, []);
+
   useEffect(() => {
     const bannerElement = bannerRef.current;
 
@@ -139,12 +155,12 @@ const Main = () => {
       <RentalSection>
         <SectionTitle>최신 등록 물품</SectionTitle>
         <RentalGrid>
-          {rentalItems.map(item => (
-            <RentalCard key={item.id} onClick={() => handleRentalCardClick(item.id)}> {/* 카드 클릭 시 이동 */}
-              <CardImage />
+          {latestItems.map(item => ( // 최신 물품으로 변경
+            <RentalCard key={item.itemId} onClick={() => handleRentalCardClick(item.itemId)}> {/* 카드 클릭 시 이동 */}
+              <CardImage style={{ backgroundImage: `url(${item.itemPhoto})` }} /> {/* 이미지 추가 */}
               <CardInfo>
-                <CardTitle>{item.title}</CardTitle>
-                <CardPrice>₩{item.price} / {item.duration}</CardPrice>
+                <CardTitle>{item.itemName}</CardTitle>
+                <CardPrice>₩{item.price}</CardPrice>
               </CardInfo>
             </RentalCard>
           ))}
