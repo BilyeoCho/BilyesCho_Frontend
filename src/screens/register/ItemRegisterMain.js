@@ -36,6 +36,15 @@ const ItemRegisterMain = () => {
     formData.append('userId', userId);
     formData.append('price', price);
 
+    console.log('전송할 데이터:', {
+        itemPhoto: imagePreview,
+        category: selectedCategory,
+        itemName: itemName,
+        itemDescription: itemDescription,
+        userId: userId,
+        price: price,
+    });
+
     try {
       const response = await axiosApi.post('/regist', formData, {
         headers: {
