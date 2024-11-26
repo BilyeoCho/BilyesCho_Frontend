@@ -9,9 +9,11 @@ const handleRequestInterceptor = (config) => {
   const token = localStorage.getItem("accessToken");
   if (token && !['/login', '/join'].includes(config.url)) {
     config.headers.Authorization = `Bearer ${token}`;
+    console.log("요청에 추가된 토큰:", token); // 추가된 토큰 로그 확인
   } else {
     console.error("토큰이 없거나 유효하지 않습니다.");
   }
+  console.log("요청 구성 확인:", config); // 요청 객체 확인
   return config;
 };
 
