@@ -339,4 +339,3 @@ const GridItem = styled.div`
 `;
 
 export default ItemRegisterMain
-export default ItemRegisterMain
