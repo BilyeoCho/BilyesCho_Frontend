@@ -1,137 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import TopBar from '../../components/TopBar';
 import { useParams } from 'react-router-dom';
+import axiosApi from '../../axios';
 
 const ItemRentDetail = () => {
   const { itemId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [itemDetails, setItemDetails] = useState(null);
 
-  // 임시 데이터
-  const rentalItems = [
-    {
-        id: 1,
-        title: '자전거',
-        price: '10,000',
-        description: [
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-
-        ],
-        owner: '장성우',
-        category: 'Sports',
-        image: 'bicycle.jpg',
-      },
-      {
-        id: 2,
-        title: '텐트',
-        price: '20,000',
-        description: [
-          '텐트 상세설명입니다.',
-          '텐트 상세설명입니다.',
-          '텐트 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-        ],
-        owner: '김철수',
-        category: 'Sports',
-        image: 'tent.jpg',
-      },
-      {
-        id: 3,
-        title: '캠핑의자',
-        price: '5,000',
-        description: [
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-        ],
-        owner: '정준서',
-        category: 'Sports',
-        image: 'bicycle.jpg',
-      },
-      {
-        id: 4,
-        title: '가스토치',
-        price: '3,000',
-        description: [
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-        ],
-        owner: '김태양',
-        category: 'Sports',
-        image: 'bicycle.jpg',
-      },
-      {
-        id: 5,
-        title: '코터',
-        price: '15,000',
-        description: [
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-        ],
-        owner: '장성우',
-        category: 'Sports',
-        image: 'bicycle.jpg',
-      },
-      {
-        id: 6,
-        title: '등산모자',
-        price: '2,000',
-        description: [
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-        ],
-        owner: '김철수',
-        category: 'Sports',
-        image: 'bicycle.jpg',
-      },
-      {
-        id: 7,
-        title: '야구글러브',
-        price: '8,000',
-        description: [
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-        ],
-        owner: '정준서',
-        category: 'Sports',
-        image: 'bicycle.jpg',
-      },
-      {
-        id: 8,
-        title: '낚시대',
-        price: '12,000',
-        description: [
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-          '물품 상세설명입니다.',
-        ],
-        owner: '김태양',
-        category: 'Sports',
-        image: 'bicycle.jpg',
+  useEffect(() => {
+    const fetchItemDetails = async () => {
+      try {
+        const response = await axiosApi.get(`/item/${itemId}`);
+        setItemDetails(response.data);
+      } catch (error) {
+        console.error('물품 상세 조회 실패:', error);
       }
-  ];
+    };
 
-  // iitemId에 해당하는 아이템을 찾기
-  const itemDetails = rentalItems.find(item => item.id === parseInt(itemId));
+    fetchItemDetails();
+  }, [itemId]);
 
   if (!itemDetails) {
     return <div>해당 물품을 찾을 수 없습니다.</div>;
@@ -150,20 +39,18 @@ const ItemRentDetail = () => {
       <TopBar />
       <ContentWrapper>
         <ImageSection>
-          <ItemImage>{itemDetails.title} Image</ItemImage>
+          <ItemImage>{itemDetails.itemName} Image</ItemImage>
         </ImageSection>
         <DetailsSection>
-          <OwnerInfo>{itemDetails.owner}</OwnerInfo>
-          <ItemTitle>{itemDetails.title}</ItemTitle>
+          <OwnerInfo>{itemDetails.userId}</OwnerInfo>
+          <ItemTitle>{itemDetails.itemName}</ItemTitle>
           <ItemPrice>₩{itemDetails.price}</ItemPrice>
           <RentButton onClick={handleRentButtonClick}>대여요청하기</RentButton>
           <ItemDetails>
             <SectionTitle>상세 정보</SectionTitle>
-            <Category>{itemDetails.category}</Category>
+            <Category>{itemDetails.itemCategory}</Category>
             <DescriptionList>
-              {itemDetails.description.map((desc, index) => (
-                <DescriptionItem key={index}>{desc}</DescriptionItem>
-              ))}
+              <DescriptionItem>{itemDetails.itemDescription}</DescriptionItem>
             </DescriptionList>
           </ItemDetails>
         </DetailsSection>
@@ -173,14 +60,14 @@ const ItemRentDetail = () => {
         <ModalOverlay>
           <ModalContainer>
             <ModalTitle>대여 요청</ModalTitle>
-            <OwnerInfo>{itemDetails.owner}</OwnerInfo>
+            <OwnerInfo>{itemDetails.userId}</OwnerInfo>
             <ContactInfo>
               <ContactLabel>연락처</ContactLabel>
             </ContactInfo>
             <ChatLink>
               <ChatIcon />
               <ChatInfo>
-                <ChatText>오픈 카카오톡 방🙏</ChatText>
+                <ChatText>오픈 카카오톡 방</ChatText>
                 <ChatURL href="https://www.figma.com/">https://www.figma.com/</ChatURL>
               </ChatInfo>
             </ChatLink>
