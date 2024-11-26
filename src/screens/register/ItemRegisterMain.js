@@ -13,16 +13,12 @@ const ItemRegisterMain = () => {
   const [price, setPrice] = useState(''); // 변수명 변경
   
   const handleImageUpload = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]; // 사용자가 업로드한 파일 가져옴
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setItemPhoto(reader.result); // 변수명 변경
-      };
-      reader.readAsDataURL(file);
+      setItemPhoto(file); // 원본 File 객체를 상태에 저장
     }
   };
-
+  
   const handleCategoryClick = (category) => {
     setItemCategory(category); // 변수명 변경
   };
