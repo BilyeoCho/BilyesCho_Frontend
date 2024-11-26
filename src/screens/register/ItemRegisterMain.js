@@ -5,44 +5,44 @@ import axiosApi from '../../axios';
 
 const ItemRegisterMain = () => {
   const navigate = useNavigate();
-  const [itemPhoto, setImagePreview] = useState(null);
-  const [itemCategory, setSelectedCategory] = useState(null);
-  const [itemName, setItemName] = useState('');
-  const [itemDescription, setItemDescription] = useState('');
-  const [userId, setUserId] = useState('');
-  const [price, setPrice] = useState('');
+  const [itemPhoto, setItemPhoto] = useState(null); // 변수명 변경
+  const [itemCategory, setItemCategory] = useState(null); // 변수명 변경
+  const [itemName, setItemName] = useState(''); // 변수명 변경
+  const [itemDescription, setItemDescription] = useState(''); // 변수명 변경
+  const [userId, setUserId] = useState(''); // 변수명 변경
+  const [price, setPrice] = useState(''); // 변수명 변경
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result);
+        setItemPhoto(reader.result); // 변수명 변경
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
+    setItemCategory(category); // 변수명 변경
   };
 
   const handleSubmit = async () => {
     const formData = new FormData();
-    formData.append('itemPhoto', itemPhoto);
-    formData.append('category', itemCategory);
-    formData.append('itemName', itemName);
-    formData.append('itemDescription', itemDescription);
-    formData.append('userId', userId);
-    formData.append('price', price);
+    formData.append('itemPhoto', itemPhoto); // 변수명 변경
+    formData.append('itemCategory', itemCategory); // 변수명 변경
+    formData.append('itemName', itemName); // 변수명 변경
+    formData.append('itemDescription', itemDescription); // 변수명 변경
+    formData.append('userId', userId); // 변수명 변경
+    formData.append('price', price); // 변수명 변경
 
     console.log('전송할 데이터입니다.:', {
-        itemPhoto: itemPhoto,
-        category: itemCategory,
-        itemName: itemName,
-        itemDescription: itemDescription,
-        userId: userId,
-        price: price,
+        itemPhoto: itemPhoto, // 변수명 변경
+        itemCategory: itemCategory, // 변수명 변경
+        itemName: itemName, // 변수명 변경
+        itemDescription: itemDescription, // 변수명 변경
+        userId: userId, // 변수명 변경
+        price: price, // 변수명 변경
     });
 
     try {
@@ -52,7 +52,7 @@ const ItemRegisterMain = () => {
         },
       });
       if (response.status === 200) {
-        navigate('/');
+        navigate('/'); // 성공 시 이동
       }
     } catch (error) {
       console.error('물품 등록 실패:', error.response ? error.response.data : error.message);
@@ -61,31 +61,31 @@ const ItemRegisterMain = () => {
 
   return (
     <RegisterContainer>
-    <TopSection>
-      <LeftSection>
-        <TitleSection>
-          <RegisterTitle>물품 등록하기</RegisterTitle>
-          <RegisterSubtitle>소중한 물품을 등록해주세요</RegisterSubtitle>
-        </TitleSection>
-        <ImageUploadButton onClick={() => document.getElementById('imageInput').click()}>
-          <UploadText>사진을 첨부해주세요</UploadText>
-          <input
-            type="file"
-            id="imageInput"
-            accept="image/*"
-            onChange={handleImageUpload}
-            style={{ display: 'none' }}
-          />
-        </ImageUploadButton>
-      </LeftSection>
-      <ImagePreviewSection>
-        {itemPhoto ? (
-          <PreviewImage src={itemPhoto} alt="Preview" />
-        ) : (
-          <UploadText style={{ color: '#666' }}>물품사진</UploadText>
-        )}
-      </ImagePreviewSection>
-    </TopSection>
+      <TopSection>
+        <LeftSection>
+          <TitleSection>
+            <RegisterTitle>물품 등록하기</RegisterTitle>
+            <RegisterSubtitle>소중한 물품을 등록해주세요</RegisterSubtitle>
+          </TitleSection>
+          <ImageUploadButton onClick={() => document.getElementById('imageInput').click()}>
+            <UploadText>사진을 첨부해주세요</UploadText>
+            <input
+              type="file"
+              id="imageInput"
+              accept="image/*"
+              onChange={handleImageUpload}
+              style={{ display: 'none' }}
+            />
+          </ImageUploadButton>
+        </LeftSection>
+        <ImagePreviewSection>
+          {itemPhoto ? (
+            <PreviewImage src={itemPhoto} alt="Preview" />
+          ) : (
+            <UploadText style={{ color: '#666' }}>물품사진</UploadText>
+          )}
+        </ImagePreviewSection>
+      </TopSection>
 
       <BottomSection>
         <GridContainer>
@@ -95,7 +95,7 @@ const ItemRegisterMain = () => {
               <Input 
                 placeholder="제품명을 입력해주세요" 
                 value={itemName} 
-                onChange={(e) => setItemName(e.target.value)}
+                onChange={(e) => setItemName(e.target.value)} // 변수명 변경
               />
               <SubText>물품 이름 설명</SubText>
             </InputGroup>
@@ -108,8 +108,8 @@ const ItemRegisterMain = () => {
                 {['Sports', 'Fashion', 'Electronics', 'Instruments', 'Camera', 'Book', 'Others'].map((category) => (
                   <CategoryButton 
                     key={category}
-                    isSelected={itemCategory === category}
-                    onClick={() => handleCategoryClick(category)}
+                    isSelected={itemCategory === category} // 변수명 변경
+                    onClick={() => handleCategoryClick(category)} // 변수명 변경
                   >
                     {category}
                   </CategoryButton>
@@ -125,7 +125,7 @@ const ItemRegisterMain = () => {
               <Input 
                 placeholder="가격을 입력해주세요" 
                 value={price} 
-                onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => setPrice(e.target.value)} // 변수명 변경
               />
               <SubText>대여 가격 설정</SubText>
             </InputGroup>
@@ -137,7 +137,7 @@ const ItemRegisterMain = () => {
               <TextArea 
                 placeholder="물품에 대한 설명해주세요" 
                 value={itemDescription} 
-                onChange={(e) => setItemDescription(e.target.value)}
+                onChange={(e) => setItemDescription(e.target.value)} // 변수명 변경
               />
               <SubText>물품 상세 설명</SubText>
             </InputGroup>
