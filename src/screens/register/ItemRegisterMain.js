@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axiosApi from '../../axios';
@@ -11,17 +11,6 @@ const ItemRegisterMain = () => {
   const [itemDescription, setItemDescription] = useState(''); // 변수명 변경
   const [userId, setUserId] = useState(localStorage.getItem("userId") || ''); // userId 자동 설정
   const [price, setPrice] = useState(''); // 변수명 변경
-
-  useEffect(() => {
-    const storedUserId = localStorage.getItem('userId');
-    if (storedUserId) {
-      setUserId(storedUserId);
-    } else {
-      console.error("userId가 존재하지 않습니다. 로그인 여부를 확인하세요.");
-      alert("로그인이 필요합니다.");
-      navigate('/login'); // 로그인 페이지로 리다이렉트
-    }
-  }, [navigate]);
   
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -39,6 +28,7 @@ const ItemRegisterMain = () => {
   };
 
   const handleSubmit = async () => {
+
     const formData = new FormData();
     formData.append('itemPhoto', itemPhoto); // 변수명 변경
     formData.append('itemCategory', itemCategory); // 변수명 변경
