@@ -42,7 +42,6 @@ const ItemRegisterMain = () => {
         itemCategory: itemCategory, // 변수명 변경
         itemName: itemName, // 변수명 변경
         itemDescription: itemDescription, // 변수명 변경
-        userId: userId, // 변수명 변경
         price: price, // 변수명 변경
     });
 
