@@ -55,7 +55,7 @@ const ItemRentDetail = () => {
       <TopBar />
       <ContentWrapper>
         <ImageSection>
-          <ItemImage src={itemDetails.itemPhoto} alt={`${itemDetails.itemName} 이미지`} />
+          <ItemImage src={itemDetails.itemPhoto} alt={`${itemDetails.itemName} 이미지`} style={{ objectFit: 'contain' }} />
         </ImageSection>
         <DetailsSection>
           <OwnerInfo>{itemDetails.userId}</OwnerInfo>
