@@ -32,7 +32,9 @@ const RegisterHistory = () => {
       const response = await axiosApi.delete(`/delete/${itemId}`);
       if (response.status === 204) {
         alert('물품이 성공적으로 삭제되었습니다.');
-        navigate('/mypage');
+        setTimeout(() => {
+          navigate('/mypage');
+        }, 1000);
       }
     } catch (error) {
       if (error.response) {
