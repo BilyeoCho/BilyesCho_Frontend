@@ -12,7 +12,7 @@ const EditRegister = () => {
   const [itemCategory, setItemCategory] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [price, setPrice] = useState('');
-  const [status, setStatus] = useState('AVAILABLE');
+  const [itemStatus, setItemStatus] = useState('AVAILABLE');
 
   useEffect(() => {
     const fetchItemDetails = async () => {
@@ -23,7 +23,7 @@ const EditRegister = () => {
         setItemCategory(itemCategory);
         setItemDescription(itemDescription);
         setPrice(price);
-        setStatus(status);
+        setItemStatus(status);
         setItemPhoto(itemPhoto);
       } catch (error) {
         console.error('물품 정보 조회 실패:', error);
@@ -45,7 +45,7 @@ const EditRegister = () => {
   };
 
   const handleStatusClick = (status) => {
-    setStatus(status);
+    setItemStatus(status);
   };
 
   const handleSubmit = async () => {
@@ -55,7 +55,7 @@ const EditRegister = () => {
     formData.append('itemCategory', itemCategory);
     formData.append('itemDescription', itemDescription);
     formData.append('price', price);
-    formData.append('status', status);
+    formData.append('status', itemStatus);
 
     try {
       await axiosApi.put(`/update/${id}`, formData, {
@@ -149,7 +149,7 @@ const EditRegister = () => {
                 {['AVAILABLE', 'RENTED'].map((status) => (
                   <StatusButton 
                     key={status}
-                    isSelected={status === status}
+                    isSelected={itemStatus === status}
                     onClick={() => handleStatusClick(status)}
                     status={status}
                   >
