@@ -1,28 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useNavigate, useParams } from 'react-router-dom';
+import axiosApi from '../../axios';
 
 const EditRegister = () => {
-  const [imagePreview, setImagePreview] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState('제공가능');
+  const { id } = useParams(); // 물품 ID 가져오기
+  const navigate = useNavigate();
   
+  const [itemPhoto, setItemPhoto] = useState(null);
+  const [itemName, setItemName] = useState('');
+  const [itemCategory, setItemCategory] = useState('');
+  const [itemDescription, setItemDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [status, setStatus] = useState('AVAILABLE');
+
+  useEffect(() => {
+    const fetchItemDetails = async () => {
+      try {
+        const response = await axiosApi.get(`/item/${id}`);
+        const { itemName, itemCategory, itemDescription, price, status, itemPhoto } = response.data;
+        setItemName(itemName);
+        setItemCategory(itemCategory);
+        setItemDescription(itemDescription);
+        setPrice(price);
+        setStatus(status);
+        setItemPhoto(itemPhoto);
+      } catch (error) {
+        console.error('물품 정보 조회 실패:', error);
+      }
+    };
+
+    fetchItemDetails();
+  }, [id]);
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setItemPhoto(file);
     }
   };
 
   const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
+    setItemCategory(category);
   };
 
   const handleStatusClick = (status) => {
-    setSelectedStatus(status);
+    setStatus(status);
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append('itemName', itemName);
+    formData.append('itemPhoto', itemPhoto);
+    formData.append('itemCategory', itemCategory);
+    formData.append('itemDescription', itemDescription);
+    formData.append('price', price);
+    formData.append('status', status);
+
+    try {
+      await axiosApi.put(`/update/${id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      navigate('/mypage'); // 수정 완료 후 리다이렉트
+    } catch (error) {
+      console.error('물품 수정 실패:', error);
+    }
   };
 
   return (
@@ -45,8 +89,8 @@ const EditRegister = () => {
           </ImageUploadButton>
         </LeftSection>
         <ImagePreviewSection>
-          {imagePreview ? (
-            <PreviewImage src={imagePreview} alt="Preview" />
+          {itemPhoto ? (
+            <PreviewImage src={URL.createObjectURL(itemPhoto)} alt="Preview" />
           ) : (
             <UploadText style={{ color: '#666' }}>물품사진</UploadText>
           )}
@@ -58,7 +102,11 @@ const EditRegister = () => {
           <GridItem>
             <InputGroup>
               <Label>상품명</Label>
-              <Input placeholder="제품명을 입력해주세요" />
+              <Input 
+                value={itemName}
+                onChange={(e) => setItemName(e.target.value)}
+                placeholder="제품명을 입력해주세요" 
+              />
               <SubText>물품 이름 설명</SubText>
             </InputGroup>
           </GridItem>
@@ -67,10 +115,10 @@ const EditRegister = () => {
             <CategorySection>
               <Label>카테고리</Label>
               <CategoryWrapper>
-                {['Sports', 'Fashion', 'Electronics', 'Instruments', 'Camera', 'Book', 'Others'].map((category) => (
+                {['SPORTS', 'FASHION', 'ELECTRONICS', 'INSTRUMENTS', 'CAMERA', 'BOOK', 'OTHERS'].map((category) => (
                   <CategoryButton 
                     key={category}
-                    isSelected={selectedCategory === category}
+                    isSelected={itemCategory === category}
                     onClick={() => handleCategoryClick(category)}
                   >
                     {category}
@@ -84,7 +132,12 @@ const EditRegister = () => {
           <GridItem>
             <InputGroup>
               <Label>가격</Label>
-              <Input placeholder="가격을 입력해주세요" />
+              <Input 
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                placeholder="가격을 입력해주세요" 
+              />
               <SubText>대여 가격 설정</SubText>
             </InputGroup>
           </GridItem>
@@ -93,10 +146,10 @@ const EditRegister = () => {
             <CategorySection>
               <Label>상태</Label>
               <StatusWrapper>
-                {['제공가능', '제공중', '제공완료'].map((status) => (
+                {['AVAILABLE', 'RENTED'].map((status) => (
                   <StatusButton 
                     key={status}
-                    isSelected={selectedStatus === status}
+                    isSelected={status === status}
                     onClick={() => handleStatusClick(status)}
                     status={status}
                   >
@@ -111,12 +164,16 @@ const EditRegister = () => {
           <GridItem style={{ gridColumn: '1 / -1' }}>
             <InputGroup>
               <Label>상세 설명</Label>
-              <TextArea placeholder="물품에 대한 설명해주세요" />
+              <TextArea 
+                value={itemDescription}
+                onChange={(e) => setItemDescription(e.target.value)}
+                placeholder="물품에 대한 설명해주세요" 
+              />
               <SubText>물품 상세 설명</SubText>
             </InputGroup>
           </GridItem>
         </GridContainer>
-        <SubmitButton>수정하기</SubmitButton>
+        <SubmitButton onClick={handleSubmit}>수정하기</SubmitButton>
       </BottomSection>
     </RegisterContainer>
   );
@@ -311,17 +368,13 @@ const StatusWrapper = styled(CategoryWrapper)`
 const StatusButton = styled(CategoryButton)`
   ${props => {
     switch (props.status) {
-      case '제공가능':
+      case 'AVAILABLE':
         return props.isSelected && `
           background-color: #0c8599;
         `;
-      case '제공중':
+      case 'RENTED':
         return props.isSelected && `
           background-color: #2f9e44;
-        `;
-      case '제공완료':
-        return props.isSelected && `
-          background-color: #666;
         `;
       default:
         return '';
