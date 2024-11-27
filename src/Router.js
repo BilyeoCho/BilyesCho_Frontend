@@ -54,7 +54,7 @@ const router = createBrowserRouter([
         element: <MyPage />,
       },
       {
-        path: "/mypage/edit/:itemId",
+        path: "/mypage/edit/:id",
         element: <EditRegister />,
       },
       {
