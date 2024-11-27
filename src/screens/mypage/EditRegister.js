@@ -26,7 +26,7 @@ const EditRegister = () => {
         setItemStatus(status);
         setItemPhoto(itemPhoto);
       } catch (error) {
-        console.error('물품 정보 조회 실패:', error);
+        console.error('물품 정보 조회 실패:', error.response ? error.response.data : error.message);
       }
     };
 
@@ -68,6 +68,8 @@ const EditRegister = () => {
       console.error('물품 수정 실패:', error);
     }
   };
+
+  console.log('Fetched ID:', id); // 이 로그를 통해 id 값을 확인
 
   return (
     <RegisterContainer>
