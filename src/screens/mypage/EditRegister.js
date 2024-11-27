@@ -52,21 +52,63 @@ const EditRegister = () => {
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append('itemName', itemName);
-    formData.append('itemPhoto', itemPhoto);
+    
+    if (itemPhoto instanceof File) {
+      formData.append('itemPhoto', itemPhoto);
+    } else {
+      formData.append('itemPhoto', itemPhoto);
+    }
+
     formData.append('itemCategory', itemCategory);
     formData.append('itemDescription', itemDescription);
     formData.append('price', price);
     formData.append('status', itemStatus);
 
+    console.log('Submitting data:', {
+      itemName,
+      itemPhoto,
+      itemCategory,
+      itemDescription,
+      price,
+      status: itemStatus,
+    });
+
     try {
-      await axiosApi.put(`/update/${id}`, formData, {
+      const response = await axiosApi.put(`/update/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      navigate('/mypage'); // 수정 완료 후 리다이렉트
+
+      if (response.status === 200) {
+        navigate('/mypage'); // 수정 완료 후 리다이렉트
+      }
     } catch (error) {
-      console.error('물품 수정 실패:', error);
+      // 상태 코드에 따른 에러 로그 출력
+      if (error.response) {
+        console.error('Error Status:', error.response.status);
+        console.error('Error Data:', error.response.data);
+        
+        switch (error.response.status) {
+          case 400:
+            alert('데이터가 유효하지 않습니다. 다시 확인해주세요.');
+            break;
+          case 403:
+            alert('권한이 없습니다.');
+            break;
+          case 404:
+            alert('물품을 찾을 수 없습니다.');
+            break;
+          case 500:
+            alert('서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+            break;
+          default:
+            alert('알 수 없는 오류가 발생했습니다.');
+        }
+      } else {
+        console.error('Network Error:', error.message);
+        alert('네트워크 오류가 발생했습니다.');
+      }
     }
   };
 
