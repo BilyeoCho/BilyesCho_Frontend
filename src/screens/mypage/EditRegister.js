@@ -92,6 +92,37 @@ const EditRegister = () => {
     }
   };
 
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm('이 물품을 삭제하시겠습니까?');
+    if (!confirmDelete) return;
+
+    try {
+      const response = await axiosApi.delete(`/delete/${id}`); // id를 명세에 맞게 사용
+      if (response.status === 200) {
+        alert('물품이 성공적으로 삭제되었습니다.');
+        navigate('/mypage'); // 삭제 후 리다이렉트
+      }
+    } catch (error) {
+      if (error.response) {
+        switch (error.response.status) {
+          case 403:
+            alert('권한이 없습니다.');
+            break;
+          case 404:
+            alert('물품을 찾을 수 없습니다.');
+            break;
+          case 500:
+            alert('서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+            break;
+          default:
+            alert('알 수 없는 오류가 발생했습니다.');
+        }
+      } else {
+        alert('네트워크 오류가 발생했습니다.');
+      }
+    }
+  };
+
   console.log('Fetched ID:', id); // 이 로그를 통해 id 값을 확인
 
   return (
@@ -199,6 +230,7 @@ const EditRegister = () => {
           </GridItem>
         </GridContainer>
         <SubmitButton onClick={handleSubmit}>수정하기</SubmitButton>
+        <DeleteButton onClick={handleDelete}>삭제하기</DeleteButton>
       </BottomSection>
     </RegisterContainer>
   );
@@ -405,6 +437,10 @@ const StatusButton = styled(CategoryButton)`
         return '';
     }
   }}
+`;
+
+const DeleteButton = styled(SubmitButton)`
+  background-color: #ff0000;
 `;
 
 export default EditRegister;
