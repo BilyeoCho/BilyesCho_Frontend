@@ -18,6 +18,7 @@ const EditRegister = () => {
     const fetchItemDetails = async () => {
       try {
         const response = await axiosApi.get(`/item/${id}`);
+        console.log('Response Data:', response.data); // 응답 데이터 로그
         const { itemName, itemCategory, itemDescription, price, status, itemPhoto } = response.data;
         setItemName(itemName);
         setItemCategory(itemCategory);
