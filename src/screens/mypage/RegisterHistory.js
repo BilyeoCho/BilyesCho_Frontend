@@ -7,20 +7,30 @@ const RegisterHistory = () => {
   const navigate = useNavigate();
   const [registeredItems, setRegisteredItems] = useState([]);
 
-  useEffect(() => {
-    const fetchRegisteredItems = async () => {
-      try {
-        const response = await axiosApi.get('/myitems');
+  const fetchRegisteredItems = async () => {
+    try {
+      const response = await axiosApi.get('/myitems');
+      if (response.status === 200) {
         const itemsWithDefaultStatus = response.data.map(item => ({
           ...item,
           status: 'AVAILABLE',
         }));
         setRegisteredItems(itemsWithDefaultStatus);
-      } catch (error) {
-        console.error('등록된 물품 조회 실패:', error);
       }
-    };
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 500) {
+          alert('서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+        } else {
+          console.error('등록된 물품 조회 실패:', error.response.data);
+        }
+      } else {
+        alert('네트워크 오류가 발생했습니다.');
+      }
+    }
+  };
 
+  useEffect(() => {
     fetchRegisteredItems();
   }, []);
 
@@ -32,9 +42,7 @@ const RegisterHistory = () => {
       const response = await axiosApi.delete(`/delete/${itemId}`);
       if (response.status === 204) {
         alert('물품이 성공적으로 삭제되었습니다.');
-        setTimeout(() => {
-          navigate('/mypage');
-        }, 1000);
+        fetchRegisteredItems();
       }
     } catch (error) {
       if (error.response) {
