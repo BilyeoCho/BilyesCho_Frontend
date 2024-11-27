@@ -38,12 +38,12 @@ const ItemRentMain = () => {
           .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
           .map((item) => (
             <RentalCard key={item.itemId} onClick={() => handleCardClick(item.itemId)}>
-              <CardImage />
+              <CardImage style={{ backgroundImage: `url(${item.itemPhoto})` }} />
               <CardInfo>
                 <CardTitle>{item.itemName}</CardTitle>
                 <CardPrice>₩{item.price}</CardPrice>
               </CardInfo>
-            </RentalCard>
+            </RentalCard> 
           ))}
       </RentalGrid>
       <PaginationWrapper>
