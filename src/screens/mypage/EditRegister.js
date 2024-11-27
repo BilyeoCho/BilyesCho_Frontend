@@ -92,10 +92,10 @@ const EditRegister = () => {
           </ImageUploadButton>
         </LeftSection>
         <ImagePreviewSection>
-          {itemPhoto ? (
+          {itemPhoto instanceof File ? (
             <PreviewImage src={URL.createObjectURL(itemPhoto)} alt="Preview" />
           ) : (
-            <UploadText style={{ color: '#666' }}>물품사진</UploadText>
+            <PreviewImage src={itemPhoto} alt="Preview" />
           )}
         </ImagePreviewSection>
       </TopSection>
