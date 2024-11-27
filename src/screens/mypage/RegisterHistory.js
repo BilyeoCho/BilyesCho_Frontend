@@ -1,33 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import axiosApi from '../../axios';
 
 const RegisterHistory = () => {
   const navigate = useNavigate();
+  const [registeredItems, setRegisteredItems] = useState([]);
 
-  const registeredItems = [
-    {
-      id: 1,
-      name: '자전거',
-      status: '제공가능',
-      price: '10,000원',
-      image: '/images/tent1.jpg'
-    },
-    {
-      id: 2,
-      name: '텐트',
-      status: '제공중',
-      price: '20,000원',
-      image: '/images/tent1.jpg'
-    },
-    {
-      id: 3,
-      name: '캠핑의자',
-      status: '제공완료',
-      price: '10,000원',
-      image: '/images/chair1.jpg'
-    },
-  ];
+  useEffect(() => {
+    const fetchRegisteredItems = async () => {
+      try {
+        const response = await axiosApi.get('/myitems');
+        const itemsWithDefaultStatus = response.data.map(item => ({
+          ...item,
+          status: 'AVAILABLE',
+        }));
+        setRegisteredItems(itemsWithDefaultStatus);
+      } catch (error) {
+        console.error('등록된 물품 조회 실패:', error);
+      }
+    };
+
+    fetchRegisteredItems();
+  }, []);
 
   return (
     <Content>
@@ -37,22 +32,22 @@ const RegisterHistory = () => {
 
       <ItemGrid>
         {registeredItems.map((item) => (
-          <ItemCard key={item.id}>
-            <ItemImage src={item.image} alt={item.name} />
+          <ItemCard key={item.itemId}>
+            <ItemImage src={item.itemPhoto} alt={item.itemName} />
             <ItemInfo>
               <ItemHeader>
-                <ItemName>{item.name}</ItemName>
+                <ItemName>{item.itemName}</ItemName>
                 <StatusBadge status={item.status}>{item.status}</StatusBadge>
               </ItemHeader>
               <ItemDetails>
                 <DetailRow>
                   <DetailLabel>대여 가격</DetailLabel>
-                  <DetailValue>{item.price}</DetailValue>
+                  <DetailValue>₩{item.price}</DetailValue>
                 </DetailRow>
               </ItemDetails>
-              {item.status === '제공가능' && (
+              {item.status === 'AVAILABLE' && (
                 <ButtonGroup>
-                  <EditButton onClick={() => navigate(`/mypage/edit/${item.id}`)}>
+                  <EditButton onClick={() => navigate(`/mypage/edit/${item.itemId}`)}>
                     수정
                   </EditButton>
                   <DeleteButton>삭제</DeleteButton>
@@ -128,30 +123,8 @@ const StatusBadge = styled.span`
   border-radius: 4px;
   font-size: 12px;
   font-weight: bold;
-  ${props => {
-    switch (props.status) {
-      case '제공가능':
-        return `
-          background-color: #e3fafc;
-          color: #0c8599;
-        `;
-      case '제공중':
-        return `
-          background-color: #e6f3e6;
-          color: #2f9e44;
-        `;
-      case '제공완료':
-        return `
-          background-color: #f8f9fa;
-          color: #666;
-        `;
-      default:
-        return `
-          background-color: #f8f9fa;
-          color: #666;
-        `;
-    }
-  }}
+  background-color: #e3fafc;
+  color: #0c8599;
 `;
 
 const ItemDetails = styled.div`
