@@ -58,6 +58,15 @@ const EditRegister = () => {
     formData.append('price', price);
     formData.append('status', itemStatus);
 
+    console.log('Submitting data:', {
+      itemName,
+      itemPhoto,
+      itemCategory,
+      itemDescription,
+      price,
+      status: itemStatus,
+    });
+
     try {
       const response = await axiosApi.put(`/update/${id}`, formData, {
         headers: {
