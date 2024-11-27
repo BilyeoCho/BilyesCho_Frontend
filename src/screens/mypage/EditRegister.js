@@ -58,46 +58,15 @@ const EditRegister = () => {
     formData.append('price', price);
     formData.append('status', itemStatus);
 
-    console.log('Submitting data:', {
-      itemName,
-      itemPhoto,
-      itemCategory,
-      itemDescription,
-      price,
-      status: itemStatus,
-    });
-
     try {
-      const response = await axiosApi.put(`/update/${id}`, formData, {
+      await axiosApi.put(`/update/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
-      if (response.status === 200) {
-        navigate('/mypage'); // 수정 완료 후 리다이렉트
-      }
+      navigate('/mypage'); // 수정 완료 후 리다이렉트
     } catch (error) {
-      if (error.response) {
-        switch (error.response.status) {
-          case 400:
-            alert('데이터가 유효하지 않습니다. 다시 확인해주세요.');
-            break;
-          case 403:
-            alert('권한이 없습니다.');
-            break;
-          case 404:
-            alert('물품을 찾을 수 없습니다.');
-            break;
-          case 500:
-            alert('서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
-            break;
-          default:
-            alert('알 수 없는 오류가 발생했습니다.');
-        }
-      } else {
-        alert('네트워크 오류가 발생했습니다.');
-      }
+      console.error('물품 수정 실패:', error);
     }
   };
 
@@ -415,4 +384,5 @@ const StatusButton = styled(CategoryButton)`
     }
   }}
 `;
+
 export default EditRegister;
