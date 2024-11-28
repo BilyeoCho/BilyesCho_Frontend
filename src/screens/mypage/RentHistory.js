@@ -24,6 +24,11 @@ const RentHistory = () => {
     fetchRentedItems();
   }, []);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 변환
+  };
+
   if (error) {
     return <div>{error}</div>;
   }
@@ -45,11 +50,11 @@ const RentHistory = () => {
               <ItemDetails>
                 <DetailRow>
                   <DetailLabel>대여일</DetailLabel>
-                  <DetailValue>{item.startTime}</DetailValue>
+                  <DetailValue>{formatDate(item.startTime)}</DetailValue>
                 </DetailRow>
                 <DetailRow>
-                  <DetailLabel>반납일</DetailLabel>
-                  <DetailValue>{item.endTime}</DetailValue>
+                  <DetailLabel>반납예정일</DetailLabel>
+                  <DetailValue>{formatDate(item.endTime)}</DetailValue>
                 </DetailRow>
               </ItemDetails>
               {item.rentStatus === 'RENTED' && (
