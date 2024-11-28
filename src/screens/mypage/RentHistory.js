@@ -1,29 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import axiosApi from '../../axios';
 
 const RentHistory = () => {
-  const rentedItems = [
-    {
-      id: 1,
-      name: '텐트',
-      status: '대여중',
-      price: '20,000원',
-      duration: '24시간',
-      rentDate: '2024-03-15',
-      returnDate: '2024-03-16',
-      image: '/images/tent1.jpg'
-    },
-    {
-      id: 2,
-      name: '캠핑의자',
-      status: '대여완료',
-      price: '10,000원',
-      duration: '12시간',
-      rentDate: '2024-03-10',
-      returnDate: '2024-03-11',
-      image: '/images/chair1.jpg'
-    },
-  ];
+  const [rentedItems, setRentedItems] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchRentedItems = async () => {
+      try {
+        const response = await axiosApi.get('/rents/borrowed', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        setRentedItems(response.data);
+      } catch (error) {
+        setError('물품을 가져오는 데 실패했습니다.');
+        console.error('API 요청 오류:', error.response.data);
+      }
+    };
+
+    fetchRentedItems();
+  }, []);
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <Content>
@@ -33,32 +36,23 @@ const RentHistory = () => {
 
       <ItemGrid>
         {rentedItems.map((item) => (
-          <ItemCard key={item.id}>
-            <ItemImage src={item.image} alt={item.name} />
+          <ItemCard key={item.rentId}>
             <ItemInfo>
               <ItemHeader>
-                <ItemName>{item.name}</ItemName>
-                <StatusBadge status={item.status}>{item.status}</StatusBadge>
+                <ItemName>{item.itemId}</ItemName>
+                <StatusBadge status={item.rentStatus}>{item.rentStatus}</StatusBadge>
               </ItemHeader>
               <ItemDetails>
                 <DetailRow>
-                  <DetailLabel>대여 가격</DetailLabel>
-                  <DetailValue>{item.price}</DetailValue>
-                </DetailRow>
-                <DetailRow>
-                  <DetailLabel>대여 기간</DetailLabel>
-                  <DetailValue>{item.duration}</DetailValue>
-                </DetailRow>
-                <DetailRow>
                   <DetailLabel>대여일</DetailLabel>
-                  <DetailValue>{item.rentDate}</DetailValue>
+                  <DetailValue>{item.startTime}</DetailValue>
                 </DetailRow>
                 <DetailRow>
                   <DetailLabel>반납일</DetailLabel>
-                  <DetailValue>{item.returnDate}</DetailValue>
+                  <DetailValue>{item.endTime}</DetailValue>
                 </DetailRow>
               </ItemDetails>
-              {item.status === '대여중' && (
+              {item.rentStatus === 'RENTED' && (
                 <ButtonGroup>
                   <ReturnButton>반납하기</ReturnButton>
                 </ButtonGroup>
@@ -105,12 +99,6 @@ const ItemCard = styled.div`
   }
 `;
 
-const ItemImage = styled.img`
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-`;
-
 const ItemInfo = styled.div`
   padding: 16px;
 `;
@@ -133,8 +121,8 @@ const StatusBadge = styled.span`
   border-radius: 4px;
   font-size: 12px;
   font-weight: bold;
-  background-color: ${props => props.status === '대여중' ? '#fff3bf' : '#f8f9fa'};
-  color: ${props => props.status === '대여중' ? '#f08c00' : '#666'};
+  background-color: ${props => props.status === 'RENTED' ? '#fff3bf' : '#f8f9fa'};
+  color: ${props => props.status === 'RENTED' ? '#f08c00' : '#666'};
 `;
 
 const ItemDetails = styled.div`
