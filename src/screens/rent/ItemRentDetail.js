@@ -53,9 +53,9 @@ const ItemRentDetail = () => {
         itemId: itemId,
         renterId: localStorage.getItem("userId"),
         startTime: new Date().toISOString(),
-        endTime: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+        endTime: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString(),
       };
-      const response = await axiosApi.post('/api/rents/request', body);
+      const response = await axiosApi.post('/rents/request', body);
       if (response.status === 200) {
         navigate('/itemrent');
       }
