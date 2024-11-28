@@ -21,6 +21,7 @@ function Login() {
       console.log("로그인 응답:", res); // 서버 응답 확인
       if (res.status === 200) {
         localStorage.setItem('accessToken', res.data.accessToken);
+        localStorage.setItem('userId', userId);
         navigate('/home');
       }
     } catch (error) {
