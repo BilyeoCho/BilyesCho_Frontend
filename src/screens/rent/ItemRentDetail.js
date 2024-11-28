@@ -53,8 +53,8 @@ const ItemRentDetail = () => {
       const body = {
         itemId: itemId,
         renterId: renterId,
-        startTime: new Date().toISOString(),
-        endTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000).toISOString(),
+        startTime: formatDate(new Date()),
+        endTime: formatDate(new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000)),
       };
 
       console.log("전송할 body:", body);
@@ -86,6 +86,15 @@ const ItemRentDetail = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}:00`;
   };
 
   return (
