@@ -50,6 +50,9 @@ const ItemRentDetail = () => {
   const handleConfirmRent = async () => {
     try {
       const renterId = localStorage.getItem("userId");
+      console.log("Renter ID:", renterId); // renterId 로그 추가
+      console.log("Item ID:", itemId); // itemId 로그 추가
+
       const body = {
         itemId: itemId,
         renterId: renterId,
@@ -67,13 +70,13 @@ const ItemRentDetail = () => {
       if (error.response) {
         switch (error.response.status) {
           case 400:
-            console.error('잘못된 요청: 물품 상태가 대여 가능하지 않음.');
+            console.error('400 잘못된 요청: 물품 상태가 대여 가능하지 않음.');
             break;
           case 404:
-            console.error('물품 또는 사용자를 찾을 수 없음.');
+            console.error('404 물품 또는 사용자를 찾을 수 없음.');
             break;
           case 500:
-            console.error('서버 오류가 발생했습니다.');
+            console.error('500 서버 오류가 발생했습니다.');
             break;
           default:
             console.error('알 수 없는 오류가 발생했습니다.');
