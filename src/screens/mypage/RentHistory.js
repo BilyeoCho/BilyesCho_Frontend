@@ -30,8 +30,10 @@ const RentHistory = () => {
   };
 
   const handleReturnItem = async (rentId) => {
+    const renterId = localStorage.getItem("renterId");
+
     try {
-      const response = await axiosApi.put(`/rents/return/${rentId}`, null, {
+      const response = await axiosApi.put(`/rents/return/${rentId}?renterId=${renterId}`, null, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
