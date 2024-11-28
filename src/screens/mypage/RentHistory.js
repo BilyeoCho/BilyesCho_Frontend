@@ -29,6 +29,52 @@ const RentHistory = () => {
     return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 변환
   };
 
+  const handleReturnItem = async (rentId) => {
+    try {
+      const response = await axiosApi.put(`/rents/return/${rentId}`, null, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      
+      if (response.status === 200) {
+        console.log('반납 성공:', response.data);
+        setRentedItems((prevItems) =>
+          prevItems.map((item) =>
+            item.rentId === rentId ? { ...item, rentStatus: 'AVAILABLE' } : item
+          )
+        );
+      }
+    } catch (error) {
+      if (error.response) {
+        switch (error.response.status) {
+          case 400:
+            console.error('잘못된 요청:', error.response.data);
+            alert('잘못된 요청입니다. 다시 시도해 주세요.');
+            break;
+          case 403:
+            console.error('해당 사용자는 대여하지 않은 물품을 반납:', error.response.data);
+            alert('이 물품은 대여하지 않았습니다.');
+            break;
+          case 404:
+            console.error('대여 기록을 찾을 수 없습니다:', error.response.data);
+            alert('대여 기록을 찾을 수 없습니다.');
+            break;
+          case 500:
+            console.error('서버 오류:', error.response.data);
+            alert('서버 오류가 발생했습니다. 나중에 다시 시도해 주세요.');
+            break;
+          default:
+            console.error('알 수 없는 오류:', error.response.data);
+            alert('알 수 없는 오류가 발생했습니다.');
+        }
+      } else {
+        console.error('네트워크 오류:', error);
+        alert('네트워크 오류가 발생했습니다. 인터넷 연결을 확인해 주세요.');
+      }
+    }
+  };
+
   if (error) {
     return <div>{error}</div>;
   }
@@ -59,7 +105,7 @@ const RentHistory = () => {
               </ItemDetails>
               {item.rentStatus === 'RENTED' && (
                 <ButtonGroup>
-                  <ReturnButton>반납하기</ReturnButton>
+                  <ReturnButton onClick={() => handleReturnItem(item.rentId)}>반납하기</ReturnButton>
                 </ButtonGroup>
               )}
             </ItemInfo>
