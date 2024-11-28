@@ -79,7 +79,7 @@ const EditRegister = () => {
       });
 
       if (response.status === 200) {
-        navigate('/mypage'); // 수정 완료 후 리다이��트
+        navigate('/mypage'); // 수정 완료 후 리다이렉트
       }
     } catch (error) {
       // 상태 코드에 따른 에러 로그 출력

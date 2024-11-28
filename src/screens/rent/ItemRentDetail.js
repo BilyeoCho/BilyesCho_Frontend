@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import TopBar from '../../components/TopBar';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axiosApi from '../../axios';
 
 const ItemRentDetail = () => {
   const { itemId } = useParams();
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemDetails, setItemDetails] = useState(null);
   const [error, setError] = useState(null);
@@ -42,8 +43,25 @@ const ItemRentDetail = () => {
     return <div>해당 물품을 찾을 수 없습니다.</div>;
   }
 
-  const handleRentButtonClick = () => {
+  const handleRentButtonClick = async () => {
     setIsModalOpen(true);
+  };
+
+  const handleConfirmRent = async () => {
+    try {
+      const body = {
+        itemId: itemId,
+        renterId: localStorage.getItem("userId"),
+        startTime: new Date().toISOString(),
+        endTime: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      };
+      const response = await axiosApi.post('/api/rents/request', body);
+      if (response.status === 200) {
+        navigate('/itemrent');
+      }
+    } catch (error) {
+      console.error('대여 요청 실패:', error);
+    }
   };
 
   const handleCloseModal = () => {
@@ -88,6 +106,7 @@ const ItemRentDetail = () => {
               </ChatInfo>
             </ChatLink>
             <CloseButton onClick={handleCloseModal}>닫기</CloseButton>
+            <RentButton onClick={handleConfirmRent}>대여 요청 확인</RentButton>
           </ModalContainer>
         </ModalOverlay>
       )}
