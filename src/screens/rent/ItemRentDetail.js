@@ -13,6 +13,7 @@ const ItemRentDetail = () => {
 
   useEffect(() => {
     const fetchItemDetails = async () => {
+      console.log("현재 itemId:", itemId);
       try {
         const response = await axiosApi.get(`/item/${itemId}`);
         setItemDetails(response.data);
@@ -50,8 +51,8 @@ const ItemRentDetail = () => {
   const handleConfirmRent = async () => {
     try {
       const renterId = localStorage.getItem("userId");
-      console.log("Renter ID:", renterId); // renterId 로그 추가
-      console.log("Item ID:", itemId); // itemId 로그 추가
+      console.log("Renter ID:", renterId);
+      console.log("Item ID:", itemId);
 
       if (!renterId) {
         console.error("유효하지 않은 renterId입니다.");
