@@ -53,14 +53,30 @@ const ItemRentDetail = () => {
         itemId: itemId,
         renterId: localStorage.getItem("userId"),
         startTime: new Date().toISOString(),
-        endTime: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString(),
+        endTime: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000).toISOString(),
       };
       const response = await axiosApi.post('/rents/request', body);
       if (response.status === 200) {
         navigate('/itemrent');
       }
     } catch (error) {
-      console.error('대여 요청 실패:', error);
+      if (error.response) {
+        switch (error.response.status) {
+          case 400:
+            console.error('잘못된 요청: 물품 상태가 대여 가능하지 않음.');
+            break;
+          case 404:
+            console.error('물품 또는 사용자를 찾을 수 없음.');
+            break;
+          case 500:
+            console.error('서버 오류가 발생했습니다.');
+            break;
+          default:
+            console.error('알 수 없는 오류가 발생했습니다.');
+        }
+      } else {
+        console.error('네트워크 오류가 발생했습니다.');
+      }
     }
   };
 
