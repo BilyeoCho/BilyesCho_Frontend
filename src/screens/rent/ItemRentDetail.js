@@ -49,11 +49,12 @@ const ItemRentDetail = () => {
 
   const handleConfirmRent = async () => {
     try {
+      const userId = localStorage.getItem("userId");
       const body = {
         itemId: itemId,
-        renterId: localStorage.getItem("userId"),
+        renterId: userId,
         startTime: new Date().toISOString(),
-        endTime: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000).toISOString(),
+        endTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000).toISOString(),
       };
       const response = await axiosApi.post('/rents/request', body);
       if (response.status === 200) {
