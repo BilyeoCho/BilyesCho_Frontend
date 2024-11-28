@@ -53,6 +53,11 @@ const ItemRentDetail = () => {
       console.log("Renter ID:", renterId); // renterId 로그 추가
       console.log("Item ID:", itemId); // itemId 로그 추가
 
+      if (!renterId) {
+        console.error("유효하지 않은 renterId입니다.");
+        return;
+      }
+
       const body = {
         itemId: itemId,
         renterId: renterId,
