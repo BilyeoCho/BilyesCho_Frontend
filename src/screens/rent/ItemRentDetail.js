@@ -66,7 +66,7 @@ const ItemRentDetail = () => {
         endTime: formatDate(new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000)),
       };
 
-      console.log("전송할 body:", body);
+      console.log("전송할 body:", JSON.stringify(body, null, 2));
 
       const response = await axiosApi.post('/rents/request', body);
       if (response.status === 200) {
