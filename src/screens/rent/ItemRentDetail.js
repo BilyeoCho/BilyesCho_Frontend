@@ -10,6 +10,8 @@ const ItemRentDetail = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemDetails, setItemDetails] = useState(null);
   const [error, setError] = useState(null);
+  const CloseButton = styled(Button)``;
+  const RentButton = styled(Button)``;
 
   useEffect(() => {
     const fetchItemDetails = async () => {
@@ -145,8 +147,10 @@ const ItemRentDetail = () => {
                 <ChatURL href="https://www.figma.com/">https://www.figma.com/</ChatURL>
               </ChatInfo>
             </ChatLink>
-            <CloseButton onClick={handleCloseModal}>닫기</CloseButton>
-            <RentButton onClick={handleConfirmRent}>대여 요청 확인</RentButton>
+            <ButtonContainer>
+              <CloseButton onClick={handleCloseModal}>닫기</CloseButton>
+              <RentButton onClick={handleConfirmRent}>대여 요청 확인</RentButton>
+            </ButtonContainer>
           </ModalContainer>
         </ModalOverlay>
       )}
@@ -214,17 +218,6 @@ const ItemPrice = styled.div`
   font-size: 20px;
   font-weight: 500;
   margin: 8px 0 24px;
-`;
-
-const RentButton = styled.button`
-  width: 100%;
-  padding: 16px;
-  background-color: #000;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  cursor: pointer;
 `;
 
 const ItemDetails = styled.div`
@@ -331,8 +324,14 @@ const ChatURL = styled.a`
   font-size: 14px;
 `;
 
-const CloseButton = styled.button`
-  width: 100%;
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+`;
+
+const Button = styled.button`
+  flex: 1;
   padding: 12px;
   background-color: #000;
   color: white;
@@ -340,6 +339,11 @@ const CloseButton = styled.button`
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #333;
+  }
 `;
 
 export default ItemRentDetail;
