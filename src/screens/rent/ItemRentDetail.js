@@ -60,7 +60,7 @@ const ItemRentDetail = () => {
       }
 
       const body = {
-        itemId: String(itemId),
+        itemId: String(itemId), 
         renterId: String(renterId),
         startTime: formatDate(new Date()),
         endTime: formatDate(new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000)),
