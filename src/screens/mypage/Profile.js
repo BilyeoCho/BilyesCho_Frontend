@@ -15,15 +15,13 @@ const Profile = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result);
-        setFormData(prev => ({
-          ...prev,
-          userPhoto: file
-        }));
-      };
-      reader.readAsDataURL(file);
+      const imageUrl = URL.createObjectURL(file);
+      setProfileImage(imageUrl);
+      
+      setFormData(prev => ({
+        ...prev,
+        userPhoto: file
+      }));
     }
   };
 
