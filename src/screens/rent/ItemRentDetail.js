@@ -74,6 +74,7 @@ const ItemRentDetail = () => {
         navigate('/itemrent');
       }
     } catch (error) {
+      console.error("대여 요청 중 오류 발생:", error);
       if (error.response) {
         switch (error.response.status) {
           case 400:
