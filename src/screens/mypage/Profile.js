@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axiosApi from '../../axios';
 
 const Profile = () => {
   const [profileImage, setProfileImage] = useState('/images/default-profile.jpg');
-  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-  const [contact, setContact] = useState({
-    kakaoUrl: ''
+  const [formData, setFormData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    userName: '',
+    userPhoto: null,
+    openKakaoLink: ''
   });
 
   const handleImageChange = (e) => {
@@ -15,160 +18,141 @@ const Profile = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfileImage(reader.result);
+        setFormData(prev => ({
+          ...prev,
+          userPhoto: file
+        }));
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handlePasswordChange = (e) => {
-    e.preventDefault();
-    // 비밀번호 변경 로직 구현
-    setIsPasswordModalOpen(false);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
-  const handleContactUpdate = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // 연락처 정보 업데이트 로직 구현
-    setIsContactModalOpen(false);
+    try {
+      const response = await axiosApi.put('/users/update', formData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.status === 200) {
+        alert('프로필이 성공적으로 업데이트되었습니다.');
+      }
+    } catch (error) {
+      if (error.response) {
+        switch (error.response.status) {
+          case 400:
+            alert('잘못된 요청입니다.');
+            break;
+          case 401:
+            alert('현재 비밀번호가 일치하지 않습니다.');
+            break;
+          default:
+            alert('프로필 업데이트 중 오류가 발생했습니다.');
+        }
+      }
+    }
   };
 
   return (
-    <Content>
-      <ContentHeader>
-        <h2>프로필</h2>
-      </ContentHeader>
+    <Container>
+      <Title>프로필 설정</Title>
+      
+      <ProfileForm onSubmit={handleSubmit}>
+        <ImageSection>
+          <ProfileImage src={profileImage} alt="프로필 이미지" />
+          <ImageUploadLabel htmlFor="profile-upload">
+            프로필 사진 변경
+            <input
+              id="profile-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              style={{ display: 'none' }}
+            />
+          </ImageUploadLabel>
+        </ImageSection>
 
-      <ProfileContainer>
-        <ProfileSection>
-          <ProfileImageContainer>
-            <ProfileImage src={profileImage} alt="프로필 이미지" />
-            <ImageUploadLabel htmlFor="profile-upload">
-              사진 변경
-              <input
-                id="profile-upload"
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                style={{ display: 'none' }}
-              />
-            </ImageUploadLabel>
-          </ProfileImageContainer>
-        </ProfileSection>
+        <FormSection>
+          <InputGroup>
+            <Label>현재 비밀번호</Label>
+            <Input
+              type="password"
+              name="currentPassword"
+              value={formData.currentPassword}
+              onChange={handleInputChange}
+              placeholder="현재 비밀번호를 입력하세요"
+            />
+          </InputGroup>
 
-        <SettingsSection>
-          <SettingItem>
-            <SettingTitle>비밀번호 변경</SettingTitle>
-            <SettingButton onClick={() => setIsPasswordModalOpen(true)}>
-              변경하기
-            </SettingButton>
-          </SettingItem>
+          <InputGroup>
+            <Label>새 비밀번호</Label>
+            <Input
+              type="password"
+              name="newPassword"
+              value={formData.newPassword}
+              onChange={handleInputChange}
+              placeholder="새 비밀번호를 입력하세요"
+            />
+          </InputGroup>
 
-          <SettingItem>
-            <SettingTitle>오픈채팅 URL</SettingTitle>
-            <SettingButton onClick={() => setIsContactModalOpen(true)}>
-              {contact.kakaoUrl ? '수정하기' : '등록하기'}
-            </SettingButton>
-          </SettingItem>
+          <InputGroup>
+            <Label>오픈채팅 URL</Label>
+            <Input
+              type="url"
+              name="openKakaoLink"
+              value={formData.openKakaoLink}
+              onChange={handleInputChange}
+              placeholder="https://open.kakao.com/..."
+            />
+            <Description>물품 대여 요청 시 표시될 오픈채팅방 URL을 입력해주세요.</Description>
+          </InputGroup>
 
-          <DeleteAccountButton>회원탈퇴</DeleteAccountButton>
-        </SettingsSection>
-      </ProfileContainer>
-
-      {/* 비밀번호 변경 모달 */}
-      {isPasswordModalOpen && (
-        <ModalOverlay>
-          <ModalContainer>
-            <ModalTitle>비밀번호 변경</ModalTitle>
-            <ModalForm onSubmit={handlePasswordChange}>
-              <InputGroup>
-                <Label>현재 비밀번호</Label>
-                <Input type="password" required />
-              </InputGroup>
-              <InputGroup>
-                <Label>새 비밀번호</Label>
-                <Input type="password" required />
-              </InputGroup>
-              <InputGroup>
-                <Label>새 비밀번호 확인</Label>
-                <Input type="password" required />
-              </InputGroup>
-              <ButtonGroup>
-                <CancelButton type="button" onClick={() => setIsPasswordModalOpen(false)}>
-                  취소
-                </CancelButton>
-                <ConfirmButton type="submit">변경하기</ConfirmButton>
-              </ButtonGroup>
-            </ModalForm>
-          </ModalContainer>
-        </ModalOverlay>
-      )}
-
-      {/* 연락처 설정 모달 */}
-      {isContactModalOpen && (
-        <ModalOverlay>
-          <ModalContainer>
-            <ModalTitle>오픈채팅 URL 설정</ModalTitle>
-            <ModalForm onSubmit={handleContactUpdate}>
-              <InputGroup>
-                <Label>오픈 카카오톡 방🙏</Label>
-                <Input 
-                  type="url" 
-                  value={contact.kakaoUrl}
-                  onChange={(e) => setContact({ kakaoUrl: e.target.value })}
-                  placeholder="https://open.kakao.com/..."
-                  required 
-                />
-                <Description>물품 대여 요청 시 표시될 오픈채팅방 URL을 입력해주세요.</Description>
-              </InputGroup>
-              <ButtonGroup>
-                <CancelButton type="button" onClick={() => setIsContactModalOpen(false)}>
-                  취소
-                </CancelButton>
-                <ConfirmButton type="submit">저장하기</ConfirmButton>
-              </ButtonGroup>
-            </ModalForm>
-          </ModalContainer>
-        </ModalOverlay>
-      )}
-    </Content>
+          <UpdateButton type="submit">프로필 업데이트</UpdateButton>
+          <DeleteAccountButton type="button">회원탈퇴</DeleteAccountButton>
+        </FormSection>
+      </ProfileForm>
+    </Container>
   );
 };
 
-const Content = styled.div`
-  flex: 1;
-  padding: 20px;
-`;
-
-const ContentHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-
-  h2 {
-    font-size: 24px;
-    font-weight: bold;
-  }
-`;
-
-const ProfileContainer = styled.div`
+const Container = styled.div`
   max-width: 600px;
   margin: 0 auto;
+  padding: 40px 20px;
 `;
 
-const ProfileSection = styled.div`
+const Title = styled.h1`
+  font-size: 24px;
+  font-weight: bold;
   margin-bottom: 40px;
   text-align: center;
 `;
 
-const ProfileImageContainer = styled.div`
-  position: relative;
-  display: inline-block;
+const ProfileForm = styled.form`
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+`;
+
+const ImageSection = styled.div`
+  text-align: center;
+  margin-bottom: 32px;
 `;
 
 const ProfileImage = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 16px;
@@ -177,119 +161,38 @@ const ProfileImage = styled.img`
 const ImageUploadLabel = styled.label`
   display: inline-block;
   padding: 8px 16px;
-  background-color: #000;
-  color: #fff;
-  border-radius: 6px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s;
 
   &:hover {
-    background-color: #333;
+    background-color: #e9ecef;
   }
 `;
 
-const SettingsSection = styled.div`
-  background-color: #fff;
-  border-radius: 12px;
-  padding: 24px;
-  border: 1px solid #eee;
-`;
-
-const SettingItem = styled.div`
+const FormSection = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 0;
-  border-bottom: 1px solid #eee;
-
-  &:last-child {
-    border-bottom: none;
-  }
-`;
-
-const SettingTitle = styled.span`
-  font-size: 16px;
-  font-weight: 500;
-`;
-
-const SettingButton = styled.button`
-  padding: 8px 16px;
-  border: 1px solid #000;
-  background-color: #fff;
-  color: #000;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    background-color: #000;
-    color: #fff;
-  }
-`;
-
-const DeleteAccountButton = styled.button`
-  width: 100%;
-  padding: 12px;
-  margin-top: 24px;
-  border: 1px solid #dc3545;
-  background-color: #fff;
-  color: #dc3545;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    background-color: #dc3545;
-    color: #fff;
-  }
-`;
-
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-`;
-
-const ModalContainer = styled.div`
-  background: white;
-  padding: 24px;
-  border-radius: 16px;
-  width: 420px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-`;
-
-const ModalForm = styled.form`
-  padding: 0 24px;
-`;
-
-const ModalTitle = styled.h3`
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
+  flex-direction: column;
+  gap: 24px;
 `;
 
 const InputGroup = styled.div`
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
 const Label = styled.label`
-  display: block;
-  margin-bottom: 8px;
   font-weight: 500;
+  color: #495057;
 `;
 
 const Input = styled.input`
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
   font-size: 14px;
 
   &:focus {
@@ -298,47 +201,43 @@ const Input = styled.input`
   }
 `;
 
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: 8px;
-  margin-top: 20px;
-`;
-
-const Button = styled.button`
-  flex: 1;
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-`;
-
-const CancelButton = styled(Button)`
-  background: white;
-  border: 1px solid #ddd;
-  color: #666;
-
-  &:hover {
-    background: #f5f5f5;
-  }
-`;
-
-const ConfirmButton = styled(Button)`
-  background: #000;
-  border: none;
-  color: white;
-
-  &:hover {
-    background: #333;
-  }
-`;
-
 const Description = styled.p`
   font-size: 12px;
-  color: #666;
-  margin-top: 8px;
-  margin-bottom: 0;
+  color: #868e96;
+  margin-top: 4px;
+`;
+
+const UpdateButton = styled.button`
+  width: 100%;
+  padding: 12px;
+  background-color: #000;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #333;
+  }
+`;
+
+const DeleteAccountButton = styled.button`
+  width: 100%;
+  padding: 12px;
+  background-color: white;
+  color: #dc3545;
+  border: 1px solid #dc3545;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #dc3545;
+    color: white;
+  }
 `;
 
 export default Profile;
