@@ -7,8 +7,10 @@ const axiosApi = axios.create({
 
 const handleRequestInterceptor = (config) => {
   const token = localStorage.getItem("accessToken");
+  const userId = localStorage.getItem("userId");
   if (token && !['/login', '/join'].includes(config.url)) {
     config.headers.Authorization = `Bearer ${token}`;
+    config.headers['X-User-Id'] = userId;
     console.log("요청에 추가된 토큰:", token); // 추가된 토큰 로그 확인
   } else {
     console.error("토큰이 없거나 유효하지 않습니다.");

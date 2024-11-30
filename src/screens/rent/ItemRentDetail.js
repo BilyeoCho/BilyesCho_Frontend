@@ -51,7 +51,7 @@ const ItemRentDetail = () => {
   const handleConfirmRent = async () => {
     try {
       const renterId = localStorage.getItem("userId");
-      console.log("Renter ID:", renterId);
+      console.log("Renter ID from localStorage:", renterId);
       console.log("Item ID:", itemId);
 
       if (!renterId) {
