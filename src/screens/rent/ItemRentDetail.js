@@ -67,6 +67,7 @@ const ItemRentDetail = () => {
       };
 
       console.log("전송할 body:", JSON.stringify(body, null, 2));
+      console.log("헤더:", axiosApi.defaults.headers);
 
       const response = await axiosApi.post('/rents/request', body);
       if (response.status === 200) {
