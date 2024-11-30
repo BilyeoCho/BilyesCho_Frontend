@@ -10,8 +10,6 @@ const ItemRentDetail = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemDetails, setItemDetails] = useState(null);
   const [error, setError] = useState(null);
-  const CloseButton = styled(Button)``;
-  const RentButton = styled(Button)``;
 
   useEffect(() => {
     const fetchItemDetails = async () => {
@@ -333,13 +331,26 @@ const ButtonContainer = styled.div`
 const Button = styled.button`
   flex: 1;
   padding: 12px;
-  background-color: #000;
-  color: white;
-  border: none;
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
+`;
+
+const CloseButton = styled(Button)`
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`;
+
+const RentButton = styled(Button)`
+  background-color: black;
+  color: white;
+  border: none;
 
   &:hover {
     background-color: #333;
