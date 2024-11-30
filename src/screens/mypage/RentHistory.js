@@ -30,14 +30,15 @@ const RentHistory = () => {
   };
 
   const handleReturnItem = async (rentId) => {
-    const renterId = localStorage.getItem("renterId");
-
     try {
-      const response = await axiosApi.put(`/rents/return/${rentId}?renterId=${renterId}`, null, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
+      const renterId = localStorage.getItem("userId");
+      
+      if (!renterId) {
+        console.error("사용자 ID를 찾을 수 없습니다.");
+        return;
+      }
+
+      const response = await axiosApi.put(`/rents/return/${rentId}?renterId=${renterId}`);
       
       if (response.status === 200) {
         console.log('반납 성공:', response.data);
@@ -46,6 +47,7 @@ const RentHistory = () => {
             item.rentId === rentId ? { ...item, rentStatus: 'AVAILABLE' } : item
           )
         );
+        alert('물품이 성공적으로 반납되었습니다.');
       }
     } catch (error) {
       if (error.response) {
@@ -93,7 +95,9 @@ const RentHistory = () => {
             <ItemInfo>
               <ItemHeader>
                 <ItemName>{item.itemId}</ItemName>
-                <StatusBadge status={item.rentStatus}>{item.rentStatus}</StatusBadge>
+                <StatusBadge status={item.rentStatus}>
+                  {item.rentStatus === 'RENTED' ? '대여중' : '반납완료'}
+                </StatusBadge>
               </ItemHeader>
               <ItemDetails>
                 <DetailRow>
@@ -107,7 +111,9 @@ const RentHistory = () => {
               </ItemDetails>
               {item.rentStatus === 'RENTED' && (
                 <ButtonGroup>
-                  <ReturnButton onClick={() => handleReturnItem(item.rentId)}>반납하기</ReturnButton>
+                  <ReturnButton onClick={() => handleReturnItem(item.rentId)}>
+                    반납하기
+                  </ReturnButton>
                 </ButtonGroup>
               )}
             </ItemInfo>
