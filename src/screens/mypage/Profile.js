@@ -42,7 +42,7 @@ const Profile = () => {
         }
       });
       
-      if (response.status === 200) {
+      if (response.status === 200) { 
         alert('프로필이 성공적으로 업데이트되었습니다.');
       }
     } catch (error) {

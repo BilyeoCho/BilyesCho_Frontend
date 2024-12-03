@@ -55,22 +55,23 @@ const ItemRentDetail = () => {
       console.log("Item ID:", itemId);
 
       if (!renterId) {
-        console.error("유효하지 않은 renterId입니다.");
+        alert("로그인이 필요한 서비스입니다.");
         return;
       }
 
       const body = {
-        itemId: String(itemId), 
-        renterId: String(renterId),
-        startTime: formatDate(new Date()),
-        endTime: formatDate(new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000)),
+        itemId: String(itemId),
+        renterId: String(renterId)
       };
 
       console.log("전송할 body:", JSON.stringify(body, null, 2));
       console.log("헤더:", axiosApi.defaults.headers);
 
       const response = await axiosApi.post('/rents/request', body);
+      
       if (response.status === 200) {
+        alert("대여 요청이 완료되었습니다.");
+        setIsModalOpen(false);
         navigate('/itemrent');
       }
     } catch (error) {
@@ -78,34 +79,22 @@ const ItemRentDetail = () => {
       if (error.response) {
         switch (error.response.status) {
           case 400:
-            console.error('400 잘못된 요청: 물품 상태가 대여 가능하지 않음.');
+            alert('400 : 잘못된 요청입니다.');
             break;
           case 404:
-            console.error('404 물품 또는 사용자를 찾을 수 없음.');
-            break;
-          case 500:
-            console.error('500 서버 오류가 발생했습니다.');
+            alert('404 : 물품 또는 사용자를 찾을 수 없습니다.');
             break;
           default:
-            console.error('알 수 없는 오류가 발생했습니다.');
+            alert('서버 오류가 발생했습니다. 나중에 다시 시도해 주세요.');
         }
       } else {
-        console.error('네트워크 오류가 발생했습니다.');
+        alert('네트워크 오류가 발생했습니다.');
       }
     }
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-  };
-
-  const formatDate = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    return `${year}-${month}-${day}T${hours}:${minutes}:00`;
   };
 
   return (
@@ -147,7 +136,7 @@ const ItemRentDetail = () => {
             </ChatLink>
             <ButtonContainer>
               <CloseButton onClick={handleCloseModal}>닫기</CloseButton>
-              <RentButton onClick={handleConfirmRent}>대여 요청 확인</RentButton>
+              <RentButton onClick={handleConfirmRent}>대여 요청</RentButton>
             </ButtonContainer>
           </ModalContainer>
         </ModalOverlay>
