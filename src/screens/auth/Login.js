@@ -20,9 +20,9 @@ function Login() {
       });
       console.log("로그인 응답:", res.data); // 서버에서 어떤 데이터가 오는지 확인
       if (res.status === 200) {
-        console.log("저장할 userId:", res.data.userId); // undefined인지 확인
+        console.log("저장할 userId:", userId); // undefined인지 확인
         localStorage.setItem('accessToken', res.data.accessToken);
-        localStorage.setItem('userId', res.data.userId); // 서버에서 반환하는 실제 사용자 ID 저장
+        localStorage.setItem('userId', userId); // 서버에서 반환하는 실제 사용자 ID 저장
         navigate('/home');
       }
     } catch (error) {
