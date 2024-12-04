@@ -71,10 +71,10 @@ const ReviewMain = () => {
         
         // 필요한 정보만 추출하여 새로운 배열 생성
         const combinedItems = itemResponses.map(response => ({
-          id: response.data.id,
-          title: response.data.itemName,
+          itemId: response.data.itemId,
+          itemName: response.data.itemName,
           price: `₩${response.data.price.toLocaleString()}`,
-          photo: response.data.itemPhoto
+          itemPhoto: response.data.itemPhoto
         }));
         
         console.log('최종 가공된 데이터:', combinedItems); // 최종 데이터 확인용 로그 추가
