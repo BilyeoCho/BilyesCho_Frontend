@@ -105,6 +105,7 @@ const Main = () => {
     <MainContainer>
       {/* 배너 섹션 */}
       <BannerSection>
+        <SectionTitle>인기 등록 물품</SectionTitle>
         <BannerWrapper ref={bannerRef}>
           {bannerItems.length > 0 && (
             <BannerImage
