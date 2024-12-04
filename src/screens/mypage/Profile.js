@@ -86,8 +86,22 @@ const Profile = () => {
         navigate('/'); // 로그인 화면으로 리다이렉트
       }
     } catch (error) {
-      console.error('회원 탈퇴 실패:', error);
-      alert('회원 탈퇴 중 오류가 발생했습니다.');
+      if (error.response) {
+        switch (error.response.status) {
+          case 401:
+            alert('401 인증되지 않은 사용자입니다. 다시 로그인 해주세요.');
+            break;
+          case 500:
+            alert('500 서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+            break;
+          default:
+            console.error('회원 탈퇴 실패:', error);
+            alert('회원 탈퇴 중 오류가 발생했습니다.');
+        }
+      } else {
+        console.error('회원 탈퇴 실패:', error);
+        alert('네트워크 오류가 발생했습니다.');
+      }
     }
   };
 
