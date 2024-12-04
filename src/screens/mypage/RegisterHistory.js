@@ -27,11 +27,26 @@ const RegisterHistory = () => {
   };
 
   const handleStatusChange = async (itemId, currentStatus) => {
+    const startTime = new Date();
+    const endTime = new Date(startTime);
+    endTime.setDate(endTime.getDate() + 2);
+
+    const formatDate = (date) => {
+      return date.toISOString().replace('Z', '').replace(/\.\d{3}/, '');
+    };
+
+    const requestBody = {
+      itemId: String(itemId),
+      renterId: "2",
+      startTime: formatDate(startTime),
+      endTime: formatDate(endTime)
+    };
+    
+    console.log('상태 변경 요청 데이터:', JSON.stringify(requestBody, null, 2));
+    
     try {
-      const response = await axiosApi.post('/rents/rentstatus', {
-        itemId: String(itemId),
-        status: currentStatus === 'AVAILABLE' ? 'RENTED' : 'AVAILABLE'
-      });
+      const response = await axiosApi.post('/rents/rentstatus', requestBody);
+      console.log('상태 변경 응답:', response.data);
 
       if (response.status === 200) {
         setRegisteredItems(prevItems =>
