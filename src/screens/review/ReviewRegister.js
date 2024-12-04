@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import TopBar from '../../components/TopBar';
@@ -12,6 +12,19 @@ const ReviewRegister = () => {
   const [rate, setRate] = useState('5');
   const [reviewCategory, setReviewCategory] = useState('');
   const [content, setContent] = useState('');
+  const [reviewPhoto, setReviewPhoto] = useState(null);
+
+  useEffect(() => {
+    if (location.state?.itemPhoto) {
+      fetch(location.state.itemPhoto)
+        .then(res => res.blob())
+        .then(blob => {
+          const file = new File([blob], "reviewPhoto.png", { type: "image/png" });
+          setReviewPhoto(file);
+        })
+        .catch(error => console.error('이미지 변환 실패:', error));
+    }
+  }, [location.state?.itemPhoto]);
 
   const handleCategoryClick = (category) => {
     setReviewCategory(category);
@@ -28,8 +41,8 @@ const ReviewRegister = () => {
       formData.append('userId', userId);
       formData.append('itemId', itemId);
       
-      if (location.state?.itemPhoto) {
-        formData.append('reviewPhoto', location.state.itemPhoto);
+      if (reviewPhoto) {
+        formData.append('reviewPhoto', reviewPhoto);
       }
 
       for (let pair of formData.entries()) {
