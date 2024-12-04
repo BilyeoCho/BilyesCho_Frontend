@@ -21,15 +21,6 @@ const Main = () => {
     { id: 3, title: "인기 등록 물품 3", image: "banner3.jpg" },
   ];
 
-  const categories = [
-    { id: 1, name: "Bicycle", icon: "🚲", category: "Sports & Outdoors" },
-    { id: 2, name: "Tent", icon: "⛺", category: "Camping Equipment" },
-    { id: 3, name: "Kayak", icon: "🛶", category: "Water Sports Gear" },
-    { id: 4, name: "Electric Guitar", icon: "🎸", category: "Musical Instruments" },
-    { id: 5, name: "Camera", icon: "📸", category: "Photography Equipment" },
-    { id: 6, name: "Telescope", icon: "🔭", category: "Science & Discovery" },
-  ];
-
   const rentalItems = [
     { id: 1, title: "자전거", price: "10,000", duration: "24시간" },
     { id: 2, title: "텐트", price: "20,000", duration: "24시간" },
@@ -140,17 +131,6 @@ const Main = () => {
         </BannerWrapper>
       </BannerSection>
 
-      {/* 카테고리 섹션 */}
-      <CategorySection>
-        {categories.map(category => (
-          <CategoryItem key={category.id}>
-            <CategoryIcon>{category.icon}</CategoryIcon>
-            <CategoryName>{category.name}</CategoryName>
-            <CategoryDesc>{category.category}</CategoryDesc>
-          </CategoryItem>
-        ))}
-      </CategorySection>
-
       {/* 최신 대여 목록 섹션 */}
       <RentalSection>
         <SectionTitle>최신 등록 물품</SectionTitle>
@@ -247,36 +227,6 @@ const Indicator = styled.div`
   border-radius: 50%;
   background-color: ${props => props.active ? '#000' : '#ccc'};
   cursor: pointer;
-`;
-
-const CategorySection = styled.div`
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 20px;
-  margin-bottom: 40px;
-`;
-
-const CategoryItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  cursor: pointer;
-`;
-
-const CategoryIcon = styled.div`
-  font-size: 2rem;
-  margin-bottom: 10px;
-`;
-
-const CategoryName = styled.div`
-  font-weight: bold;
-  margin-bottom: 5px;
-`;
-
-const CategoryDesc = styled.div`
-  font-size: 0.8rem;
-  color: #666;
 `;
 
 const RentalSection = styled.div`
