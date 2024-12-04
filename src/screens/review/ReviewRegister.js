@@ -15,9 +15,21 @@ const ReviewRegister = () => {
   const [reviewPhoto, setReviewPhoto] = useState(null);
 
   useEffect(() => {
-    if (location.state?.itemPhoto) {
-      setReviewPhoto(location.state.itemPhoto);
-    }
+    const convertUrlToFile = async () => {
+      if (location.state?.itemPhoto) {
+        try {
+          const response = await fetch(location.state.itemPhoto);
+          const blob = await response.blob();
+          const fileName = location.state.itemPhoto.split('/').pop(); // URL에서 파일명 추출
+          const file = new File([blob], fileName, { type: blob.type });
+          setReviewPhoto(file);
+        } catch (error) {
+          console.error('이미지 URL을 File로 변환 실패:', error);
+        }
+      }
+    };
+
+    convertUrlToFile();
   }, [location.state?.itemPhoto]);
 
   const handleCategoryClick = (category) => {
