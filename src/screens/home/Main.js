@@ -13,24 +13,35 @@ const Main = () => {
   const [startX, setStartX] = useState(0);
   const [currentTranslate, setCurrentTranslate] = useState(0);
   const [latestItems, setLatestItems] = useState([]);
-
-  // 임시 데이터
-  const bannerItems = [
-    { id: 1, title: "인기 등록 물품 1", image: "banner1.jpg" },
-    { id: 2, title: "인기 등록 물품 2", image: "banner2.jpg" },
-    { id: 3, title: "인기 등록 물품 3", image: "banner3.jpg" },
-  ];
-
-  const rentalItems = [
-    { id: 1, title: "자전거", price: "10,000", duration: "24시간" },
-    { id: 2, title: "텐트", price: "20,000", duration: "24시간" },
-    { id: 3, title: "평일의자", price: "5,000", duration: "24시간" },
-    { id: 4, title: "가스토치", price: "3,000", duration: "24시간" },
-    // ... 더 많은 아이템들
-  ];
+  const [bannerItems, setBannerItems] = useState([]);
 
   const itemsPerPage = 4;
-  const totalPages = Math.ceil(rentalItems.length / itemsPerPage);
+  const totalPages = Math.ceil(latestItems.length / itemsPerPage);
+
+  // 인기 물품 조회 함수
+  const fetchTopItems = async () => {
+    try {
+      const response = await axiosApi.get('/item/top-3');
+      setBannerItems(response.data);
+    } catch (error) {
+      console.error("인기 물품 조회 실패:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTopItems();
+    fetchLatestItems();
+  }, []);
+
+  // 최신 물품 조회 함수
+  const fetchLatestItems = async () => {
+    try {
+      const response = await axiosApi.get('/latest');
+      setLatestItems(response.data);
+    } catch (error) {
+      console.error("최신 물품 조회 실패:", error);
+    }
+  };
 
   // 드래그 시작 시
   const handleDragStart = (e) => {
@@ -72,20 +83,6 @@ const Main = () => {
     navigate(`/itemrent/${id}`);  // RentalCard 클릭 시 ItemRentDetail로 이동
   };
 
-  // 최신 물품 조회 함수
-  const fetchLatestItems = async () => {
-    try {
-      const response = await axiosApi.get('/latest');
-      setLatestItems(response.data); // 응답 데이터로 상태 업데이트
-    } catch (error) {
-      console.error("최신 물품 조회 실패:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchLatestItems(); // 컴포넌트 마운트 시 최신 물품 조회
-  }, []);
-
   useEffect(() => {
     const bannerElement = bannerRef.current;
 
@@ -109,14 +106,17 @@ const Main = () => {
       {/* 배너 섹션 */}
       <BannerSection>
         <BannerWrapper ref={bannerRef}>
-          <BannerImage
-            style={{
-              transform: `translateX(${currentTranslate}px)`,
-            }}
-            onClick={() => handleBannerClick(bannerItems[currentBanner].id)} // 배너 클릭 시 이동
-          >
-            {bannerItems[currentBanner].title}
-          </BannerImage>
+          {bannerItems.length > 0 && (
+            <BannerImage
+              style={{
+                backgroundImage: `url(${bannerItems[currentBanner].itemPhoto})`,
+                transform: `translateX(${currentTranslate}px)`,
+              }}
+              onClick={() => handleBannerClick(bannerItems[currentBanner].itemId)}
+            >
+              {bannerItems[currentBanner].itemName}
+            </BannerImage>
+          )}
           <BannerButton left onClick={handlePrevBanner}>&lt;</BannerButton>
           <BannerButton right onClick={handleNextBanner}>&gt;</BannerButton>
           <BannerIndicators>
@@ -135,9 +135,9 @@ const Main = () => {
       <RentalSection>
         <SectionTitle>최신 등록 물품</SectionTitle>
         <RentalGrid>
-          {latestItems.map(item => ( // 최신 물품으로 변경
-            <RentalCard key={item.itemId} onClick={() => handleRentalCardClick(item.itemId)}> {/* 카드 클릭 시 이동 */}
-              <CardImage style={{ backgroundImage: `url(${item.itemPhoto})` }} /> {/* 이미지 추가 */}
+          {latestItems.map(item => (
+            <RentalCard key={item.itemId} onClick={() => handleRentalCardClick(item.itemId)}>
+              <CardImage style={{ backgroundImage: `url(${item.itemPhoto})` }} />
               <CardInfo>
                 <CardTitle>{item.itemName}</CardTitle>
                 <CardPrice>₩{item.price}</CardPrice>
