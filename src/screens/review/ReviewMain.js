@@ -39,8 +39,11 @@ const ReviewMain = () => {
     setSelectedCategory(category);
   };
 
-  const handleItemClick = (itemId) => {
-    navigate(`/review/register/${itemId}`); // 아이템 클릭 시 리뷰 등록 페이지로 이동
+  const handleItemClick = (itemId, itemTitle, itemPhoto) => {
+    console.log('선택된 아이템 ID:', itemId);
+    console.log('선택된 아이템 제목:', itemTitle);
+    console.log('선택된 아이템 이미지:', itemPhoto);
+    navigate(`/review/register/${itemId}`, { state: { itemPhoto } });
   };
 
   const handleReviewClick = (review) => {
@@ -67,7 +70,8 @@ const ReviewMain = () => {
         const combinedItems = itemResponses.map(response => ({
           id: response.data.id,
           title: response.data.itemName,
-          price: `₩${response.data.price.toLocaleString()}`
+          price: `₩${response.data.price.toLocaleString()}`,
+          photo: response.data.itemPhoto
         }));
         
         setBorrowedItems(combinedItems);
@@ -131,7 +135,10 @@ const ReviewMain = () => {
           {borrowedItems
             .slice((currentRegisterPage - 1) * itemsPerPage, currentRegisterPage * itemsPerPage)
             .map((item) => (
-              <ItemButton key={item.id} onClick={() => handleItemClick(item.id)}>
+              <ItemButton 
+                key={item.id} 
+                onClick={() => handleItemClick(item.id, item.title, item.photo)}
+              >
                 <ItemInfo>
                   <ItemTitle>{item.title}</ItemTitle>
                 </ItemInfo>
