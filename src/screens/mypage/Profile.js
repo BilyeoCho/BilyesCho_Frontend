@@ -40,6 +40,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       const formData = new FormData();
+      
       formData.append('currentPassword', formData.currentPassword);
       formData.append('newPassword', formData.newPassword);
       formData.append('userName', formData.userName);
@@ -80,7 +81,7 @@ const Profile = () => {
   const handleDeleteAccount = async () => {
     try {
       const response = await axiosApi.delete('/delete');
-      if (response.status === 200) {
+      if (response.status === 204) {
         alert('회원 탈퇴 성공');
         navigate('/'); // 로그인 화면으로 리다이렉트
       }
