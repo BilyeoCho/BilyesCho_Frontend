@@ -39,19 +39,35 @@ const ReviewRegister = () => {
         formData.append('reviewPhoto', reviewPhoto);
       }
 
+      console.log('=== FormData 내용 확인 ===');
       for (let pair of formData.entries()) {
         console.log(pair[0] + ': ' + pair[1]);
       }
+      
+      console.log('=== 요청 데이터 객체 확인 ===');
+      console.log({
+        rate,
+        reviewCategory,
+        content,
+        userId,
+        itemId,
+        reviewPhoto
+      });
 
-      await axiosApi.post('/reviews/write', formData, {
+      const response = await axiosApi.post('/reviews/write', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
       
+      console.log('=== 서버 응답 확인 ===');
+      console.log('응답 상태:', response.status);
+      console.log('응답 데이터:', response.data);
+
       navigate('/review');
     } catch (error) {
       console.error('리뷰 등록 실패:', error);
+      console.error('에러 응답:', error.response?.data);
       alert('리뷰 등록에 실패했습니다.');
     }
   };
