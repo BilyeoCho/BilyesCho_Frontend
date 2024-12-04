@@ -1,14 +1,42 @@
 import React, { useState } from 'react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import TopBar from '../../components/TopBar';
+import axiosApi from '../../axios';
 
 const ReviewRegister = () => {
-  const [rating, setRating] = useState(5);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [review, setReview] = useState('');
+  const { itemId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  const [rate, setRate] = useState('5');
+  const [reviewCategory, setReviewCategory] = useState('');
+  const [content, setContent] = useState('');
 
   const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
+    setReviewCategory(category);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const reviewData = {
+        reviewRequest: {
+          rate,
+          reviewCategory,
+          content,
+          userId: 1,
+          itemId: parseInt(itemId)
+        },
+        reviewPhoto: location.state?.itemPhoto || ''
+      };
+
+      await axiosApi.post('/reviews/write', reviewData);
+      
+      navigate('/review');
+    } catch (error) {
+      console.error('리뷰 등록 실패:', error);
+      alert('리뷰 등록에 실패했습니다.');
+    }
   };
 
   return (
@@ -17,18 +45,24 @@ const ReviewRegister = () => {
       <ReviewRegisterContainer>
         <TopSection>
           <ImageSection>
-            <PlaceholderImage>물품 사진</PlaceholderImage>
+            <PlaceholderImage>
+              {location.state?.itemPhoto ? (
+                <img src={location.state.itemPhoto} alt="물품 이미지" />
+              ) : (
+                "물품 사진"
+              )}
+            </PlaceholderImage>
           </ImageSection>
           <FormSection>
             <SectionTitle>리뷰 등록하기</SectionTitle>
             <RatingWrapper>
               <RatingLabel>평점</RatingLabel>
               <RatingButtons>
-                {[1, 2, 3, 4, 5].map((value) => (
+                {['1', '2', '3', '4', '5'].map((value) => (
                   <RatingButton
                     key={value}
-                    isSelected={rating === value}
-                    onClick={() => setRating(value)}
+                    isSelected={rate === value}
+                    onClick={() => setRate(value)}
                   >
                     {value}
                   </RatingButton>
@@ -42,7 +76,7 @@ const ReviewRegister = () => {
                 {['답변이 빨라요', '친절하고 배려가 넘쳐요', '물품 설명이 적절했어요'].map((category) => (
                   <FilterButton
                     key={category}
-                    isSelected={selectedCategory === category}
+                    isSelected={reviewCategory === category}
                     onClick={() => handleCategoryClick(category)}
                   >
                     {category}
@@ -54,12 +88,12 @@ const ReviewRegister = () => {
             <InputWrapper>
               <Label>리뷰</Label>
               <TextArea
-                value={review}
-                onChange={(e) => setReview(e.target.value)}
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
                 placeholder="솔직한 리뷰를 작성해주세요"
               />
             </InputWrapper>
-            <SubmitButton>리뷰 제출하기</SubmitButton>
+            <SubmitButton onClick={handleSubmit}>리뷰 제출하기</SubmitButton>
           </FormSection>
         </TopSection>
       </ReviewRegisterContainer>
@@ -101,6 +135,13 @@ const PlaceholderImage = styled.div`
   border-radius: 12px;
   font-size: 18px;
   color: #888;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const SectionTitle = styled.h2`
