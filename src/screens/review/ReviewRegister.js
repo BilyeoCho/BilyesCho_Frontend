@@ -18,17 +18,11 @@ const ReviewRegister = () => {
     const convertUrlToFile = async () => {
       if (location.state?.itemPhoto) {
         try {
-          const response = await axiosApi.get(location.state.itemPhoto, {
-            responseType: 'blob'
-          });
-          
+          const response = await fetch(location.state.itemPhoto, { mode: 'cors' });
+          const blob = await response.blob();
           const fileName = location.state.itemPhoto.split('/').pop();
-          const file = new File([response.data], fileName, { 
-            type: response.data.type 
-          });
+          const file = new File([blob], fileName, { type: blob.type });
           setReviewPhoto(file);
-          
-          console.log('File 변환 성공:', file);
         } catch (error) {
           console.error('이미지 URL을 File로 변환 실패:', error);
         }
