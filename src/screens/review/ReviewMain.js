@@ -59,10 +59,13 @@ const ReviewMain = () => {
         const borrowedResponse = await axiosApi.get('/rents/borrowed');
         const borrowedData = borrowedResponse.data;
         
+        console.log('빌린 물품 데이터:', borrowedData); // 데이터 확인용 로그 추가
+        
         // 각 물품의 상세 정보 조회
-        const itemDetailsPromises = borrowedData.map(borrowed => 
-          axiosApi.get(`/item/${borrowed.itemId}`)
-        );
+        const itemDetailsPromises = borrowedData.map(borrowed => {
+          console.log('borrowed 객체:', borrowed); // borrowed 객체 확인용 로그 추가
+          return axiosApi.get(`/item/${borrowed.itemId}`);
+        });
         
         const itemResponses = await Promise.all(itemDetailsPromises);
         
@@ -73,6 +76,8 @@ const ReviewMain = () => {
           price: `₩${response.data.price.toLocaleString()}`,
           photo: response.data.itemPhoto
         }));
+        
+        console.log('최종 가공된 데이터:', combinedItems); // 최종 데이터 확인용 로그 추가
         
         setBorrowedItems(combinedItems);
       } catch (error) {
