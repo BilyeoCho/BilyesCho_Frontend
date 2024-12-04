@@ -19,18 +19,23 @@ const ReviewRegister = () => {
 
   const handleSubmit = async () => {
     try {
-      const reviewData = {
-        reviewRequest: {
-          rate,
-          reviewCategory,
-          content,
-          userId: 1,
-          itemId: parseInt(itemId)
-        },
-        reviewPhoto: location.state?.itemPhoto || ''
-      };
+      const formData = new FormData();
+      
+      formData.append('rate', rate);
+      formData.append('reviewCategory', reviewCategory);
+      formData.append('content', content);
+      formData.append('userId', '1'); // 실제 로그인된 사용자 ID로 대체 필요
+      formData.append('itemId', itemId);
+      
+      if (location.state?.itemPhoto) {
+        formData.append('reviewPhoto', location.state.itemPhoto);
+      }
 
-      await axiosApi.post('/reviews/write', reviewData);
+      await axiosApi.post('/reviews/write', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       
       navigate('/review');
     } catch (error) {
