@@ -61,16 +61,13 @@ const RegisterHistory = () => {
       if (error.response) {
         switch (error.response.status) {
           case 400:
-            alert('잘못된 요청입니다.');
-            break;
-          case 403:
-            alert('권한이 없습니다.');
+            alert('400 잘못된 요청입니다.');
             break;
           case 404:
-            alert('물품을 찾을 수 없습니다.');
+            alert('404 아이템 또는 사용자 정보를 찾을 수 없습니다.');
             break;
           case 500:
-            alert('서버 오류가 발생했습니다.');
+            alert('500 서버 오류가 발생했습니다.');
             break;
           default:
             alert('알 수 없는 오류가 발생했습니다.');
