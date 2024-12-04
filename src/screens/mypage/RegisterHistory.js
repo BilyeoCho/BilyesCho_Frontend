@@ -11,11 +11,7 @@ const RegisterHistory = () => {
     try {
       const response = await axiosApi.get('/myitems');
       if (response.status === 200) {
-        const itemsWithDefaultStatus = response.data.map(item => ({
-          ...item,
-          status: 'AVAILABLE',
-        }));
-        setRegisteredItems(itemsWithDefaultStatus);
+        setRegisteredItems(response.data);
       }
     } catch (error) {
       if (error.response) {
@@ -23,6 +19,46 @@ const RegisterHistory = () => {
           alert('서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
         } else {
           console.error('등록된 물품 조회 실패:', error.response.data);
+        }
+      } else {
+        alert('네트워크 오류가 발생했습니다.');
+      }
+    }
+  };
+
+  const handleStatusChange = async (itemId, currentStatus) => {
+    try {
+      const response = await axiosApi.post('/rents/rentstatus', {
+        itemId: String(itemId),
+        status: currentStatus === 'AVAILABLE' ? 'RENTED' : 'AVAILABLE'
+      });
+
+      if (response.status === 200) {
+        setRegisteredItems(prevItems =>
+          prevItems.map(item =>
+            item.itemId === itemId
+              ? { ...item, status: currentStatus === 'AVAILABLE' ? 'RENTED' : 'AVAILABLE' }
+              : item
+          )
+        );
+      }
+    } catch (error) {
+      if (error.response) {
+        switch (error.response.status) {
+          case 400:
+            alert('잘못된 요청입니다.');
+            break;
+          case 403:
+            alert('권한이 없습니다.');
+            break;
+          case 404:
+            alert('물품을 찾을 수 없습니다.');
+            break;
+          case 500:
+            alert('서버 오류가 발생했습니다.');
+            break;
+          default:
+            alert('알 수 없는 오류가 발생했습니다.');
         }
       } else {
         alert('네트워크 오류가 발생했습니다.');
@@ -78,7 +114,13 @@ const RegisterHistory = () => {
             <ItemInfo>
               <ItemHeader>
                 <ItemName>{item.itemName}</ItemName>
-                <StatusBadge status={item.status}>{item.status}</StatusBadge>
+                <StatusBadge 
+                  status={item.status}
+                  onClick={() => handleStatusChange(item.itemId, item.status)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {item.status}
+                </StatusBadge>
               </ItemHeader>
               <ItemDetails>
                 <DetailRow>
