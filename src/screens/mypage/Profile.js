@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axiosApi from '../../axios';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
+  const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState('/images/default-profile.jpg');
   const [formData, setFormData] = useState({
     currentPassword: '',
@@ -11,6 +13,7 @@ const Profile = () => {
     userPhoto: null,
     openKakaoLink: ''
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -58,6 +61,19 @@ const Profile = () => {
             alert('프로필 업데이트 중 오류가 발생했습니다.');
         }
       }
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      const response = await axiosApi.delete('/delete');
+      if (response.status === 200) {
+        alert('회원 탈퇴 성공');
+        navigate('/'); // 로그인 화면으로 리다이렉트
+      }
+    } catch (error) {
+      console.error('회원 탈퇴 실패:', error);
+      alert('회원 탈퇴 중 오류가 발생했습니다.');
     }
   };
 
@@ -116,9 +132,22 @@ const Profile = () => {
           </InputGroup>
 
           <UpdateButton type="submit">프로필 업데이트</UpdateButton>
-          <DeleteAccountButton type="button">회원탈퇴</DeleteAccountButton>
+          <DeleteAccountButton type="button" onClick={() => setIsModalOpen(true)}>회원탈퇴</DeleteAccountButton>
         </FormSection>
       </ProfileForm>
+
+      {isModalOpen && (
+        <ModalOverlay>
+          <ModalContainer>
+            <ModalTitle>회원 탈퇴</ModalTitle>
+            <ModalMessage>정말 탈퇴하시겠습니까?</ModalMessage>
+            <ButtonContainer>
+              <CancelButton onClick={() => setIsModalOpen(false)}>취소</CancelButton>
+              <ConfirmButton onClick={handleDeleteAccount}>탈퇴하기</ConfirmButton>
+            </ButtonContainer>
+          </ModalContainer>
+        </ModalOverlay>
+      )}
     </Container>
   );
 };
@@ -236,6 +265,55 @@ const DeleteAccountButton = styled.button`
     background-color: #dc3545;
     color: white;
   }
+`;
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContainer = styled.div`
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+`;
+
+const ModalTitle = styled.h2`
+  margin-bottom: 10px;
+`;
+
+const ModalMessage = styled.p`
+  margin-bottom: 20px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const CancelButton = styled.button`
+  background: #ccc;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+
+const ConfirmButton = styled.button`
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
 `;
 
 export default Profile;
