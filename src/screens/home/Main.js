@@ -167,21 +167,34 @@ const MainContainer = styled.div`
 const BannerSection = styled.div`
   position: relative;
   margin-bottom: 40px;
+  padding: 0 20px;
 `;
 
 const BannerWrapper = styled.div`
   position: relative;
   overflow: hidden;
+  background-color: #f0f0f0;
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 100%;
 `;
 
 const BannerImage = styled.div`
   width: 100%;
-  height: 300px;
+  height: 400px;
   background-color: #f0f0f0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.2s ease-out;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
 `;
 
 const BannerButton = styled.button`
