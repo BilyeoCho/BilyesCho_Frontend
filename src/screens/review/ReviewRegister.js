@@ -20,15 +20,20 @@ const ReviewRegister = () => {
   const handleSubmit = async () => {
     try {
       const formData = new FormData();
+      const userId = localStorage.getItem('userId');
       
       formData.append('rate', rate);
       formData.append('reviewCategory', reviewCategory);
       formData.append('content', content);
-      formData.append('userId', '1'); // 실제 로그인된 사용자 ID로 대체 필요
+      formData.append('userId', userId);
       formData.append('itemId', itemId);
       
       if (location.state?.itemPhoto) {
         formData.append('reviewPhoto', location.state.itemPhoto);
+      }
+
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
       }
 
       await axiosApi.post('/reviews/write', formData, {
