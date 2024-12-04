@@ -16,13 +16,7 @@ const ReviewRegister = () => {
 
   useEffect(() => {
     if (location.state?.itemPhoto) {
-      fetch(location.state.itemPhoto)
-        .then(res => res.blob())
-        .then(blob => {
-          const file = new File([blob], "reviewPhoto.png", { type: "image/png" });
-          setReviewPhoto(file);
-        })
-        .catch(error => console.error('이미지 변환 실패:', error));
+      setReviewPhoto(location.state.itemPhoto);
     }
   }, [location.state?.itemPhoto]);
 
