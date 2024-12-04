@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Pagination } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Modal from '@mui/material/Modal';
+import axiosApi from '../../axios';
 
 const ReviewMain = () => {
   const [currentReviewPage, setCurrentReviewPage] = useState(1);
@@ -10,6 +11,7 @@ const ReviewMain = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
+  const [borrowedItems, setBorrowedItems] = useState([]);
   const navigate = useNavigate(); // 페이지 전환을 위한 useNavigate 훅 사용
 
   const reviews = [
@@ -27,18 +29,11 @@ const ReviewMain = () => {
     { user: '이철수', rating: 4, comment: '다음에 또 빌리고 싶습니다.', image: '/images/chair2.jpg', itemName: '캠핑의자' },
   ];
 
-  const items = [
-    { id: 1, title: '텐트', duration: '24시간', price: '₩10,000' },
-    { id: 2, title: '캠핑의자', duration: '48시간', price: '₩5,000' },
-    { id: 3, title: '랜턴', duration: '12시간', price: '₩3,000' },
-    { id: 4, title: '취사도구', duration: '36시간', price: '₩7,000' },
-  ];
-
   const reviewsPerPage = 4;
   const itemsPerPage = 2;
 
   const totalReviewPages = Math.ceil(reviews.length / reviewsPerPage);
-  const totalRegisterPages = Math.ceil(items.length / itemsPerPage);
+  const totalRegisterPages = Math.ceil(borrowedItems.length / itemsPerPage);
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
@@ -52,6 +47,37 @@ const ReviewMain = () => {
     setSelectedReview(review);
     setIsModalOpen(true);
   };
+
+  // 빌린 물품 목록 조회
+  useEffect(() => {
+    const fetchBorrowedItems = async () => {
+      try {
+        // 빌린 물품 목록 조회
+        const borrowedResponse = await axiosApi.get('/rents/borrowed');
+        const borrowedData = borrowedResponse.data;
+        
+        // 각 물품의 상세 정보 조회
+        const itemDetailsPromises = borrowedData.map(borrowed => 
+          axiosApi.get(`/item/${borrowed.itemId}`)
+        );
+        
+        const itemResponses = await Promise.all(itemDetailsPromises);
+        
+        // 필요한 정보만 추출하여 새로운 배열 생성
+        const combinedItems = itemResponses.map(response => ({
+          id: response.data.id,
+          title: response.data.itemName,
+          price: `₩${response.data.price.toLocaleString()}`
+        }));
+        
+        setBorrowedItems(combinedItems);
+      } catch (error) {
+        console.error('물품 목록 조회 실패:', error);
+      }
+    };
+
+    fetchBorrowedItems();
+  }, []);
 
   return (
     <ReviewContainer>
@@ -102,13 +128,12 @@ const ReviewMain = () => {
       <Section>
         <SectionTitle>리뷰 등록하기</SectionTitle>
         <ItemList>
-          {items
+          {borrowedItems
             .slice((currentRegisterPage - 1) * itemsPerPage, currentRegisterPage * itemsPerPage)
             .map((item) => (
               <ItemButton key={item.id} onClick={() => handleItemClick(item.id)}>
                 <ItemInfo>
                   <ItemTitle>{item.title}</ItemTitle>
-                  <ItemDuration>{item.duration}</ItemDuration>
                 </ItemInfo>
                 <PriceAndArrow>
                   <ItemPrice>{item.price}</ItemPrice>
@@ -261,11 +286,6 @@ const ItemInfo = styled.div`
 const ItemTitle = styled.div`
   font-size: 16px;
   font-weight: bold;
-`;
-
-const ItemDuration = styled.div`
-  font-size: 14px;
-  color: #666;
 `;
 
 const PriceAndArrow = styled.div`
