@@ -39,9 +39,22 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const formData = new FormData();
+      formData.append('currentPassword', formData.currentPassword);
+      formData.append('newPassword', formData.newPassword);
+      formData.append('userName', formData.userName);
+      formData.append('userPhoto', formData.userPhoto);
+      formData.append('openKakaoLink', formData.openKakaoLink);
+
+      // 요청 전 데이터 확인
+      console.log('=== 전송할 데이터 ===');
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+      }
+
       const response = await axiosApi.put('/users/update', formData, {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'multipart/form-data'
         }
       });
       
