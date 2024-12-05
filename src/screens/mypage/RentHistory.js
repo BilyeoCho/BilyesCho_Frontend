@@ -33,12 +33,12 @@ const RentHistory = () => {
     return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 변환
   };
 
-  const handleReturnItem = async (rentId, renterId) => {
+  const handleReturnItem = async (rentId, renterUserId) => {
     try {
-      console.log(`반납 요청 URL: /rents/return/${rentId}?renterId=${renterId}`);
-      console.log('반납 요청 데이터:', { rentId, renterId });
+      console.log(`반납 요청 URL: /rents/return/${rentId}?renterId=${renterUserId}`);
+      console.log('반납 요청 데이터:', { rentId, renterUserId });
 
-      const response = await axiosApi.put(`/rents/return/${rentId}?renterId=${renterId}`);
+      const response = await axiosApi.put(`/rents/return/${rentId}?renterId=${renterUserId}`);
       
       if (response.status === 200) {
         console.log('반납 성공:', response.data);
@@ -112,7 +112,7 @@ const RentHistory = () => {
               </ItemDetails>
               {item.rentStatus === 'RENTED' && (
                 <ButtonGroup>
-                  <ReturnButton onClick={() => handleReturnItem(item.rentId, item.renterId)}>
+                  <ReturnButton onClick={() => handleReturnItem(item.rentId, item.renterUserId)}>
                     반납하기
                   </ReturnButton>
                 </ButtonGroup>
