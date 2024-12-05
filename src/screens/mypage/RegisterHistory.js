@@ -86,7 +86,7 @@ const RegisterHistory = () => {
     // 요청 데이터 준비
     const requestData = {
       itemId: selectedItemId,
-      renterId: rentInfo.renterId,
+      renterUserId: rentInfo.renterId,
       startTime: formatDateTime(rentInfo.startTime),
       endTime: formatDateTime(rentInfo.endTime)
     };
