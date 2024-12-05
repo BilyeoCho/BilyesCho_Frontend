@@ -12,25 +12,7 @@ const ReviewRegister = () => {
   const [rate, setRate] = useState('5');
   const [reviewCategory, setReviewCategory] = useState('');
   const [content, setContent] = useState('');
-  const [reviewPhoto, setReviewPhoto] = useState(null);
-
-  useEffect(() => {
-    const convertUrlToFile = async () => {
-      if (location.state?.itemPhoto) {
-        try {
-          const response = await fetch(location.state.itemPhoto, { mode: 'cors' });
-          const blob = await response.blob();
-          const fileName = location.state.itemPhoto.split('/').pop();
-          const file = new File([blob], fileName, { type: blob.type });
-          setReviewPhoto(file);
-        } catch (error) {
-          console.error('이미지 URL을 File로 변환 실패:', error);
-        }
-      }
-    };
-
-    convertUrlToFile();
-  }, [location.state?.itemPhoto]);
+  const [reviewPhoto, setReviewPhoto] = useState(location.state?.itemPhoto || '');
 
   const handleCategoryClick = (category) => {
     setReviewCategory(category);
@@ -91,8 +73,8 @@ const ReviewRegister = () => {
         <TopSection>
           <ImageSection>
             <PlaceholderImage>
-              {location.state?.itemPhoto ? (
-                <img src={location.state.itemPhoto} alt="물품 이미지" />
+              {reviewPhoto ? (
+                <img src={reviewPhoto} alt="물품 이미지" />
               ) : (
                 "물품 사진"
               )}
