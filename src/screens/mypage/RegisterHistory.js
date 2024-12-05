@@ -73,12 +73,18 @@ const RegisterHistory = () => {
   };
 
   const handleStatusChange = async () => {
+    // ISO 문자열을 원하는 형식으로 변환
+    const formatDateTime = (dateTimeString) => {
+      if (!dateTimeString) return '';
+      return dateTimeString.replace('T', 'T').slice(0, 19);
+    };
+
     // 요청 데이터 준비
     const requestData = {
       itemId: selectedItemId,
       renterId: rentInfo.renterId,
-      startTime: rentInfo.startTime,
-      endTime: rentInfo.endTime
+      startTime: formatDateTime(rentInfo.startTime),
+      endTime: formatDateTime(rentInfo.endTime)
     };
     
     console.log('대여 상태 변경 요청 데이터:', requestData);
