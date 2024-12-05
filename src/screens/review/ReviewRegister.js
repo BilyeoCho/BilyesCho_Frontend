@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import TopBar from '../../components/TopBar';
@@ -21,8 +21,19 @@ const ReviewRegister = () => {
 
   const handleSubmit = async () => {
     try {
+      const urlToFile = async (url) => {
+        try {
+          const response = await fetch(url);
+          const blob = await response.blob();
+          const fileName = url.split('/').pop() || 'image.png';
+          return new File([blob], fileName, { type: blob.type });
+        } catch (error) {
+          console.error('URL을 파일로 변환 중 오류:', error);
+          return null;
+        }
+      };
+
       const formData = new FormData();
-      
       formData.append('rate', rate);
       formData.append('reviewCategory', reviewCategory);
       formData.append('content', content);
@@ -30,7 +41,20 @@ const ReviewRegister = () => {
       formData.append('itemId', itemId);
       
       if (reviewPhoto) {
-        formData.append('reviewPhoto', reviewPhoto);
+        try {
+          console.log('변환 전 reviewPhoto URL:', reviewPhoto);
+          const photoFile = await urlToFile(reviewPhoto);
+          if (photoFile) {
+            formData.append('reviewPhoto', photoFile);
+            console.log('파일 변환 성공:', photoFile.name);
+          } else {
+            console.log('파일 변환 실패, URL을 그대로 사용');
+            formData.append('reviewPhoto', reviewPhoto);
+          }
+        } catch (error) {
+          console.error('이미지 변환 중 오류:', error);
+          formData.append('reviewPhoto', reviewPhoto);
+        }
       }
 
       console.log('=== FormData 내용 확인 ===');
