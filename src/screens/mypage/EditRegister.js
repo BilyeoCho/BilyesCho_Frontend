@@ -12,7 +12,6 @@ const EditRegister = () => {
   const [itemCategory, setItemCategory] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [price, setPrice] = useState('');
-  const [itemStatus, setItemStatus] = useState('AVAILABLE');
 
   useEffect(() => {
     const fetchItemDetails = async () => {
@@ -24,7 +23,6 @@ const EditRegister = () => {
         setItemCategory(itemCategory);
         setItemDescription(itemDescription);
         setPrice(price);
-        setItemStatus(status);
         setItemPhoto(itemPhoto);
       } catch (error) {
         console.error('물품 정보 조회 실패:', error.response ? error.response.data : error.message);
@@ -45,10 +43,6 @@ const EditRegister = () => {
     setItemCategory(category);
   };
 
-  const handleStatusClick = (status) => {
-    setItemStatus(status);
-  };
-
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append('itemName', itemName);
@@ -60,7 +54,7 @@ const EditRegister = () => {
     formData.append('itemCategory', itemCategory);
     formData.append('itemDescription', itemDescription);
     formData.append('price', price);
-    formData.append('status', itemStatus);
+    formData.append('status', 'AVAILABLE');
 
     console.log('Submitting data:', {
       itemName,
@@ -68,7 +62,7 @@ const EditRegister = () => {
       itemCategory,
       itemDescription,
       price,
-      status: itemStatus,
+      status: 'AVAILABLE',
     });
 
     try {
@@ -183,25 +177,6 @@ const EditRegister = () => {
               />
               <SubText>대여 가격 설정</SubText>
             </InputGroup>
-          </GridItem>
-
-          <GridItem>
-            <CategorySection>
-              <Label>상태</Label>
-              <StatusWrapper>
-                {['AVAILABLE', 'RENTED'].map((status) => (
-                  <StatusButton 
-                    key={status}
-                    isSelected={itemStatus === status}
-                    onClick={() => handleStatusClick(status)}
-                    status={status}
-                  >
-                    {status}
-                  </StatusButton>
-                ))}
-              </StatusWrapper>
-              <SubText>물품 상태 선택</SubText>
-            </CategorySection>
           </GridItem>
 
           <GridItem style={{ gridColumn: '1 / -1' }}>
@@ -402,27 +377,6 @@ const GridContainer = styled.div`
 
 const GridItem = styled.div`
   width: 100%;
-`;
-
-const StatusWrapper = styled(CategoryWrapper)`
-  margin-top: 8px;
-`;
-
-const StatusButton = styled(CategoryButton)`
-  ${props => {
-    switch (props.status) {
-      case 'AVAILABLE':
-        return props.isSelected && `
-          background-color: #0c8599;
-        `;
-      case 'RENTED':
-        return props.isSelected && `
-          background-color: #2f9e44;
-        `;
-      default:
-        return '';
-    }
-  }}
 `;
 
 export default EditRegister;
