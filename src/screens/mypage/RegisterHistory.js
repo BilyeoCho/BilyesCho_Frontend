@@ -76,7 +76,11 @@ const RegisterHistory = () => {
     // ISO 문자열을 원하는 형식으로 변환
     const formatDateTime = (dateTimeString) => {
       if (!dateTimeString) return '';
-      return dateTimeString.replace('T', 'T').slice(0, 19);
+      // 초가 없는 경우 ':00'을 추가
+      const withSeconds = dateTimeString.length === 16 
+        ? dateTimeString + ':00' 
+        : dateTimeString;
+      return withSeconds;
     };
 
     // 요청 데이터 준비
@@ -184,6 +188,7 @@ const RegisterHistory = () => {
                 type="datetime-local"
                 value={rentInfo.startTime}
                 onChange={(e) => setRentInfo({...rentInfo, startTime: e.target.value})}
+                step="1"
               />
             </InputGroup>
             <InputGroup>
@@ -192,6 +197,7 @@ const RegisterHistory = () => {
                 type="datetime-local"
                 value={rentInfo.endTime}
                 onChange={(e) => setRentInfo({...rentInfo, endTime: e.target.value})}
+                step="1"
               />
             </InputGroup>
             <ModalButtonGroup>
