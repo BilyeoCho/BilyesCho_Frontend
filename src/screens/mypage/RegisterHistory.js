@@ -6,6 +6,13 @@ import axiosApi from '../../axios';
 const RegisterHistory = () => {
   const navigate = useNavigate();
   const [registeredItems, setRegisteredItems] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [rentInfo, setRentInfo] = useState({
+    renterId: '',
+    startTime: '',
+    endTime: ''
+  });
 
   const fetchRegisteredItems = async () => {
     try {
@@ -65,6 +72,51 @@ const RegisterHistory = () => {
     }
   };
 
+  const handleStatusChange = async () => {
+    // 요청 데이터 준비
+    const requestData = {
+      itemId: selectedItemId,
+      renterId: rentInfo.renterId,
+      startTime: rentInfo.startTime,
+      endTime: rentInfo.endTime
+    };
+    
+    console.log('대여 상태 변경 요청 데이터:', requestData);
+
+    try {
+      const response = await axiosApi.post('/rents/rentstatus', requestData);
+      
+      if (response.status === 200) {
+        console.log('대여 상태 변경 응답:', response.data);
+        alert('대여 상태가 성공적으로 변경되었습니다.');
+        setIsModalOpen(false);
+        fetchRegisteredItems();
+      }
+    } catch (error) {
+      console.error('대여 상태 변경 오류:', error);
+      
+      if (error.response) {
+        switch (error.response.status) {
+          case 400:
+            alert('400 물품이 대여 가능한 상태가 아닙니다.');
+            break;
+          case 404:
+            alert('404 물품 또는 사용자를 찾을 수 없습니다.');
+            break;
+          case 500:
+            alert('500서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+            break;
+          default:
+            alert('알 수 없는 오류가 발생했습니다.');
+        }
+      } else if (error.request) {
+        alert('서버에서 응답이 없습니다. 네트워크 연결을 확인해주세요.');
+      } else {
+        alert('요청 설정 중 오류가 발생했습니다.');
+      }
+    }
+  };
+
   return (
     <Content>
       <ContentHeader>
@@ -78,7 +130,15 @@ const RegisterHistory = () => {
             <ItemInfo>
               <ItemHeader>
                 <ItemName>{item.itemName}</ItemName>
-                <StatusBadge status={item.status}>{item.status}</StatusBadge>
+                <StatusBadge 
+                  status={item.status}
+                  onClick={() => {
+                    setSelectedItemId(item.itemId);
+                    setIsModalOpen(true);
+                  }}
+                >
+                  {item.status}
+                </StatusBadge>
               </ItemHeader>
               <ItemDetails>
                 <DetailRow>
@@ -98,6 +158,43 @@ const RegisterHistory = () => {
           </ItemCard>
         ))}
       </ItemGrid>
+
+      {isModalOpen && (
+        <Modal>
+          <ModalContent>
+            <h3>물품 상태 변경하기</h3>
+            <InputGroup>
+              <label>대여자 ID:</label>
+              <input
+                type="text"
+                value={rentInfo.renterId}
+                onChange={(e) => setRentInfo({...rentInfo, renterId: e.target.value})}
+                placeholder="대여자 ID를 입력하세요"
+              />
+            </InputGroup>
+            <InputGroup>
+              <label>대여 시작 시간:</label>
+              <input
+                type="datetime-local"
+                value={rentInfo.startTime}
+                onChange={(e) => setRentInfo({...rentInfo, startTime: e.target.value})}
+              />
+            </InputGroup>
+            <InputGroup>
+              <label>대여 종료 시간:</label>
+              <input
+                type="datetime-local"
+                value={rentInfo.endTime}
+                onChange={(e) => setRentInfo({...rentInfo, endTime: e.target.value})}
+              />
+            </InputGroup>
+            <ModalButtonGroup>
+              <ConfirmButton onClick={handleStatusChange}>확인</ConfirmButton>
+              <CancelButton onClick={() => setIsModalOpen(false)}>취소</CancelButton>
+            </ModalButtonGroup>
+          </ModalContent>
+        </Modal>
+      )}
     </Content>
   );
 };
@@ -222,6 +319,82 @@ const DeleteButton = styled.button`
   &:hover {
     background-color: #dc3545;
     color: #fff;
+  }
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background-color: white;
+  padding: 24px;
+  border-radius: 12px;
+  width: 400px;
+  
+  h3 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+`;
+
+const InputGroup = styled.div`
+  margin-bottom: 16px;
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  
+  input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+`;
+
+const ModalButtonGroup = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+`;
+
+const ConfirmButton = styled.button`
+  flex: 1;
+  padding: 8px;
+  background-color: #0c8599;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: #0b7285;
+  }
+`;
+
+const CancelButton = styled.button`
+  flex: 1;
+  padding: 8px;
+  background-color: #868e96;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: #495057;
   }
 `;
 
