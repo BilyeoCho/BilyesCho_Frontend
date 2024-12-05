@@ -9,7 +9,7 @@ const RegisterHistory = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [rentInfo, setRentInfo] = useState({
-    renterId: '',
+    renterUserId: '',
     startTime: '',
     endTime: ''
   });
@@ -86,7 +86,7 @@ const RegisterHistory = () => {
     // 요청 데이터 준비
     const requestData = {
       itemId: selectedItemId,
-      renterUserId: rentInfo.renterId,
+      renterUserId: rentInfo.renterUserId,
       startTime: formatDateTime(rentInfo.startTime),
       endTime: formatDateTime(rentInfo.endTime)
     };

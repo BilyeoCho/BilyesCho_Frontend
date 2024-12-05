@@ -14,10 +14,14 @@ const RentHistory = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        setRentedItems(response.data);
+        const itemsWithNames = await Promise.all(response.data.map(async (item) => {
+          const itemResponse = await axiosApi.get(`/item/${item.itemId}`);
+          return { ...item, itemName: itemResponse.data.itemName };
+        }));
+        setRentedItems(itemsWithNames);
       } catch (error) {
         setError('물품을 가져오는 데 실패했습니다.');
-        console.error('API 요청 오류:', error.response.data);
+        console.error('API 요청 오류:', error.response ? error.response.data : error.message);
       }
     };
 
@@ -94,7 +98,7 @@ const RentHistory = () => {
           <ItemCard key={item.rentId}>
             <ItemInfo>
               <ItemHeader>
-                <ItemName>{item.itemId}</ItemName>
+                <ItemName>{item.itemName}</ItemName>
                 <StatusBadge status={item.rentStatus}>
                   {item.rentStatus === 'RENTED' ? '대여중' : '반납완료'}
                 </StatusBadge>
