@@ -11,7 +11,11 @@ const RegisterHistory = () => {
     try {
       const response = await axiosApi.get('/myitems');
       if (response.status === 200) {
-        setRegisteredItems(response.data);
+        const itemsWithDefaultStatus = response.data.map(item => ({
+          ...item,
+          status: 'AVAILABLE',
+        }));
+        setRegisteredItems(itemsWithDefaultStatus);
       }
     } catch (error) {
       if (error.response) {
@@ -19,58 +23,6 @@ const RegisterHistory = () => {
           alert('서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
         } else {
           console.error('등록된 물품 조회 실패:', error.response.data);
-        }
-      } else {
-        alert('네트워크 오류가 발생했습니다.');
-      }
-    }
-  };
-
-  const handleStatusChange = async (itemId, currentStatus) => {
-    const startTime = new Date();
-    const endTime = new Date(startTime);
-    endTime.setDate(endTime.getDate() + 2);
-
-    const formatDate = (date) => {
-      return date.toISOString().replace('Z', '').replace(/\.\d{3}/, '');
-    };
-
-    const requestBody = {
-      itemId: String(itemId),
-      renterId: "2",
-      startTime: formatDate(startTime),
-      endTime: formatDate(endTime)
-    };
-    
-    console.log('상태 변경 요청 데이터:', JSON.stringify(requestBody, null, 2));
-    
-    try {
-      const response = await axiosApi.post('/rents/rentstatus', requestBody);
-      console.log('상태 변경 응답:', response.data);
-
-      if (response.status === 200) {
-        setRegisteredItems(prevItems =>
-          prevItems.map(item =>
-            item.itemId === itemId
-              ? { ...item, status: currentStatus === 'AVAILABLE' ? 'RENTED' : 'AVAILABLE' }
-              : item
-          )
-        );
-      }
-    } catch (error) {
-      if (error.response) {
-        switch (error.response.status) {
-          case 400:
-            alert('400 잘못된 요청입니다.');
-            break;
-          case 404:
-            alert('404 아이템 또는 사용자 정보를 찾을 수 없습니다.');
-            break;
-          case 500:
-            alert('500 서버 오류가 발생했습니다.');
-            break;
-          default:
-            alert('알 수 없는 오류가 발생했습니다.');
         }
       } else {
         alert('네트워크 오류가 발생했습니다.');
@@ -126,13 +78,7 @@ const RegisterHistory = () => {
             <ItemInfo>
               <ItemHeader>
                 <ItemName>{item.itemName}</ItemName>
-                <StatusBadge 
-                  status={item.status}
-                  onClick={() => handleStatusChange(item.itemId, item.status)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {item.status}
-                </StatusBadge>
+                <StatusBadge status={item.status}>{item.status}</StatusBadge>
               </ItemHeader>
               <ItemDetails>
                 <DetailRow>
