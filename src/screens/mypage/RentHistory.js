@@ -33,14 +33,10 @@ const RentHistory = () => {
     return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 변환
   };
 
-  const handleReturnItem = async (rentId) => {
+  const handleReturnItem = async (rentId, renterId) => {
     try {
-      const renterId = localStorage.getItem("userId");
-      
-      if (!renterId) {
-        console.error("사용자 ID를 찾을 수 없습니다.");
-        return;
-      }
+      console.log(`반납 요청 URL: /rents/return/${rentId}?renterId=${renterId}`);
+      console.log('반납 요청 데이터:', { rentId, renterId });
 
       const response = await axiosApi.put(`/rents/return/${rentId}?renterId=${renterId}`);
       
@@ -55,6 +51,7 @@ const RentHistory = () => {
       }
     } catch (error) {
       if (error.response) {
+        console.error('반납 요청 실패:', error.response);
         switch (error.response.status) {
           case 400:
             console.error('잘못된 요청:', error.response.data);
@@ -115,7 +112,7 @@ const RentHistory = () => {
               </ItemDetails>
               {item.rentStatus === 'RENTED' && (
                 <ButtonGroup>
-                  <ReturnButton onClick={() => handleReturnItem(item.rentId)}>
+                  <ReturnButton onClick={() => handleReturnItem(item.rentId, item.renterId)}>
                     반납하기
                   </ReturnButton>
                 </ButtonGroup>
