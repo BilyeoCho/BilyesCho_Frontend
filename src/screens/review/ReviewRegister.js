@@ -21,18 +21,6 @@ const ReviewRegister = () => {
 
   const handleSubmit = async () => {
     try {
-      const urlToFile = async (url) => {
-        try {
-          const response = await fetch(url);
-          const blob = await response.blob();
-          const fileName = url.split('/').pop() || 'image.png';
-          return new File([blob], fileName, { type: blob.type });
-        } catch (error) {
-          console.error('URL을 파일로 변환 중 오류:', error);
-          return null;
-        }
-      };
-
       const formData = new FormData();
       formData.append('rate', rate);
       formData.append('reviewCategory', reviewCategory);
@@ -43,14 +31,17 @@ const ReviewRegister = () => {
       if (reviewPhoto) {
         try {
           console.log('변환 전 reviewPhoto URL:', reviewPhoto);
-          const photoFile = await urlToFile(reviewPhoto);
-          if (photoFile) {
-            formData.append('reviewPhoto', photoFile);
-            console.log('파일 변환 성공:', photoFile.name);
-          } else {
-            console.log('파일 변환 실패, URL을 그대로 사용');
-            formData.append('reviewPhoto', reviewPhoto);
-          }
+          
+          // URL에서 파일명 추출
+          const fileName = reviewPhoto.split('/').pop();
+          // 빈 Blob 생성
+          const blob = new Blob([''], { type: 'image/jpeg' });
+          // File 객체 생성
+          const file = new File([blob], fileName, { type: 'image/jpeg' });
+          
+          formData.append('reviewPhoto', file);
+          console.log('파일 변환 성공:', file.name);
+          
         } catch (error) {
           console.error('이미지 변환 중 오류:', error);
           formData.append('reviewPhoto', reviewPhoto);
