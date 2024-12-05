@@ -63,24 +63,21 @@ const ReviewMain = () => {
         console.log('빌린 물품 데이터:', borrowedData); // 데이터 확인용 로그 추가
         
         // 각 물품의 상세 정보 조회
-        const itemDetailsPromises = borrowedData.map(borrowed => {
-          console.log('borrowed 객체:', borrowed); // borrowed 객체 확인용 로그 추가
-          return axiosApi.get(`/item/${borrowed.itemId}`);
+        const itemDetailsPromises = borrowedData.map(async (borrowed) => {
+          const itemResponse = await axiosApi.get(`/item/${borrowed.itemId}`);
+          return {
+            itemId: itemResponse.data.itemId,
+            itemName: itemResponse.data.itemName,
+            price: `₩${itemResponse.data.price.toLocaleString()}`,
+            itemPhoto: itemResponse.data.itemPhoto,
+            rentId: borrowed.rentId
+          };
         });
         
         const itemResponses = await Promise.all(itemDetailsPromises);
+        console.log('최종 가공된 데이터:', itemResponses);
         
-        // 필요한 정보만 추출하여 새로운 배열 생성
-        const combinedItems = itemResponses.map(response => ({
-          itemId: response.data.itemId,
-          itemName: response.data.itemName,
-          price: `₩${response.data.price.toLocaleString()}`,
-          itemPhoto: response.data.itemPhoto
-        }));
-        
-        console.log('최종 가공된 데이터:', combinedItems); // 최종 데이터 확인용 로그 추가
-        
-        setBorrowedItems(combinedItems);
+        setBorrowedItems(itemResponses);
       } catch (error) {
         console.error('물품 목록 조회 실패:', error);
       }
