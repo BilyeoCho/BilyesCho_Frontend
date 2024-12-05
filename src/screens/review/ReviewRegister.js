@@ -13,6 +13,7 @@ const ReviewRegister = () => {
   const [reviewCategory, setReviewCategory] = useState('');
   const [content, setContent] = useState('');
   const [reviewPhoto, setReviewPhoto] = useState(location.state?.itemPhoto || '');
+  const userId = location.state?.rentId || '';
 
   const handleCategoryClick = (category) => {
     setReviewCategory(category);
@@ -21,7 +22,6 @@ const ReviewRegister = () => {
   const handleSubmit = async () => {
     try {
       const formData = new FormData();
-      const userId = localStorage.getItem('userId');
       
       formData.append('rate', rate);
       formData.append('reviewCategory', reviewCategory);

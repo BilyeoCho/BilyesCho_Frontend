@@ -39,11 +39,12 @@ const ReviewMain = () => {
     setSelectedCategory(category);
   };
 
-  const handleItemClick = (itemId, itemName, itemPhoto) => {
+  const handleItemClick = (itemId, itemName, itemPhoto, rentId) => {
     console.log('선택된 아이템 ID:', itemId);
     console.log('선택된 아이템 이름:', itemName);
     console.log('선택된 아이템 이미지:', itemPhoto);
-    navigate(`/review/register/${itemId}`, { state: { itemPhoto } });
+    console.log('선택된 렌트 ID:', rentId);
+    navigate(`/review/register/${itemId}`, { state: { itemPhoto, rentId } });
   };
 
   const handleReviewClick = (review) => {
@@ -142,7 +143,7 @@ const ReviewMain = () => {
             .map((item) => (
               <ItemButton 
                 key={item.itemId} 
-                onClick={() => handleItemClick(item.itemId, item.itemName, item.itemPhoto)}
+                onClick={() => handleItemClick(item.itemId, item.itemName, item.itemPhoto, item.rentId)}
               >
                 <ItemInfo>
                   <ItemTitle>{item.itemName}</ItemTitle>
