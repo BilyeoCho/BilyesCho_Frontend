@@ -16,15 +16,29 @@ const EditReview = () => {
   useEffect(() => {
     const fetchReview = async () => {
       try {
+        console.log(`=== GET 요청 시작: /reviews/${reviewId} ===`);
         const response = await axiosApi.get(`/reviews/${reviewId}`);
+        
         if (response.status === 200) {
+          console.log('GET 응답 데이터:', response.data);
+          console.log('rate:', response.data.rate);
+          console.log('content:', response.data.content);
+          console.log('reviewPhoto:', response.data.reviewPhoto);
+          console.log('reviewCategory:', response.data.reviewCategory);
+
           setRating(parseInt(response.data.rate));
           setReview(response.data.content);
           setReviewPhoto(response.data.reviewPhoto || '');
           setReviewCategory(response.data.reviewCategory || '');
+
+          console.log('=== 상태 업데이트 완료 ===');
         }
       } catch (error) {
         console.error('리뷰 조회 실패:', error);
+        if (error.response) {
+          console.error('에러 응답:', error.response.data);
+          console.error('에러 상태:', error.response.status);
+        }
         alert('리뷰 정보를 불러오는데 실패했습니다.');
       }
     };
@@ -34,20 +48,30 @@ const EditReview = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axiosApi.put(`/reviews/${reviewId}`, {
+      console.log(`=== PUT 요청 시작: /reviews/${reviewId} ===`);
+      const requestData = {
         rate: rating.toString(),
         content: review,
         reviewPhoto: reviewPhoto,
         reviewCategory: reviewCategory
-      });
+      };
+      
+      console.log('PUT 요청 데이터:', requestData);
+
+      const response = await axiosApi.put(`/reviews/${reviewId}`, requestData);
 
       if (response.status === 200) {
+        console.log('PUT 응답 데이터:', response.data);
+        console.log('=== 리뷰 수정 성공 ===');
         alert('리뷰가 성공적으로 수정되었습니다.');
         navigate('/mypage?tab=review');
       }
     } catch (error) {
       console.error('리뷰 수정 실패:', error);
       if (error.response) {
+        console.error('에러 응답:', error.response.data);
+        console.error('에러 상태:', error.response.status);
+        
         switch (error.response.status) {
           case 400:
             alert('400 잘못된 요청입니다. 입력값을 확인해주세요.');
@@ -59,6 +83,7 @@ const EditReview = () => {
             alert('리뷰 수정 중 오류가 발생했습니다.');
         }
       } else {
+        console.error('네트워크 오류:', error);
         alert('네트워크 오류가 발생했습니다.');
       }
     }
