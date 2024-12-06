@@ -176,16 +176,10 @@ const ReviewCard = styled.div`
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
   display: flex;
   flex-direction: column;
   gap: 8px;
-
-  &:hover {
-    background-color: #f5f5f5;
-    transform: translateY(-2px);
-  }
+  background-color: white;
 `;
 
 const ReviewComment = styled.div`

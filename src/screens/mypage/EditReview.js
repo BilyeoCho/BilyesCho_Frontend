@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import TopBar from '../../components/TopBar';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const EditReview = () => {
   const { reviewId } = useParams();
+  const navigate = useNavigate();
   const [rating, setRating] = useState(5);
   const [review, setReview] = useState('');
 
@@ -17,6 +18,10 @@ const EditReview = () => {
   const handleSubmit = () => {
     // 리뷰 수정 로직 구현
     console.log('리뷰가 수정되었습니다.');
+  };
+
+  const handleCancel = () => {
+    navigate('/mypage?tab=review');
   };
 
   return (
@@ -49,7 +54,7 @@ const EditReview = () => {
             />
           </InputWrapper>
           <ButtonGroup>
-            <CancelButton>취소</CancelButton>
+            <CancelButton onClick={handleCancel}>취소</CancelButton>
             <SubmitButton onClick={handleSubmit}>리뷰 수정하기</SubmitButton>
           </ButtonGroup>
         </FormSection>
