@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import SideBar from '../../components/SideBar';
 import RegisterHistory from './RegisterHistory';
 import RentHistory from './RentHistory';
@@ -10,6 +10,31 @@ import Profile from './Profile';
 const MyPageMain = () => {
   const [activeMenu, setActiveMenu] = useState('등록내역');
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // URL의 쿼리 파라미터에서 현재 탭 가져오기
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tab = params.get('tab');
+    
+    switch (tab) {
+      case 'register':
+        setActiveMenu('등록내역');
+        break;
+      case 'rent':
+        setActiveMenu('대여내역');
+        break;
+      case 'review':
+        setActiveMenu('리뷰내역');
+        break;
+      case 'profile':
+        setActiveMenu('프로필');
+        break;
+      default:
+        setActiveMenu('등록내역');
+        navigate('/mypage?tab=register', { replace: true });
+    }
+  }, [location.search, navigate]);
 
   const handleMenuClick = (menuName) => {
     setActiveMenu(menuName);
@@ -59,8 +84,7 @@ const MyPageMain = () => {
 
 const Container = styled.div`
   display: flex;
-  gap: 40px;
-  height: 100%;
+  min-height: calc(100vh - 60px);
 `;
 
 export default MyPageMain;
