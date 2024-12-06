@@ -62,14 +62,13 @@ const ReviewRegister = () => {
         },
       });
       
-      console.log('=== 서버 응답 확인 ===');
-      console.log('응답 상태:', response.status);
-      console.log('응답 데이터:', response.data);
-
-      navigate('/review');
+      if (response.status === 200) {
+        const reviewId = response.data.reviewId;
+        console.log('생성된 리뷰 ID:', reviewId);
+        navigate('/mypage');
+      }
     } catch (error) {
       console.error('리뷰 등록 실패:', error);
-      console.error('에러 응답:', error.response?.data);
       alert('리뷰 등록에 실패했습니다.');
     }
   };

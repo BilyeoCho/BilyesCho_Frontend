@@ -1,40 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import axiosApi from '../../axios';
 
 const ReviewHistory = () => {
   const navigate = useNavigate();
+  const [reviews, setReviews] = useState([]);
 
-  const reviews = [
-    {
-      id: 1,
-      itemName: '자전거',
-      rating: 5,
-      comment: '유용하게 사용했습니다.',
-      date: '2024-03-15'
-    },
-    {
-      id: 2,
-      itemName: '텐트',
-      rating: 5,
-      comment: '되게 아늑하고 좋았습니다.',
-      date: '2024-03-10'
-    },
-    {
-      id: 3,
-      itemName: '캠핑의자',
-      rating: 5,
-      comment: '푹신하고 편안했습니다.',
-      date: '2024-03-05'
-    },
-    {
-      id: 4,
-      itemName: '가스토치',
-      rating: 5,
-      comment: '불이 세요.',
-      date: '2024-03-01'
-    }
-  ];
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axiosApi.get('/reviews/all');
+        if (response.status === 200) {
+          const reviewsData = response.data;
+          const detailedReviews = await Promise.all(
+            reviewsData.map(async (review) => {
+              const detailResponse = await axiosApi.get(`/reviews/${review.reviewId}`);
+              return detailResponse.data;
+            })
+          );
+          setReviews(detailedReviews);
+        }
+      } catch (error) {
+        console.error('리뷰 조회 실패:', error);
+      }
+    };
+
+    fetchReviews();
+  }, []);
 
   const handleEditReview = (reviewId) => {
     navigate(`/edit-review/${reviewId}`);
@@ -48,14 +41,13 @@ const ReviewHistory = () => {
 
       <ReviewGrid>
         {reviews.map((review) => (
-          <ReviewCard key={review.id}>
+          <ReviewCard key={review.reviewId}>
             <ReviewHeader>
               <ItemName>{review.itemName}</ItemName>
-              <ReviewDate>{review.date}</ReviewDate>
             </ReviewHeader>
-            <Rating>{'⭐'.repeat(review.rating)}</Rating>
-            <ReviewText>{review.comment}</ReviewText>
-            <EditButton onClick={() => handleEditReview(review.id)}>
+            <Rating>{'⭐'.repeat(parseInt(review.rate))}</Rating>
+            <ReviewText>{review.content}</ReviewText>
+            <EditButton onClick={() => handleEditReview(review.reviewId)}>
               편집하기
             </EditButton>
           </ReviewCard>
@@ -111,11 +103,6 @@ const ItemName = styled.h3`
   font-size: 18px;
   font-weight: bold;
   margin: 0;
-`;
-
-const ReviewDate = styled.span`
-  color: #666;
-  font-size: 14px;
 `;
 
 const Rating = styled.div`
