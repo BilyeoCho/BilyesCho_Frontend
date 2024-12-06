@@ -177,8 +177,8 @@ const RegisterHistory = () => {
               <label>대여자 ID:</label>
               <input
                 type="text"
-                value={rentInfo.renterId}
-                onChange={(e) => setRentInfo({...rentInfo, renterId: e.target.value})}
+                value={rentInfo.renterUserId}
+                onChange={(e) => setRentInfo({...rentInfo, renterUserId: e.target.value})}
                 placeholder="대여자 ID를 입력하세요"
               />
             </InputGroup>
