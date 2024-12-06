@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 const EditReview = () => {
   const { reviewId } = useParams();
   const [rating, setRating] = useState(5);
-  const [selectedCategory, setSelectedCategory] = useState(null);
   const [review, setReview] = useState('');
 
   // 리뷰 데이터 불러오기 (예시)
@@ -14,10 +13,6 @@ const EditReview = () => {
     // API 호출로 대체될 부분
     console.log(`리뷰 ID ${reviewId}의 데이터를 불러옵니다.`);
   }, [reviewId]);
-
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-  };
 
   const handleSubmit = () => {
     // 리뷰 수정 로직 구현
@@ -49,21 +44,6 @@ const EditReview = () => {
               </RatingButtons>
               <SubText>평점을 선택해주세요</SubText>
             </RatingWrapper>
-            <FilterWrapper>
-              <FilterLabel>리뷰 필터링</FilterLabel>
-              <FilterButtons>
-                {['답변이 빨라요', '친절하고 배려가 넘쳐요', '물품 설명이 적절했어요'].map((category) => (
-                  <FilterButton
-                    key={category}
-                    isSelected={selectedCategory === category}
-                    onClick={() => handleCategoryClick(category)}
-                  >
-                    {category}
-                  </FilterButton>
-                ))}
-              </FilterButtons>
-            </FilterWrapper>
-            <SubText>물품 카테고리 선택</SubText>
             <InputWrapper>
               <Label>리뷰</Label>
               <TextArea
@@ -160,38 +140,6 @@ const RatingButton = styled.button`
 const SubText = styled.span`
   font-size: 14px;
   color: #888;
-`;
-
-const FilterWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const FilterLabel = styled.span`
-  font-size: 16px;
-  font-weight: 500;
-`;
-
-const FilterButtons = styled.div`
-  display: flex;
-  gap: 16px;
-`;
-
-const FilterButton = styled.button`
-  padding: 8px 16px;
-  background-color: ${(props) => (props.isSelected ? 'black' : '#f5f5f5')};
-  color: ${(props) => (props.isSelected ? 'white' : 'black')};
-  border: none;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    background-color: ${(props) => (props.isSelected ? 'black' : '#e0e0e0')};
-    transform: translateY(-2px);
-  }
 `;
 
 const InputWrapper = styled.div`

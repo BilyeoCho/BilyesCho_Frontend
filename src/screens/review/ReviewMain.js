@@ -8,7 +8,6 @@ import axiosApi from '../../axios';
 const ReviewMain = () => {
   const [currentReviewPage, setCurrentReviewPage] = useState(1);
   const [currentRegisterPage, setCurrentRegisterPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
   const [borrowedItems, setBorrowedItems] = useState([]);
@@ -34,10 +33,6 @@ const ReviewMain = () => {
 
   const totalReviewPages = Math.ceil(reviews.length / reviewsPerPage);
   const totalRegisterPages = Math.ceil(borrowedItems.length / itemsPerPage);
-
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-  };
 
   const handleItemClick = (itemId, itemName, itemPhoto, rentId) => {
     console.log('선택된 아이템 ID:', itemId);
@@ -95,17 +90,6 @@ const ReviewMain = () => {
 
       <Section>
         <SectionTitle>물품 리뷰</SectionTitle>
-        <FilterWrapper>
-          {['답변이 빨라요', '친절하고 배려가 넘쳐요', '물품 설명이 적절했어요'].map((category) => (
-            <FilterButton
-              key={category}
-              isSelected={selectedCategory === category}
-              onClick={() => handleCategoryClick(category)}
-            >
-              {category}
-            </FilterButton>
-          ))}
-        </FilterWrapper>
         <ReviewGrid>
           {reviews
             .slice((currentReviewPage - 1) * reviewsPerPage, currentReviewPage * reviewsPerPage)
@@ -210,28 +194,6 @@ const SectionTitle = styled.h2`
 const Subtitle = styled.p`
   font-size: 16px;
   color: #666;
-`;
-
-const FilterWrapper = styled.div`
-  display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
-`;
-
-const FilterButton = styled.button`
-  padding: 8px 16px;
-  background-color: ${(props) => (props.isSelected ? 'black' : '#f5f5f5')};
-  color: ${(props) => (props.isSelected ? 'white' : 'black')};
-  border: none;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    background-color: ${(props) => (props.isSelected ? 'black' : '#e0e0e0')};
-    transform: translateY(-2px);
-  }
 `;
 
 const ReviewGrid = styled.div`

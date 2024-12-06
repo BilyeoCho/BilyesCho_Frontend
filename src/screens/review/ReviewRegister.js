@@ -10,20 +10,14 @@ const ReviewRegister = () => {
   const navigate = useNavigate();
   
   const [rate, setRate] = useState('5');
-  const [reviewCategory, setReviewCategory] = useState('');
   const [content, setContent] = useState('');
   const [reviewPhoto, setReviewPhoto] = useState(location.state?.itemPhoto || '');
   const userId = location.state?.rentId || '';
-
-  const handleCategoryClick = (category) => {
-    setReviewCategory(category);
-  };
 
   const handleSubmit = async () => {
     try {
       const formData = new FormData();
       formData.append('rate', rate);
-      formData.append('reviewCategory', reviewCategory);
       formData.append('content', content);
       formData.append('userId', userId);
       formData.append('itemId', itemId);
@@ -56,7 +50,6 @@ const ReviewRegister = () => {
       console.log('=== 요청 데이터 객체 확인 ===');
       console.log({
         rate,
-        reviewCategory,
         content,
         userId,
         itemId,
@@ -112,21 +105,6 @@ const ReviewRegister = () => {
               </RatingButtons>
               <SubText>평점을 선택해주세요</SubText>
             </RatingWrapper>
-            <FilterWrapper>
-              <FilterLabel>리뷰 필터링</FilterLabel>
-              <FilterButtons>
-                {['답변이 빨라요', '친절하고 배려가 넘쳐요', '물품 설명이 적절했어요'].map((category) => (
-                  <FilterButton
-                    key={category}
-                    isSelected={reviewCategory === category}
-                    onClick={() => handleCategoryClick(category)}
-                  >
-                    {category}
-                  </FilterButton>
-                ))}
-              </FilterButtons>
-            </FilterWrapper>
-            <SubText>물품 카테고리 선택</SubText>
             <InputWrapper>
               <Label>리뷰</Label>
               <TextArea
@@ -227,38 +205,6 @@ const RatingButton = styled.button`
 const SubText = styled.span`
   font-size: 14px;
   color: #888;
-`;
-
-const FilterWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const FilterLabel = styled.span`
-  font-size: 16px;
-  font-weight: 500;
-`;
-
-const FilterButtons = styled.div`
-  display: flex;
-  gap: 16px;
-`;
-
-const FilterButton = styled.button`
-  padding: 8px 16px;
-  background-color: ${(props) => (props.isSelected ? 'black' : '#f5f5f5')};
-  color: ${(props) => (props.isSelected ? 'white' : 'black')};
-  border: none;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    background-color: ${(props) => (props.isSelected ? 'black' : '#e0e0e0')};
-    transform: translateY(-2px);
-  }
 `;
 
 const InputWrapper = styled.div`
