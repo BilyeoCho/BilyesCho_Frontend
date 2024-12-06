@@ -23,80 +23,51 @@ const EditReview = () => {
     <>
       <TopBar />
       <ReviewEditContainer>
-        <TopSection>
-          <ImageSection>
-            <PlaceholderImage>물품 사진</PlaceholderImage>
-          </ImageSection>
-          <FormSection>
-            <SectionTitle>리뷰 편집하기</SectionTitle>
-            <RatingWrapper>
-              <RatingLabel>평점</RatingLabel>
-              <RatingButtons>
-                {[1, 2, 3, 4, 5].map((value) => (
-                  <RatingButton
-                    key={value}
-                    isSelected={rating === value}
-                    onClick={() => setRating(value)}
-                  >
-                    {value}
-                  </RatingButton>
-                ))}
-              </RatingButtons>
-              <SubText>평점을 선택해주세요</SubText>
-            </RatingWrapper>
-            <InputWrapper>
-              <Label>리뷰</Label>
-              <TextArea
-                value={review}
-                onChange={(e) => setReview(e.target.value)}
-                placeholder="솔직한 리뷰를 작성해주세요"
-              />
-            </InputWrapper>
-            <ButtonGroup>
-              <CancelButton>취소</CancelButton>
-              <SubmitButton onClick={handleSubmit}>리뷰 수정하기</SubmitButton>
-            </ButtonGroup>
-          </FormSection>
-        </TopSection>
+        <FormSection>
+          <SectionTitle>리뷰 편집하기</SectionTitle>
+          <RatingWrapper>
+            <RatingLabel>평점</RatingLabel>
+            <RatingButtons>
+              {[1, 2, 3, 4, 5].map((value) => (
+                <RatingButton
+                  key={value}
+                  isSelected={rating === value}
+                  onClick={() => setRating(value)}
+                >
+                  {value}
+                </RatingButton>
+              ))}
+            </RatingButtons>
+            <SubText>평점을 선택해주세요</SubText>
+          </RatingWrapper>
+          <InputWrapper>
+            <Label>리뷰</Label>
+            <TextArea
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
+              placeholder="솔직한 리뷰를 작성해주세요"
+            />
+          </InputWrapper>
+          <ButtonGroup>
+            <CancelButton>취소</CancelButton>
+            <SubmitButton onClick={handleSubmit}>리뷰 수정하기</SubmitButton>
+          </ButtonGroup>
+        </FormSection>
       </ReviewEditContainer>
     </>
   );
 };
 
 const ReviewEditContainer = styled.div`
-  max-width: 1400px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 40px;
 `;
 
-const TopSection = styled.div`
-  display: flex;
-  gap: 40px;
-  align-items: flex-start;
-  width: 100%;
-`;
-
-const ImageSection = styled.div`
-  flex: 1;
-`;
-
 const FormSection = styled.div`
-  flex: 1;  
   display: flex;
   flex-direction: column;
   gap: 24px;
-`;
-
-const PlaceholderImage = styled.div`
-  width: 100%; 
-  height: 700px;
-  background-color: #f5f5f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  font-size: 18px;
-  color: #888;
 `;
 
 const SectionTitle = styled.h2`
