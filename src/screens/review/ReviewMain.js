@@ -2,14 +2,11 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Pagination } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import Modal from '@mui/material/Modal';
 import axiosApi from '../../axios';
 
 const ReviewMain = () => {
   const [currentReviewPage, setCurrentReviewPage] = useState(1);
   const [currentRegisterPage, setCurrentRegisterPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedReview, setSelectedReview] = useState(null);
   const [borrowedItems, setBorrowedItems] = useState([]);
   const [reviews, setReviews] = useState([]);
   const navigate = useNavigate();
@@ -28,10 +25,21 @@ const ReviewMain = () => {
     navigate(`/review/register/${itemId}`, { state: { itemPhoto, rentId } });
   };
 
-  const handleReviewClick = (review) => {
-    setSelectedReview(review);
-    setIsModalOpen(true);
-  };
+  // 전체 리뷰 조회
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axiosApi.get('/reviews/all');
+        if (response.status === 200) {
+          setReviews(response.data);
+        }
+      } catch (error) {
+        console.error('리뷰 조회 실패:', error);
+      }
+    };
+
+    fetchReviews();
+  }, []);
 
   // 빌린 물품 목록 조회
   useEffect(() => {
@@ -67,22 +75,6 @@ const ReviewMain = () => {
     fetchBorrowedItems();
   }, []);
 
-  // 전체 리뷰 조회
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await axiosApi.get('/reviews/all');
-        if (response.status === 200) {
-          setReviews(response.data);
-        }
-      } catch (error) {
-        console.error('리뷰 조회 실패:', error);
-      }
-    };
-
-    fetchReviews();
-  }, []);
-
   return (
     <ReviewContainer>
       <CenteredSection>
@@ -96,10 +88,7 @@ const ReviewMain = () => {
           {reviews
             .slice((currentReviewPage - 1) * reviewsPerPage, currentReviewPage * reviewsPerPage)
             .map((review) => (
-              <ReviewCard 
-                key={review.reviewId} 
-                onClick={() => handleReviewClick(review)}
-              >
+              <ReviewCard key={review.reviewId}>
                 <ItemName>{review.itemName}</ItemName>
                 <ReviewUser>{review.userId}</ReviewUser>
                 <ReviewRating>
@@ -146,28 +135,6 @@ const ReviewMain = () => {
           />
         </PaginationWrapper>
       </Section>
-
-      <Modal
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      >
-        <ModalContainer>
-          <ModalContent>
-            <ImageSection>
-              <ProductImage src={selectedReview?.image} alt={selectedReview?.itemName} />
-            </ImageSection>
-            <ReviewSection>
-              <ReviewHeader>
-                <ItemName>{selectedReview?.itemName}</ItemName>
-                <ReviewUser>{selectedReview?.user}</ReviewUser>
-                <ReviewRating>{'⭐'.repeat(selectedReview?.rating || 0)}</ReviewRating>
-              </ReviewHeader>
-              <ReviewText>{selectedReview?.comment}</ReviewText>
-            </ReviewSection>
-            <CloseButton onClick={() => setIsModalOpen(false)}>✕</CloseButton>
-          </ModalContent>
-        </ModalContainer>
-      </Modal>
     </ReviewContainer>
   );
 };
@@ -283,50 +250,6 @@ const PaginationWrapper = styled.div`
   justify-content: center;
 `;
 
-const ModalContainer = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%;
-  max-width: 1000px;
-  background-color: white;
-  border-radius: 12px;
-  outline: none;
-`;
-
-const ModalContent = styled.div`
-  display: flex;
-  position: relative;
-  height: 600px;
-`;
-
-const ImageSection = styled.div`
-  flex: 1;
-  padding: 24px;
-`;
-
-const ProductImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 8px;
-`;
-
-const ReviewSection = styled.div`
-  flex: 1;
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 24px;
-`;
-
-const ReviewHeader = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
 
 const ItemName = styled.div`
   font-size: 24px;
@@ -345,28 +268,6 @@ const ReviewRating = styled.div`
   color: #FFD700;
   font-size: 20px;
   margin: 8px 0;
-`;
-
-const ReviewText = styled.p`
-  font-size: 18px;
-  line-height: 1.6;
-  color: #333;
-  margin-top: 16px;
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #666;
-  
-  &:hover {
-    color: #000;
-  }
 `;
 
 export default ReviewMain;
