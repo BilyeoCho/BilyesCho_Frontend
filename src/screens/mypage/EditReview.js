@@ -9,6 +9,8 @@ const EditReview = () => {
   const navigate = useNavigate();
   const [rating, setRating] = useState(5);
   const [review, setReview] = useState('');
+  const [reviewPhoto, setReviewPhoto] = useState('');
+  const [reviewCategory, setReviewCategory] = useState('');
 
   // 기존 리뷰 데이터 불러오기
   useEffect(() => {
@@ -18,6 +20,8 @@ const EditReview = () => {
         if (response.status === 200) {
           setRating(parseInt(response.data.rate));
           setReview(response.data.content);
+          setReviewPhoto(response.data.reviewPhoto || '');
+          setReviewCategory(response.data.reviewCategory || '');
         }
       } catch (error) {
         console.error('리뷰 조회 실패:', error);
@@ -32,7 +36,9 @@ const EditReview = () => {
     try {
       const response = await axiosApi.put(`/reviews/${reviewId}`, {
         rate: rating.toString(),
-        content: review
+        content: review,
+        reviewPhoto: reviewPhoto,
+        reviewCategory: reviewCategory
       });
 
       if (response.status === 200) {
@@ -44,10 +50,10 @@ const EditReview = () => {
       if (error.response) {
         switch (error.response.status) {
           case 400:
-            alert('잘못된 요청입니다. 입력값을 확인해주세요.');
+            alert('400 잘못된 요청입니다. 입력값을 확인해주세요.');
             break;
           case 404:
-            alert('해당 리뷰를 찾을 수 없습니다.');
+            alert('404 해당 리뷰를 찾을 수 없습니다.');
             break;
           default:
             alert('리뷰 수정 중 오류가 발생했습니다.');
