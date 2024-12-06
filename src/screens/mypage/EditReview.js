@@ -43,14 +43,20 @@ const EditReview = () => {
   const handleSubmit = async () => {
     try {
       console.log(`=== PUT 요청 시작: /reviews/${reviewId} ===`);
-      const requestData = {
+      const formData = new FormData();
+      formData.append('rate', rating.toString());
+      formData.append('content', review);
+      
+      console.log('PUT 요청 데이터:', {
         rate: rating.toString(),
         content: review
-      };
-      
-      console.log('PUT 요청 데이터:', requestData);
+      });
 
-      const response = await axiosApi.put(`/reviews/${reviewId}`, requestData);
+      const response = await axiosApi.put(`/reviews/${reviewId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
       if (response.status === 200) {
         console.log('PUT 응답 데이터:', response.data);
