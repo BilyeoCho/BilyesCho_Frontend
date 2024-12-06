@@ -9,8 +9,6 @@ const EditReview = () => {
   const navigate = useNavigate();
   const [rating, setRating] = useState(5);
   const [review, setReview] = useState('');
-  const [reviewPhoto, setReviewPhoto] = useState('');
-  const [reviewCategory, setReviewCategory] = useState('');
 
   // 기존 리뷰 데이터 불러오기
   useEffect(() => {
@@ -23,13 +21,9 @@ const EditReview = () => {
           console.log('GET 응답 데이터:', response.data);
           console.log('rate:', response.data.rate);
           console.log('content:', response.data.content);
-          console.log('reviewPhoto:', response.data.reviewPhoto);
-          console.log('reviewCategory:', response.data.reviewCategory);
 
           setRating(parseInt(response.data.rate));
           setReview(response.data.content);
-          setReviewPhoto(response.data.reviewPhoto || '');
-          setReviewCategory(response.data.reviewCategory || '');
 
           console.log('=== 상태 업데이트 완료 ===');
         }
@@ -51,9 +45,7 @@ const EditReview = () => {
       console.log(`=== PUT 요청 시작: /reviews/${reviewId} ===`);
       const requestData = {
         rate: rating.toString(),
-        content: review,
-        reviewPhoto: reviewPhoto,
-        reviewCategory: reviewCategory
+        content: review
       };
       
       console.log('PUT 요청 데이터:', requestData);
