@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import TopBar from '../../components/TopBar';
 import { useParams, useNavigate } from 'react-router-dom';
+import axiosApi from '../../axios';
 
 const EditReview = () => {
   const { reviewId } = useParams();
@@ -9,15 +10,52 @@ const EditReview = () => {
   const [rating, setRating] = useState(5);
   const [review, setReview] = useState('');
 
-  // 리뷰 데이터 불러오기 (예시)
+  // 기존 리뷰 데이터 불러오기
   useEffect(() => {
-    // API 호출로 대체될 부분
-    console.log(`리뷰 ID ${reviewId}의 데이터를 불러옵니다.`);
+    const fetchReview = async () => {
+      try {
+        const response = await axiosApi.get(`/reviews/${reviewId}`);
+        if (response.status === 200) {
+          setRating(parseInt(response.data.rate));
+          setReview(response.data.content);
+        }
+      } catch (error) {
+        console.error('리뷰 조회 실패:', error);
+        alert('리뷰 정보를 불러오는데 실패했습니다.');
+      }
+    };
+
+    fetchReview();
   }, [reviewId]);
 
-  const handleSubmit = () => {
-    // 리뷰 수정 로직 구현
-    console.log('리뷰가 수정되었습니다.');
+  const handleSubmit = async () => {
+    try {
+      const response = await axiosApi.put(`/reviews/${reviewId}`, {
+        rate: rating.toString(),
+        content: review
+      });
+
+      if (response.status === 200) {
+        alert('리뷰가 성공적으로 수정되었습니다.');
+        navigate('/mypage?tab=review');
+      }
+    } catch (error) {
+      console.error('리뷰 수정 실패:', error);
+      if (error.response) {
+        switch (error.response.status) {
+          case 400:
+            alert('잘못된 요청입니다. 입력값을 확인해주세요.');
+            break;
+          case 404:
+            alert('해당 리뷰를 찾을 수 없습니다.');
+            break;
+          default:
+            alert('리뷰 수정 중 오류가 발생했습니다.');
+        }
+      } else {
+        alert('네트워크 오류가 발생했습니다.');
+      }
+    }
   };
 
   const handleCancel = () => {
