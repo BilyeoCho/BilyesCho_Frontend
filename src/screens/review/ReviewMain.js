@@ -11,22 +11,8 @@ const ReviewMain = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
   const [borrowedItems, setBorrowedItems] = useState([]);
-  const navigate = useNavigate(); // 페이지 전환을 위한 useNavigate 훅 사용
-
-  const reviews = [
-    { 
-      user: '장성우', 
-      rating: 5, 
-      comment: '유용하게 사용했습니다.',
-      image: '/images/tent1.jpg',  // 실제 이미지 경로로 수정 필요
-      itemName: '텐트'
-    },
-    { user: '정준서', rating: 5, comment: '되게 아늑하고 좋았습니다.', image: '/images/chair1.jpg', itemName: '캠핑의자' },
-    { user: '김태양', rating: 5, comment: '푹신하고 편안했습니다.', image: '/images/lantern1.jpg', itemName: '랜턴' },
-    { user: '홍길동', rating: 5, comment: '불이 세요.', image: '/images/cooking1.jpg', itemName: '취사도구' },
-    { user: '박영희', rating: 4, comment: '사용감이 좋았습니다.', image: '/images/tent2.jpg', itemName: '텐트' },
-    { user: '이철수', rating: 4, comment: '다음에 또 빌리고 싶습니다.', image: '/images/chair2.jpg', itemName: '캠핑의자' },
-  ];
+  const [reviews, setReviews] = useState([]);
+  const navigate = useNavigate();
 
   const reviewsPerPage = 4;
   const itemsPerPage = 2;
@@ -81,6 +67,22 @@ const ReviewMain = () => {
     fetchBorrowedItems();
   }, []);
 
+  // 전체 리뷰 조회
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axiosApi.get('/reviews/all');
+        if (response.status === 200) {
+          setReviews(response.data);
+        }
+      } catch (error) {
+        console.error('리뷰 조회 실패:', error);
+      }
+    };
+
+    fetchReviews();
+  }, []);
+
   return (
     <ReviewContainer>
       <CenteredSection>
@@ -93,17 +95,17 @@ const ReviewMain = () => {
         <ReviewGrid>
           {reviews
             .slice((currentReviewPage - 1) * reviewsPerPage, currentReviewPage * reviewsPerPage)
-            .map((review, index) => (
+            .map((review) => (
               <ReviewCard 
-                key={index} 
+                key={review.reviewId} 
                 onClick={() => handleReviewClick(review)}
               >
                 <ItemName>{review.itemName}</ItemName>
-                <ReviewUser>{review.user}</ReviewUser>
+                <ReviewUser>{review.userId}</ReviewUser>
                 <ReviewRating>
-                  {'⭐'.repeat(review.rating)}
+                  {'⭐'.repeat(parseInt(review.rate))}
                 </ReviewRating>
-                <ReviewComment>{review.comment}</ReviewComment>
+                <ReviewComment>{review.content}</ReviewComment>
               </ReviewCard>
             ))}
         </ReviewGrid>
