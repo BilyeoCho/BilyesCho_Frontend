@@ -151,7 +151,7 @@ const RegisterHistory = () => {
                     setIsModalOpen(true);
                   }}
                 >
-                  {item.status}
+                  {item.status === 'AVAILABLE' ? '대여 가능' : '대여 중'}
                 </StatusBadge>
               </ItemHeader>
               <ItemDetails>
@@ -277,8 +277,15 @@ const StatusBadge = styled.span`
   border-radius: 4px;
   font-size: 12px;
   font-weight: bold;
-  background-color: #e3fafc;
-  color: #0c8599;
+  background-color: ${props => props.status === 'RENTED' ? '#fff3bf' : '#f8f9fa'};
+  color: ${props => props.status === 'RENTED' ? '#f08c00' : '#666'};
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const ItemDetails = styled.div`
