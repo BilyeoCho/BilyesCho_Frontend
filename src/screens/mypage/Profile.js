@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [profileImage, setProfileImage] = useState('/images/default-profile.jpg');
+  const [profileImage, setProfileImage] = useState('/기본 프로필.jpg');
   const [formData, setFormData] = useState({
     currentPassword: '',
     newPassword: '',
