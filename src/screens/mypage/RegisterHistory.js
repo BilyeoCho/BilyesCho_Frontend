@@ -147,26 +147,30 @@ const RegisterHistory = () => {
                 <StatusBadge 
                   status={item.status}
                   onClick={() => {
-                    setSelectedItemId(item.itemId);
-                    setIsModalOpen(true);
+                    if (item.status === 'AVAILABLE') {
+                      setSelectedItemId(item.itemId);
+                      setIsModalOpen(true);
+                    }
                   }}
                 >
                   {item.status === 'AVAILABLE' ? '대여 가능' : '대여 중'}
                 </StatusBadge>
               </ItemHeader>
-              <ItemDetails>
-                <DetailRow>
-                  <DetailLabel>대여 가격</DetailLabel>
-                  <DetailValue>₩{item.price}</DetailValue>
-                </DetailRow>
-              </ItemDetails>
               {item.status === 'AVAILABLE' && (
-                <ButtonGroup>
-                  <EditButton onClick={() => navigate(`/mypage/edit/${item.itemId}`)}>
-                    수정
-                  </EditButton>
-                  <DeleteButton onClick={() => handleDelete(item.itemId)}>삭제</DeleteButton>
-                </ButtonGroup>
+                <>
+                  <ItemDetails>
+                    <DetailRow>
+                      <DetailLabel>대여 가격</DetailLabel>
+                      <DetailValue>₩{item.price}</DetailValue>
+                    </DetailRow>
+                  </ItemDetails>
+                  <ButtonGroup>
+                    <EditButton onClick={() => navigate(`/mypage/edit/${item.itemId}`)}>
+                      수정
+                    </EditButton>
+                    <DeleteButton onClick={() => handleDelete(item.itemId)}>삭제</DeleteButton>
+                  </ButtonGroup>
+                </>
               )}
             </ItemInfo>
           </ItemCard>
