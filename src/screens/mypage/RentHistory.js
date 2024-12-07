@@ -35,10 +35,10 @@ const RentHistory = () => {
 
   const handleReturnItem = async (rentId, renterUserId) => {
     try {
-      console.log(`반납 요청 URL: /rents/return/${rentId}?renterId=${renterUserId}`);
+      console.log(`반납 요청 URL: /rents/return/${rentId}?renterUserId=${renterUserId}`);
       console.log('반납 요청 데이터:', { rentId, renterUserId });
 
-      const response = await axiosApi.put(`/rents/return/${rentId}?renterId=${renterUserId}`);
+      const response = await axiosApi.put(`/rents/return/${rentId}?renterUserId=${renterUserId}`);
       
       if (response.status === 200) {
         console.log('반납 성공:', response.data);
