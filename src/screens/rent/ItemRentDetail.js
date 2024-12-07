@@ -131,7 +131,7 @@ const ItemRentDetail = () => {
               <ChatIcon />
               <ChatInfo>
                 <ChatText>오픈 카카오톡 방</ChatText>
-                <ChatURL href="https://www.figma.com/">https://www.figma.com/</ChatURL>
+                <ChatURL href="https://open.kakao.com/o/skaqP23g">https://open.kakao.com/...</ChatURL>
               </ChatInfo>
             </ChatLink>
             <ButtonContainer>
