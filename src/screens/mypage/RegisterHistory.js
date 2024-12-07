@@ -73,28 +73,30 @@ const RegisterHistory = () => {
   };
 
   const handleStatusChange = async () => {
-    // ISO 문자열을 원하는 형식으로 변환
-    const formatDateTime = (dateTimeString) => {
-      if (!dateTimeString) return '';
-      // 초가 없는 경우 ':00'을 추가
-      const withSeconds = dateTimeString.length === 16 
-        ? dateTimeString + ':00' 
-        : dateTimeString;
-      return withSeconds;
-    };
-
-    // 요청 데이터 준비
-    const requestData = {
-      itemId: selectedItemId,
-      renterUserId: rentInfo.renterUserId,
-      startTime: formatDateTime(rentInfo.startTime),
-      endTime: formatDateTime(rentInfo.endTime)
-    };
-    
-    console.log('대여 상태 변경 요청 데이터:', requestData);
-
     try {
-      const response = await axiosApi.post('/rents/rentstatus', requestData);
+      console.log(`=== POST 요청 시작: /rents/rentstatus ===`);
+      
+      // ISO 문자열을 원하는 형식으로 변환
+      const formatDateTime = (dateTimeString) => {
+        if (!dateTimeString) return '';
+        return dateTimeString.replace('T', '') + ':00';
+      };
+
+      // 요청 데이터 준비
+      const requestData = {
+        itemId: selectedItemId,
+        renterUserId: rentInfo.renterUserId,
+        startTime: formatDateTime(rentInfo.startTime),
+        endTime: formatDateTime(rentInfo.endTime)
+      };
+      
+      console.log('대여 상태 변경 요청 데이터:', requestData);
+
+      const response = await axiosApi.post('/rents/rentstatus', requestData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       
       if (response.status === 200) {
         console.log('대여 상태 변경 응답:', response.data);
@@ -106,6 +108,9 @@ const RegisterHistory = () => {
       console.error('대여 상태 변경 오류:', error);
       
       if (error.response) {
+        console.error('에러 응답:', error.response.data);
+        console.error('에러 상태:', error.response.status);
+        
         switch (error.response.status) {
           case 400:
             alert('400 물품이 대여 가능한 상태가 아닙니다.');
