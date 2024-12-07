@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axiosApi from '../../axios';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,30 @@ const Profile = () => {
     openKakaoLink: ''
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 프로필 정보 로드
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axiosApi.get('/users/profile');
+        if (response.status === 200) {
+          const userData = response.data;
+          setFormData(prev => ({
+            ...prev,
+            userName: userData.userName || '',
+            openKakaoLink: userData.openKakaoLink || ''
+          }));
+          if (userData.userPhoto) {
+            setProfileImage(userData.userPhoto);
+          }
+        }
+      } catch (error) {
+        console.error('프로필 정보 로드 실패:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -39,21 +63,34 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formData = new FormData();
+      const submitFormData = new FormData();
       
-      formData.append('currentPassword', formData.currentPassword);
-      formData.append('newPassword', formData.newPassword);
-      formData.append('userName', formData.userName);
-      formData.append('userPhoto', formData.userPhoto);
-      formData.append('openKakaoLink', formData.openKakaoLink);
+      // 비밀번호가 입력된 경우에만 전송
+      if (formData.currentPassword) {
+        submitFormData.append('currentPassword', formData.currentPassword);
+      }
+      if (formData.newPassword) {
+        submitFormData.append('newPassword', formData.newPassword);
+      }
+
+      // 나머지 필드 추가
+      if (formData.userName) {
+        submitFormData.append('userName', formData.userName);
+      }
+      if (formData.userPhoto) {
+        submitFormData.append('userPhoto', formData.userPhoto);
+      }
+      if (formData.openKakaoLink) {
+        submitFormData.append('openKakaoLink', formData.openKakaoLink);
+      }
 
       // 요청 전 데이터 확인
       console.log('=== 전송할 데이터 ===');
-      for (let pair of formData.entries()) {
+      for (let pair of submitFormData.entries()) {
         console.log(pair[0] + ': ' + pair[1]);
       }
 
-      const response = await axiosApi.put('/users/update', formData, {
+      const response = await axiosApi.put('/users/update', submitFormData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -61,8 +98,13 @@ const Profile = () => {
       
       if (response.status === 200) { 
         alert('프로필이 성공적으로 업데이트되었습니다.');
+        // 프로필 업데이트 후 새로운 정보 반영
+        if (response.data.userPhoto) {
+          setProfileImage(response.data.userPhoto);
+        }
       }
     } catch (error) {
+      console.error('프로필 업데이트 오류:', error);
       if (error.response) {
         switch (error.response.status) {
           case 400:
