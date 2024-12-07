@@ -277,8 +277,8 @@ const StatusBadge = styled.span`
   border-radius: 4px;
   font-size: 12px;
   font-weight: bold;
-  background-color: ${props => props.status === 'RENTED' ? '#fff3bf' : '#f8f9fa'};
-  color: ${props => props.status === 'RENTED' ? '#f08c00' : '#666'};
+  background-color: ${props => props.status === 'RENTED' ? '#fff3bf' : '#e3fafc'};
+  color: ${props => props.status === 'RENTED' ? '#f08c00' : '#0c8599'};
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
