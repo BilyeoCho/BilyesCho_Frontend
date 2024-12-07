@@ -269,6 +269,11 @@ const CardImage = styled.div`
   width: 100%;
   height: 200px;
   background-color: #f0f0f0;
+  background-image: url(${props => props.style?.backgroundImage?.slice(4, -1).replace(/['"]/g, '')});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  transition: transform 0.2s ease-out;
 `;
 
 const CardInfo = styled.div`
