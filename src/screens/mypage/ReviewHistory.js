@@ -12,19 +12,35 @@ const ReviewHistory = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axiosApi.get('/reviews/all');
+        const userId = localStorage.getItem('userId');
+        console.log('=== GET 요청 시작: /reviews/user/${userId} ===');
+        console.log('현재 사용자 ID:', userId);
+
+        const response = await axiosApi.get(`/reviews/user/${userId}`);
+        
         if (response.status === 200) {
-          const reviewsData = response.data;
-          const detailedReviews = await Promise.all(
-            reviewsData.map(async (review) => {
-              const detailResponse = await axiosApi.get(`/reviews/${review.reviewId}`);
-              return detailResponse.data;
-            })
-          );
-          setReviews(detailedReviews);
+          console.log('리뷰 조회 응답:', response.data);
+          setReviews(response.data);
         }
       } catch (error) {
         console.error('리뷰 조회 실패:', error);
+        if (error.response) {
+          console.error('에러 응답:', error.response.data);
+          console.error('에러 상태:', error.response.status);
+          
+          switch (error.response.status) {
+            case 404:
+              alert('리뷰를 찾을 수 없습니다.');
+              break;
+            case 500:
+              alert('서버 오류가 발생했습니다.');
+              break;
+            default:
+              alert('리뷰 조회 중 오류가 발생했습니다.');
+          }
+        } else {
+          alert('네트워크 오류가 발생했습니다.');
+        }
       }
     };
 
