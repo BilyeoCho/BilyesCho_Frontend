@@ -201,16 +201,17 @@ const ProfileForm = styled.form`
 `;
 
 const ImageSection = styled.div`
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 20px;
   margin-bottom: 32px;
 `;
 
 const ProfileImage = styled.img`
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 16px;
 `;
 
 const ImageUploadLabel = styled.label`
@@ -221,6 +222,7 @@ const ImageUploadLabel = styled.label`
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s;
+  margin-top: 0;
 
   &:hover {
     background-color: #e9ecef;
